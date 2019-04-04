@@ -13,8 +13,15 @@ apt install librocksdb-dev
 ## Compiling
 
 ```sh
-mkdir bin
-cd bin
+mkdir build
+cd build
 cmake ../
 make 
 ```
+
+## Running
+
+```sh
+bin/echd
+```
+
