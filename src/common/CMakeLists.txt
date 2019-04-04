@@ -1,1 +1,5 @@
-add_library(common utxo.cpp)
+set(source_files
+        utxo.cpp
+        )
+
+add_library(common ${source_files})
