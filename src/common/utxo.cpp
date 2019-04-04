@@ -2,9 +2,9 @@
 
 UTXO::UTXO() :
 		_id(0),
-		_owner(0),
-		_amount(0),
-		_color(0)
+		_owner(),
+		_amount(),
+		_color()
 {
 }
 
