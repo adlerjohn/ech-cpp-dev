@@ -1,6 +1,6 @@
-# Seth C++ PoC Client
+# Ethereum Cash is Ethereum
 
-This repository contains a proof-of-concept implementation for SETH, a scalable side chain.
+This repository contains a proof-of-concept implementation for ECH, a scalable side chain.
 
 ## Dependencies
 
@@ -13,5 +13,8 @@ apt install librocksdb-dev
 ## Compiling
 
 ```sh
-cmake CMakeLists.txt
+mkdir bin
+cd bin
+cmake ../
+make 
 ```

@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
-project(seth_cpp)
+project(ech_cpp)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(seth_cpp main.cpp)
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
+
+add_subdirectory(src)
