@@ -13,10 +13,9 @@ apt install librocksdb-dev
 ## Compiling
 
 ```sh
-mkdir build
-cd build
-cmake ../
-make 
+mkdir build; cd build
+cmake ..
+cmake --build .
 ```
 
 ## Running
