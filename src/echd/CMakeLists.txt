@@ -1,7 +1,7 @@
 project(echd)
 
-include_directories(${ech_cpp_SOURCE_DIR}/src/common)
-link_directories(${ech_cpp_SOURCE_DIR}/src/common)
+include_directories(${ech_cpp_SOURCE_DIR}/src)
+link_directories(${ech_cpp_SOURCE_DIR}/src)
 
 set(source_files
         foo.cpp

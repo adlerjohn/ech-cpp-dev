@@ -5,7 +5,7 @@
 
 // Project includes
 #include "foo.hpp"
-#include "utxo.hpp"
+#include "common/utxo.hpp"
 
 int main()
 {
