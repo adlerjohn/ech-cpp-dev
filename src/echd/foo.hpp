@@ -1,7 +1,8 @@
 #ifndef ECH_CPP_FOO_HPP
 #define ECH_CPP_FOO_HPP
 
-class Foo {
+class Foo
+{
 public:
 	Foo() {};
 

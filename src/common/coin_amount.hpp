@@ -1,7 +1,8 @@
 #ifndef ECH_CPP_COIN_AMOUNT_HPP
 #define ECH_CPP_COIN_AMOUNT_HPP
 
-class CoinAmount {
+class CoinAmount
+{
 private:
 public:
 };

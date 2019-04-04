@@ -1,7 +1,8 @@
 #ifndef ECH_CPP_TX_HPP
 #define ECH_CPP_TX_HPP
 
-class Tx {
+class Tx
+{
 private:
 public:
 };

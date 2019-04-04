@@ -1,7 +1,8 @@
 #ifndef ECH_CPP_ADDRESS_HPP
 #define ECH_CPP_ADDRESS_HPP
 
-class Address {
+class Address
+{
 private:
 public:
 };

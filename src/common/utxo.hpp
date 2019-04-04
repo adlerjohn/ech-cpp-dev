@@ -9,7 +9,8 @@
 #include "coin_amount.hpp"
 #include "color.hpp"
 
-class UTXO {
+class UTXO
+{
 private:
 	// ID of the UTXO, determined by its hash
 	const uint64_t _id;

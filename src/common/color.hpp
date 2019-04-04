@@ -1,7 +1,8 @@
 #ifndef ECH_CPP_COLOR_HPP
 #define ECH_CPP_COLOR_HPP
 
-class Color {
+class Color
+{
 private:
 public:
 };
