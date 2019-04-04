@@ -15,7 +15,6 @@ int main()
 	foo.p();
 
 	auto utxo = UTXO();
-	utxo.p();
 
 	return 0;
 }

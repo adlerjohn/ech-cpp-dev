@@ -15,12 +15,12 @@ uint64_t UTXO::getId() const
 
 Address UTXO::getOwner() const
 {
-	return 0;
+	return Address();
 }
 
 CoinAmount UTXO::getAmount() const
 {
-	return 0;
+	return CoinAmount();
 }
 
 bool UTXO::isColored() const

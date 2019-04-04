@@ -8,4 +8,4 @@ set(source_files
         )
 
 add_executable(echd main.cpp ${source_files})
-target_link_libraries(echd common)
+target_link_libraries(echd common rocksdb)
