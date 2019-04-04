@@ -3,6 +3,7 @@
 // System includes
 #include <iostream>
 
-void Foo::p() {
+void Foo::p()
+{
 	std::cout << "FOO" << std::endl;
 }
