@@ -12,6 +12,7 @@ class UTXO
 {
 private:
 	// ID of the UTXO, determined by its hash
+	// TODO replace with digest class
 	const uint64_t _id;
 
 	// Owner of the UTXO

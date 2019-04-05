@@ -8,6 +8,7 @@ set(source_files
         state.cpp
         tx.cpp
         utxo.cpp
+        signature.cpp
         )
 
 add_library(common ${source_files})
