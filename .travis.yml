@@ -1,7 +1,6 @@
 language: c++
 compiler:
   - gcc
-  - clang
 
 dist: xenial
 
@@ -22,4 +21,9 @@ addons:
 script:
   - export CC=gcc-8
   - export CXX=g++-8
+  - mkdir -p build
+  - cd build
+  - cmake ..
+  - cmake --build .
+  - ctest
 
