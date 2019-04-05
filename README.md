@@ -7,7 +7,7 @@ This repository contains a proof-of-concept implementation for ECH, a scalable s
 Install the following libraries as dependencies before compiling.
 
 ```sh
-apt install librocksdb-dev
+apt install librocksdb-dev libboost-dev
 ```
 
 ## Compiling
