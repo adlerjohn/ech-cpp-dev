@@ -2,7 +2,12 @@
 
 // System includes
 #include <iostream>
+
+// Library includes
 #include <boost/multiprecision/cpp_int.hpp>
+#include <crypto++/eccrypto.h>
+#include <crypto++/osrng.h>
+#include <crypto++/oids.h>
 
 // Project includes
 #include "foo.hpp"

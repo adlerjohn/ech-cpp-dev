@@ -11,4 +11,4 @@ set(source_files
         )
 
 add_library(common ${source_files})
-target_link_libraries(common ${Boost_LIBRARIES})
+target_link_libraries(common ${Boost_LIBRARIES} crypto++)
