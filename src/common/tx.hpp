@@ -1,10 +1,7 @@
-#ifndef ECH_CPP_TX_HPP
-#define ECH_CPP_TX_HPP
+#pragma once
 
 class Tx
 {
 private:
 public:
 };
-
-#endif //ECH_CPP_TX_HPP

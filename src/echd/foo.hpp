@@ -1,5 +1,4 @@
-#ifndef ECH_CPP_FOO_HPP
-#define ECH_CPP_FOO_HPP
+#pragma once
 
 class Foo
 {
@@ -8,5 +7,3 @@ public:
 
 	void p();
 };
-
-#endif //ECH_CPP_FOO_HPP

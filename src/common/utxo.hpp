@@ -1,5 +1,4 @@
-#ifndef ECH_CPP_UTXO_HPP
-#define ECH_CPP_UTXO_HPP
+#pragma once
 
 // System includes
 #include <cstdint>
@@ -35,5 +34,3 @@ public:
 
 	bool isColored() const;
 };
-
-#endif //ECH_CPP_UTXO_HPP
