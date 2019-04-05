@@ -10,9 +10,9 @@
 class Block
 {
 private:
-	BlockHeader _header;
+	const BlockHeader _header;
 
 	// TODO also add interstitial state commitments (change to hashable?)
-	std::vector<Tx> _leaves;
+	const std::vector<Tx> _leaves;
 public:
 };

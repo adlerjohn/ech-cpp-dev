@@ -10,6 +10,6 @@ class State
 {
 private:
 	// The UTXO set: blockchain state
-	std::vector<UTXO> _utxoSet;
+	const std::vector<UTXO> _utxoSet;
 public:
 };

@@ -11,12 +11,12 @@ class Tx
 {
 private:
 	// Inputs to the transaction
-	std::vector<UTXO> _inputs;
+	const std::vector<UTXO> _inputs;
 
 	// Outputs of the transaction
-	std::vector<UTXO> _outputs;
+	const std::vector<UTXO> _outputs;
 
 	// Digital signature, one for each input
-	std::vector<Signature> _sig;
+	const std::vector<Signature> _sig;
 public:
 };
