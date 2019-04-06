@@ -10,6 +10,12 @@
 class Color
 {
 private:
+	const bool _isColored;
 	const Address _id;
 public:
+	Color();
+	Color(Address id);
+
+	bool isColored() const;
+	Address getColor() const;
 };

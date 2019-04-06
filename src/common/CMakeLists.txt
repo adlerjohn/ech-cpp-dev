@@ -11,6 +11,7 @@ set(source_files
         signature.cpp
         block.cpp
         block_header.cpp
+        txid.cpp
         )
 
 add_library(common ${source_files})
