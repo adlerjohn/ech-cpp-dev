@@ -1,5 +1,10 @@
 #pragma once
 
+// Library includes
+#include <crypto++/eccrypto.h>
+#include <crypto++/osrng.h>
+#include <crypto++/oids.h>
+
 #define ADDRESS_BYTES 20
 
 /**

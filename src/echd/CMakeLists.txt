@@ -1,7 +1,6 @@
 project(echd)
 
 set(source_files
-        foo.cpp
         db.cpp
         )
 
