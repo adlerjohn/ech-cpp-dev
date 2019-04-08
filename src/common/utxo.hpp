@@ -4,7 +4,7 @@
 #include <cstdint>
 
 // Project includes
-#include "address.hpp"
+#include "crypto/address.hpp"
 #include "coin_amount.hpp"
 #include "color.hpp"
 

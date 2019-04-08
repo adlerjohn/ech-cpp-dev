@@ -4,8 +4,8 @@
 #include <vector>
 
 // Project includes
+#include "crypto/signature.hpp"
 #include "serializable.hpp"
-#include "signature.hpp"
 #include "state.hpp"
 #include "txid.hpp"
 #include "utxo.hpp"

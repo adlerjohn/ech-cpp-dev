@@ -1,7 +1,7 @@
 #pragma once
 
 // Project includes
-#include "address.hpp"
+#include "crypto/address.hpp"
 
 /**
  * Coins can be "colored" i.e., represent a token other than the base currency.
