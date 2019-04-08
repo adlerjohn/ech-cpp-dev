@@ -10,7 +10,7 @@ set(source_files
         block.cpp
         block_header.cpp
         txid.cpp
-        )
+        utxoid.cpp utxoid.hpp)
 
 add_library(common ${source_files})
 target_link_libraries(common ${Boost_LIBRARIES} ech-crypto)

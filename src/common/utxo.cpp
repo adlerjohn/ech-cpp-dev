@@ -1,14 +1,14 @@
 #include "utxo.hpp"
 
 UTXO::UTXO() :
-		_id(0),
+		_id(),
 		_owner(),
 		_amount(),
 		_color()
 {
 }
 
-uint64_t UTXO::getId() const
+UTXOID UTXO::getId() const
 {
 	return _id;
 }

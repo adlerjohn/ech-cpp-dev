@@ -7,13 +7,13 @@
 #include "crypto/address.hpp"
 #include "coin_amount.hpp"
 #include "color.hpp"
+#include "utxoid.hpp"
 
 class UTXO
 {
 private:
 	// ID of the UTXO, determined by its hash
-	// TODO replace with digest class
-	const uint64_t _id;
+	const UTXOID _id;
 
 	// Owner of the UTXO
 	const Address _owner;
@@ -27,7 +27,7 @@ private:
 public:
 	UTXO();
 
-	uint64_t getId() const;
+	UTXOID getId() const;
 
 	Address getOwner() const;
 

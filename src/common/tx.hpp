@@ -7,14 +7,13 @@
 #include "crypto/signature.hpp"
 #include "serializable.hpp"
 #include "state.hpp"
-#include "txid.hpp"
 #include "utxo.hpp"
 
 class Tx : public Serializable
 {
 private:
 	// Inputs to the transaction
-	const std::vector<TXID> _inputs;
+	const std::vector<UTXOID> _inputs;
 
 	// Outputs of the transaction
 	const std::vector<UTXO> _outputs;
@@ -31,8 +30,9 @@ private:
 public:
 	// Verifies whether this transaction is valid
 	// TODO need to check for double-spends when parallel
-	bool verify(const State& state) const;
+	bool verify(const State &state) const;
 
 	std::string serialize() const override;
+
 	Serializable deserialize(std::string s) const override;
 };
