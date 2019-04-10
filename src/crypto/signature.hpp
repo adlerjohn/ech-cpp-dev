@@ -11,5 +11,8 @@ class Signature
 private:
 	const std::string _data;
 public:
-	Address getSender() const;
+	Signature(std::string data);
+
+	std::string getPubKey() const;
+	Address getAddress() const;
 };

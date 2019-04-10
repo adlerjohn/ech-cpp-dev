@@ -8,6 +8,7 @@ link_directories(${ech_cpp_SOURCE_DIR}/src)
 set(source_files
         main.cpp
         common/utxo.cpp
+        crypto/signature.cpp
         )
 
 add_executable(unit_tester ${source_files})
