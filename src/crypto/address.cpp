@@ -2,7 +2,7 @@
 
 using namespace ech::crypto;
 
-auto Address::keyToAddress(std::string pk) const
+auto Address::keyToAddress(const std::string& pk) const
 {
 	// TODO hex
 	// TODO keccak
@@ -12,17 +12,18 @@ auto Address::keyToAddress(std::string pk) const
 	return std::string();
 }
 
-auto Address::keyToAddress(PublicKey pk) const
+auto Address::keyToAddress(const PublicKey& pk) const
 {
+	// TODO
 	return std::string();
 }
 
-Address::Address(std::string pk)
+Address::Address(const std::string& pk)
 	: _addr(keyToAddress(pk))
 {
 }
 
-Address::Address(PublicKey pk)
+Address::Address(const PublicKey& pk)
 	: _addr(keyToAddress(pk))
 {
 }

@@ -18,14 +18,14 @@ class Address
 private:
 	const std::string _addr;
 
-	auto keyToAddress(std::string pk) const;
+	auto keyToAddress(const std::string& pk) const;
 
-	auto keyToAddress(PublicKey pk) const;
+	auto keyToAddress(const PublicKey& pk) const;
 
 public:
-	explicit Address(std::string pk);
+	explicit Address(const std::string& pk);
 
-	explicit Address(PublicKey pk);
+	explicit Address(const PublicKey& pk);
 
 	auto getAddress() const { return this->_addr; }
 };
