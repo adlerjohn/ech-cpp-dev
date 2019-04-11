@@ -16,29 +16,14 @@
 namespace ech::crypto
 {
 
-using SigData = byteset<SIGNATURE_BYTES>;
-
-class Signature
+class Signature : public byteset<SIGNATURE_BYTES>
 {
 private:
-	const SigData _data;
 
 public:
-	explicit Signature(SigData data);
-
 	explicit Signature(const std::string& data);
 
-	static auto signatureBytes() { return SIGNATURE_BYTES; }
-
-	auto data() const { return this->_data; }
-
 	bool verify(const std::string& msg, const PublicKey& publicKey) const;
-
-	friend std::ostream& operator<<(std::ostream& os, const Signature& o)
-	{
-		os << o.data();
-		return os;
-	}
 };
 
 } // namespace ech::crypto

@@ -11,6 +11,7 @@ set(source_files
         crypto/address.cpp
         crypto/byteset.cpp
         crypto/digest.cpp
+        crypto/keys.cpp
         crypto/signature.cpp
         )
 

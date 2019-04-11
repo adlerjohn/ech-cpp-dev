@@ -8,35 +8,27 @@
 
 using namespace ech::crypto;
 
-auto Address::toAddress(const PublicKey& pk) const
+auto Address::toAddress(const std::string& pk) const
 {
-	auto hex = pk.toHex();
-
 	CryptoPP::Keccak_256 hash;
-	hash.Update((const byte*)hex.data(), hex.size());
+	hash.Update((const byte*)pk.data(), pk.size());
 
-	auto digest = std::string(addressBytes(), '0');
+	auto digest = std::string(size(), '0');
 	hash.TruncatedFinal((byte*)&digest[0], digest.size());
 
 	std::string hexAddress;
 	CryptoPP::HexEncoder encoder(new CryptoPP::StringSink(hexAddress), false);
 	CryptoPP::StringSource(digest, true, new CryptoPP::Redirector(encoder));
 
-	return PublicKeyAddress(hexAddress);
-}
-
-auto Address::toAddress(const std::string& pk) const
-{
-	auto publicKey = PublicKey(pk);
-	return toAddress(publicKey);
+	return hexAddress;
 }
 
 Address::Address(const std::string& pk)
-	: _addr(toAddress(pk))
+	: ByteSet(toAddress(pk))
 {
 }
 
 Address::Address(const PublicKey& pk)
-	: _addr(toAddress(pk))
+	: Address(pk.toHex())
 {
 }

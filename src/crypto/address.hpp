@@ -8,35 +8,18 @@
 namespace ech::crypto
 {
 
-using PublicKeyAddress = byteset<ADDRESS_BYTES>;
-
 /**
  * Addresses are the last 20 bytes of the Keccak-256 of the hex
  * representation of the public key.
  */
-class Address
+class Address : public byteset<ADDRESS_BYTES>
 {
 private:
-	const PublicKeyAddress _addr;
-
-	auto toAddress(const PublicKey& pk) const;
-
 	auto toAddress(const std::string& pk) const;
 
 public:
 	explicit Address(const std::string& pk);
-
 	explicit Address(const PublicKey& pk);
-
-	static auto addressBytes() { return ADDRESS_BYTES; }
-
-	auto data() const { return this->_addr; }
-
-	friend std::ostream& operator<<(std::ostream& os, const Address& o)
-	{
-		os << o.data();
-		return os;
-	}
 };
 
 } // namespace ech::crypto

@@ -9,13 +9,8 @@ using namespace ech::crypto;
 
 using namespace CryptoPP;
 
-Signature::Signature(SigData data)
-	: _data(std::move(data))
-{
-}
-
 Signature::Signature(const std::string& data)
-	: _data(SigData(data))
+	: ByteSet(data)
 {
 }
 

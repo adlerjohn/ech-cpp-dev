@@ -51,6 +51,8 @@ public:
 		return str;
 	}
 
+	static auto size() { return N; }
+
 	auto data() const { return this->_data; }
 
 	friend std::ostream& operator<<(std::ostream& os, const ByteSet<N>& o)
