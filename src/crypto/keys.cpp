@@ -41,7 +41,6 @@ auto PublicKey::deriveFromSecretKey(const SecretKey& secretKey) const
 
 	CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PublicKey pk;
 	sk.MakePublicKey(pk);
-
 	result = pk.Validate(prng, 3);
 	if (!result)
 		throw std::runtime_error("invalid public key");
@@ -49,7 +48,7 @@ auto PublicKey::deriveFromSecretKey(const SecretKey& secretKey) const
 	std::string publicKey;
 	pk.Save(CryptoPP::HexEncoder(new CryptoPP::StringSink(publicKey), false).Ref());
 	// TODO is this correct?
-	publicKey = publicKey.substr(publicKey.length() - PublicKey::size() * 2);
+	publicKey = publicKey.substr(publicKey.length() - PublicKey::size() * 2u);
 
 	return PublicKey(publicKey);
 }
