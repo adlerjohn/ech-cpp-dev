@@ -6,7 +6,7 @@
 namespace ech::crypto
 {
 
-using PublicKey = ByteSet<64>;
-using SecretKey = ByteSet<32>;
+using PublicKey = byteset<64>;
+using SecretKey = byteset<32>;
 
 } // namespace ech::crypto

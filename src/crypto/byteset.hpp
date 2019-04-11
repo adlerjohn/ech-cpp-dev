@@ -50,4 +50,8 @@ public:
 	}
 };
 
+// Make it look like bitset
+template <uint64_t N>
+using byteset = ByteSet<N>;
+
 }

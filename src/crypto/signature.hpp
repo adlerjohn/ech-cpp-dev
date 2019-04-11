@@ -18,7 +18,7 @@
 namespace ech::crypto
 {
 
-using SigData = ByteSet<SIGNATURE_BYTES>;
+using SigData = byteset<SIGNATURE_BYTES>;
 
 class Signature
 {

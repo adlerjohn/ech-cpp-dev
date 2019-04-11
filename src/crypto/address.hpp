@@ -11,7 +11,7 @@
 namespace ech::crypto
 {
 
-using PublicKeyAddress = ByteSet<ADDRESS_BYTES>;
+using PublicKeyAddress = byteset<ADDRESS_BYTES>;
 
 /**
  * Addresses are the last 20 bytes of the Keccak-256 of the hex
