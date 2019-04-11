@@ -6,6 +6,8 @@
 // Project includes
 #include "common/utxo.hpp"
 
+using namespace ech;
+
 int main()
 {
 	std::cout << "Hello, World!" << std::endl;

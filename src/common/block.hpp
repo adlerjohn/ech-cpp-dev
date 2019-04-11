@@ -7,6 +7,9 @@
 #include "block_header.hpp"
 #include "tx.hpp"
 
+namespace ech
+{
+
 class Block
 {
 private:
@@ -16,3 +19,5 @@ private:
 	const std::vector<Tx> _leaves;
 public:
 };
+
+} // namespace ech

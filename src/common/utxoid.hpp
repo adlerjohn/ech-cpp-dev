@@ -3,14 +3,14 @@
 // Library includes
 #include <boost/multiprecision/cpp_int.hpp>
 
+namespace ech
 {
-using namespace boost::multiprecision;
 
 class UTXOID
 {
 private:
-	const uint256_t _id;
+	const boost::multiprecision::uint256_t _id;
 public:
 };
 
-}
+} // namespace ech

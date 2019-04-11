@@ -1,5 +1,8 @@
 #pragma once
 
+namespace ech
+{
+
 class BlockHeader
 {
 private:
@@ -8,3 +11,5 @@ private:
 	// TODO height
 public:
 };
+
+} // namespace ech

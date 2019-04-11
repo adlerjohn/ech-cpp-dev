@@ -9,6 +9,9 @@
 #include "state.hpp"
 #include "utxo.hpp"
 
+namespace ech
+{
+
 class Tx : public Serializable
 {
 private:
@@ -19,7 +22,7 @@ private:
 	const std::vector<UTXO> _outputs;
 
 	// Digital signatures, one for each input
-	const std::vector<Signature> _witnesses;
+	const std::vector<crypto::Signature> _witnesses;
 
 	// TODO flags?
 	// TODO fee/max fee
@@ -34,5 +37,7 @@ public:
 
 	std::string serialize() const override;
 
-	Serializable deserialize(std::string s) const override;
+	Serializable deserialize(const std::string& s) const override;
 };
+
+} // namespace ech

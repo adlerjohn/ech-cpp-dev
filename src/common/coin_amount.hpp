@@ -3,14 +3,14 @@
 // Library includes
 #include <boost/multiprecision/cpp_int.hpp>
 
+namespace ech
 {
-using namespace boost::multiprecision;
 
 class CoinAmount
 {
 private:
-	const uint256_t _amount;
+	const boost::multiprecision::uint256_t _amount;
 public:
 };
 
-}
+} // namespace ech

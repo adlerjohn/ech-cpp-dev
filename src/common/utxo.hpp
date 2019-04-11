@@ -9,6 +9,9 @@
 #include "color.hpp"
 #include "utxoid.hpp"
 
+namespace ech
+{
+
 class UTXO
 {
 private:
@@ -16,7 +19,7 @@ private:
 	const UTXOID _id;
 
 	// Owner of the UTXO
-	const Address _owner;
+	const crypto::Address _owner;
 
 	// Amount of coins for this UTXO
 	const CoinAmount _amount;
@@ -27,11 +30,13 @@ private:
 public:
 	UTXO();
 
-	UTXOID getId() const;
+	auto getId() const { return this->_id; }
 
-	Address getOwner() const;
+	auto getOwner() const { return this->_owner; }
 
-	CoinAmount getAmount() const;
+	auto getAmount() const { return this->_amount; }
 
-	bool isColored() const;
+	auto isColored() const { return this->_color.isColored(); }
 };
+
+} // namespace ech
