@@ -16,7 +16,17 @@ class ByteSet
 private:
 	std::array<std::byte, N> _data;
 public:
-	ByteSet() { this->_data.fill(std::byte(0)); }
+	ByteSet();
+
+	explicit ByteSet(const std::string& hex);
+
+	std::string toHex() const;
+
+	friend std::ostream& operator<<(std::ostream& os, const ByteSet<N>& o)
+	{
+		os << o.toHex();
+		return os;
+	}
 };
 
 }

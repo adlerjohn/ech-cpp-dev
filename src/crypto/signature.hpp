@@ -38,8 +38,7 @@ public:
 
 	friend std::ostream& operator<<(std::ostream& os, const Signature& o)
 	{
-		// TODO need to convert to hex
-		//os << o.getData();
+		os << o.getData();
 		return os;
 	}
 };
