@@ -23,11 +23,6 @@ private:
 	std::array<std::byte, N> _data;
 
 public:
-	ByteSet()
-	{
-		this->_data.fill(std::byte(0));
-	}
-
 	explicit ByteSet(const std::string& str)
 	{
 		if (str.length() % 2u != 0u)

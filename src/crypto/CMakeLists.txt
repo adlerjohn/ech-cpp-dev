@@ -1,5 +1,7 @@
 set(source_files
         address.cpp
+        digest.cpp
+        keys.cpp
         signature.cpp
         )
 

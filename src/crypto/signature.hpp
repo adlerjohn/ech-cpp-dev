@@ -23,8 +23,6 @@ class Signature
 private:
 	const SigData _data;
 
-	auto toSigData(const std::string& data) const;
-
 public:
 	explicit Signature(SigData data);
 
