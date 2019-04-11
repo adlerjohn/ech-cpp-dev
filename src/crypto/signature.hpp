@@ -18,7 +18,7 @@ private:
 	const std::string _data;
 
 public:
-	Signature(std::string data);
+	explicit Signature(std::string data);
 
 	auto getData() const { return this->_data; }
 
