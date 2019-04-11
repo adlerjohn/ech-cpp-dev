@@ -15,7 +15,7 @@ template<uint64_t N>
 class ByteSet
 {
 private:
-	static const std::string _hexes;
+
 
 	std::array<std::byte, N> _data;
 public:
@@ -26,6 +26,8 @@ public:
 
 	explicit ByteSet(const std::string& str)
 	{
+		static const std::string _hexes = std::string("0123456789abcdef");
+
 		auto raw_size = str.length();
 		if (raw_size % 2u != 0u)
 			throw std::invalid_argument("hex string must have an even number of hexes");
@@ -50,6 +52,8 @@ public:
 
 	std::string toHex() const
 	{
+		static const std::string _hexes = std::string("0123456789abcdef");
+
 		auto offset = size_t(0);
 		auto str = std::string(N * 2, '0');
 

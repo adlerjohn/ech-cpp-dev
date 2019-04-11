@@ -1,6 +1,5 @@
 set(source_files
         address.cpp
-        byteset.cpp
         signature.cpp
         )
 
