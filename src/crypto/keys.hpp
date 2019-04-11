@@ -22,6 +22,7 @@ public:
 	explicit SecretKey(const std::string& str);
 
 	auto sign(const Digest& msg) const;
+
 	auto sign(const std::string& str) const;
 };
 

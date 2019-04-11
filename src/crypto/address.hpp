@@ -19,6 +19,7 @@ private:
 
 public:
 	explicit Address(const std::string& pk);
+
 	explicit Address(const PublicKey& pk);
 };
 

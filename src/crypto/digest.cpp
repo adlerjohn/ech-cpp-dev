@@ -11,10 +11,10 @@ using namespace ech::crypto;
 auto Digest::hash(const std::string& str) const
 {
 	CryptoPP::Keccak_256 hash;
-	hash.Update((const byte*)str.data(), str.size());
+	hash.Update((const byte*) str.data(), str.size());
 
 	auto digest = std::string(size(), '0');
-	hash.Final((byte*)&digest[0]);
+	hash.Final((byte*) &digest[0]);
 
 	std::string hexDigest;
 	CryptoPP::HexEncoder encoder(new CryptoPP::StringSink(hexDigest), false);

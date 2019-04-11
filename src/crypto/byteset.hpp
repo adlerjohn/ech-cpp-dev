@@ -36,14 +36,14 @@ public:
 				throw std::invalid_argument("invalid hex char");
 		}
 
-		CryptoPP::HexDecoder decoder(new CryptoPP::ArraySink((byte *)this->_data.data(), N));
+		CryptoPP::HexDecoder decoder(new CryptoPP::ArraySink((byte*) this->_data.data(), N));
 		CryptoPP::StringSource(str, true, new CryptoPP::Redirector(decoder));
 	}
 
 	std::string toHex() const
 	{
 		std::string str;
-		auto dataStr = std::string((const char*)this->_data.data(), N);
+		auto dataStr = std::string((const char*) this->_data.data(), N);
 
 		CryptoPP::HexEncoder encoder(new CryptoPP::StringSink(str), false);
 		CryptoPP::StringSource(dataStr, true, new CryptoPP::Redirector(encoder));

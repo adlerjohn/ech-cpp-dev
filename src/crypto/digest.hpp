@@ -12,8 +12,10 @@ class Digest : public byteset<DIGEST_BYTES>
 {
 private:
 	auto hash(const std::string& str) const;
+
 public:
 	explicit Digest(const std::string& str, bool isDigest);
+
 	explicit Digest(const std::string& str);
 };
 
