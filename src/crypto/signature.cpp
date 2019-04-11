@@ -7,8 +7,6 @@
 
 using namespace ech::crypto;
 
-using namespace CryptoPP;
-
 Signature::Signature(const std::string& data)
 	: ByteSet(data)
 {

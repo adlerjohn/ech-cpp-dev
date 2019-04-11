@@ -19,7 +19,6 @@ namespace ech::crypto
 class Signature : public byteset<SIGNATURE_BYTES>
 {
 private:
-
 public:
 	explicit Signature(const std::string& data);
 

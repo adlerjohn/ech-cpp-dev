@@ -6,24 +6,33 @@
 // Project includes
 #include "byteset.hpp"
 #include "digest.hpp"
+//#include "signature.hpp"
+
+#define SECRET_KEY_BYTES 32u
+#define PUBLIC_KEY_BYTES 64u
 
 namespace ech::crypto
 {
 
-class PublicKey : public byteset<64u>
-{
-public:
-	explicit PublicKey(const std::string& str);
-};
-
-class SecretKey : public byteset<32u>
+class SecretKey : public byteset<SECRET_KEY_BYTES>
 {
 public:
 	explicit SecretKey(const std::string& str);
 
-	auto sign(const Digest& msg) const;
+	std::string sign(const Digest& msg) const;
 
-	auto sign(const std::string& str) const;
+	std::string sign(const std::string& str) const;
+};
+
+class PublicKey : public byteset<PUBLIC_KEY_BYTES>
+{
+private:
+	auto deriveFromSecretKey(const SecretKey& secretKey) const;
+
+public:
+	explicit PublicKey(const std::string& str);
+
+	explicit PublicKey(const SecretKey& secretKey);
 };
 
 } // namespace ech::crypto
