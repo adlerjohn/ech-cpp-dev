@@ -21,8 +21,8 @@ class SecretKey : public byteset<32u>
 public:
 	SecretKey(const std::string& str);
 
-	auto sign(const Digest& msg);
-	auto sign(const std::string& str);
+	auto sign(const Digest& msg) const;
+	auto sign(const std::string& str) const;
 };
 
 } // namespace ech::crypto

@@ -8,7 +8,7 @@
 
 using namespace ech::crypto;
 
-auto Digest::hash(const std::string& str)
+auto Digest::hash(const std::string& str) const
 {
 	CryptoPP::Keccak_256 hash;
 	hash.Update((const byte*)str.data(), str.size());
@@ -24,7 +24,7 @@ auto Digest::hash(const std::string& str)
 }
 
 Digest::Digest(const std::string& str, bool isDigest)
-	: ByteSet(hash(str))
+	: ByteSet(isDigest ? str : hash(str))
 {
 }
 

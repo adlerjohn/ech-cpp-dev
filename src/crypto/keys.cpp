@@ -12,13 +12,13 @@ SecretKey::SecretKey(const std::string& str)
 {
 }
 
-auto SecretKey::sign(const Digest& msg)
+auto SecretKey::sign(const Digest& msg) const
 {
 	// TODO implement
 	return nullptr;
 }
 
-auto SecretKey::sign(const std::string& str)
+auto SecretKey::sign(const std::string& str) const
 {
 	// TODO implement
 	return nullptr;
