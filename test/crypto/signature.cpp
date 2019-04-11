@@ -3,7 +3,9 @@
 // Project includes
 #include "crypto/signature.hpp"
 
-TEST_CASE("Signature test 1", "[sig-1]")
+using namespace ech::crypto;
+
+TEST_CASE("Signature length", "[sig-len]")
 {
-	REQUIRE(1 == 1);
+	REQUIRE_THROWS(Signature(std::string()));
 }
