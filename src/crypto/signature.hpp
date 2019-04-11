@@ -9,6 +9,12 @@
 #include "address.hpp"
 #include "keys.hpp"
 
+// Signatures are 65 bytes:
+//  32 bytes r
+//  32 bytes s
+//  1  byte  v
+#define SIGNATURE_BYTES  65
+
 namespace ech::crypto
 {
 
