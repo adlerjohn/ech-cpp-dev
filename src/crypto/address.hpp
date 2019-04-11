@@ -30,11 +30,11 @@ public:
 
 	static auto addressBytes() { return ADDRESS_BYTES; }
 
-	auto getAddress() const { return this->_addr; }
+	auto data() const { return this->_addr; }
 
 	friend std::ostream& operator<<(std::ostream& os, const Address& o)
 	{
-		os << o.getAddress();
+		os << o.data();
 		return os;
 	}
 };

@@ -30,13 +30,13 @@ public:
 
 	static auto signatureBytes() { return SIGNATURE_BYTES; }
 
-	auto getData() const { return this->_data; }
+	auto data() const { return this->_data; }
 
 	bool verify(const std::string& msg, const PublicKey& publicKey) const;
 
 	friend std::ostream& operator<<(std::ostream& os, const Signature& o)
 	{
-		os << o.getData();
+		os << o.data();
 		return os;
 	}
 };

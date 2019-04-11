@@ -28,7 +28,7 @@ bool Signature::verify(const std::string& msg, const PublicKey& publicKey) const
 	ECDSA<ECP, SHA256>::Verifier verifier(publicKey);
 	auto result = false;
 
-	StringSource ss(_data + msg, true,
+	StringSource ss(this->_data + msg, true,
 		new SignatureVerificationFilter(
 			verifier,
 			new ArraySink((byte *) &result, sizeof(result))

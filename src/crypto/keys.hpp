@@ -10,13 +10,13 @@
 namespace ech::crypto
 {
 
-class PublicKey : public byteset<64>
+class PublicKey : public byteset<64u>
 {
 public:
 	PublicKey(const std::string& str);
 };
 
-class SecretKey : public byteset<32>
+class SecretKey : public byteset<32u>
 {
 public:
 	SecretKey(const std::string& str);

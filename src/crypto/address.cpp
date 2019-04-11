@@ -13,12 +13,13 @@ auto Address::toAddress(const PublicKey& pk) const
 	auto hex = pk.toHex();
 
 	CryptoPP::Keccak_256 hash;
+	hash.Update((const byte*)hex.data(), hex.size());
+
+	auto digest = std::string(addressBytes(), '0');
+	hash.TruncatedFinal((byte*)&digest[0], digest.size());
+
 	std::string hexAddress;
 	CryptoPP::HexEncoder encoder(new CryptoPP::StringSink(hexAddress), false);
-	auto digest = std::string(addressBytes(), '0');
-
-	hash.Update((const byte*)hex.data(), hex.size());
-	hash.TruncatedFinal((byte*)&digest[0], digest.size());
 	CryptoPP::StringSource(digest, true, new CryptoPP::Redirector(encoder));
 
 	return PublicKeyAddress(hexAddress);

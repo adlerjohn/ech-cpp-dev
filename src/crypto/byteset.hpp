@@ -51,7 +51,7 @@ public:
 		return str;
 	}
 
-	auto getData() const { return this->_data; }
+	auto data() const { return this->_data; }
 
 	friend std::ostream& operator<<(std::ostream& os, const ByteSet<N>& o)
 	{

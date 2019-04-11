@@ -10,6 +10,7 @@ set(source_files
         common/utxo.cpp
         crypto/address.cpp
         crypto/byteset.cpp
+        crypto/digest.cpp
         crypto/signature.cpp
         )
 
