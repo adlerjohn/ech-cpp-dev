@@ -18,13 +18,19 @@
 namespace ech::crypto
 {
 
+using SigData = ByteSet<SIGNATURE_BYTES>;
+
 class Signature
 {
 private:
-	const std::string _data;
+	const SigData _data;
+
+	auto toSigData(const std::string& data) const;
 
 public:
-	explicit Signature(std::string data);
+	explicit Signature(SigData data);
+
+	explicit Signature(const std::string& data);
 
 	auto getData() const { return this->_data; }
 
@@ -33,7 +39,7 @@ public:
 	friend std::ostream& operator<<(std::ostream& os, const Signature& o)
 	{
 		// TODO need to convert to hex
-		os << o.getData();
+		//os << o.getData();
 		return os;
 	}
 };

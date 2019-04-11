@@ -1,14 +1,12 @@
 #pragma once
 
-// Library includes
-#include <crypto++/eccrypto.h>
-#include <crypto++/oids.h>
-#include <crypto++/osrng.h>
+// Project includes
+#include "byteset.hpp"
 
 namespace ech::crypto
 {
 
-using PublicKey = CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PublicKey;
-using SecretKey = CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PrivateKey;
+using PublicKey = ByteSet<64>;
+using SecretKey = ByteSet<32>;
 
 } // namespace ech::crypto

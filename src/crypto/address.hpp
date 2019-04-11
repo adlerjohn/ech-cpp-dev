@@ -6,8 +6,12 @@
 // Project includes
 #include "keys.hpp"
 
+#define ADDRESS_BYTES 20
+
 namespace ech::crypto
 {
+
+using PublicKeyAddress = ByteSet<ADDRESS_BYTES>;
 
 /**
  * Addresses are the last 20 bytes of the Keccak-256 of the hex
@@ -16,11 +20,11 @@ namespace ech::crypto
 class Address
 {
 private:
-	const std::string _addr;
+	const PublicKeyAddress _addr;
 
-	auto keyToAddress(const std::string& pk) const;
+	auto toAddress(const std::string& pk) const;
 
-	auto keyToAddress(const PublicKey& pk) const;
+	auto toAddress(const PublicKey& pk) const;
 
 public:
 	explicit Address(const std::string& pk);
