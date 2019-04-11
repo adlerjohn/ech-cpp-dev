@@ -1,8 +1,6 @@
 #pragma once
 
 // System includes
-#include <bitset>
-#include <iostream>
 #include <string>
 
 // Project includes

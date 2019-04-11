@@ -1,8 +1,5 @@
 #pragma once
 
-// System includes
-#include <bitset>
-
 // Project includes
 #include "keys.hpp"
 
@@ -22,9 +19,9 @@ class Address
 private:
 	const PublicKeyAddress _addr;
 
-	auto toAddress(const std::string& pk) const;
-
 	auto toAddress(const PublicKey& pk) const;
+
+	auto toAddress(const std::string& pk) const;
 
 public:
 	explicit Address(const std::string& pk);
@@ -34,6 +31,12 @@ public:
 	static auto addressBytes() { return ADDRESS_BYTES; }
 
 	auto getAddress() const { return this->_addr; }
+
+	friend std::ostream& operator<<(std::ostream& os, const Address& o)
+	{
+		os << o.getAddress();
+		return os;
+	}
 };
 
 } // namespace ech::crypto
