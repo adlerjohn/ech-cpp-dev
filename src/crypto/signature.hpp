@@ -28,7 +28,7 @@ public:
 
 	auto getData() const { return this->_data; }
 
-	bool verify(std::string msg, PublicKey publicKey) const;
+	bool verify(const std::string& msg, const PublicKey& publicKey) const;
 
 	friend std::ostream& operator<<(std::ostream& os, const Signature& o)
 	{
