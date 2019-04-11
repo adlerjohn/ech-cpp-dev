@@ -33,7 +33,7 @@ private:
 public:
 	// Verifies whether this transaction is valid
 	// TODO need to check for double-spends when parallel
-	bool verify(const State &state) const;
+	bool verify(const State& state) const;
 
 	std::string serialize() const override;
 

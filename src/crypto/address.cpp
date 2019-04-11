@@ -1,6 +1,5 @@
 #include "address.hpp"
 
-using namespace ech;
 using namespace ech::crypto;
 
 auto Address::keyToAddress(std::string pk) const

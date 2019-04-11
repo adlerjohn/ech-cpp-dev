@@ -2,7 +2,7 @@
 
 using namespace ech;
 
-bool Tx::verify(const State &state) const
+bool Tx::verify(const State& state) const
 {
 	return false;
 }

@@ -24,7 +24,7 @@ public:
 
 	bool verify(std::string msg, PublicKey publicKey) const;
 
-	friend std::ostream &operator<<(std::ostream &os, const Signature &o)
+	friend std::ostream& operator<<(std::ostream& os, const Signature& o)
 	{
 		// TODO need to convert to hex
 		os << o.getData();
