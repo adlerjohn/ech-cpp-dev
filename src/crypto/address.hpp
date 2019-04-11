@@ -6,7 +6,7 @@
 // Project includes
 #include "keys.hpp"
 
-#define ADDRESS_BYTES 20
+#define ADDRESS_BYTES 20u
 
 namespace ech::crypto
 {
@@ -30,6 +30,8 @@ public:
 	explicit Address(const std::string& pk);
 
 	explicit Address(const PublicKey& pk);
+
+	static auto addressBytes() { return ADDRESS_BYTES; }
 
 	auto getAddress() const { return this->_addr; }
 };

@@ -13,7 +13,7 @@
 //  32 bytes r
 //  32 bytes s
 //  1  byte  v
-#define SIGNATURE_BYTES  65
+#define SIGNATURE_BYTES  65u
 
 namespace ech::crypto
 {
@@ -31,6 +31,8 @@ public:
 	explicit Signature(SigData data);
 
 	explicit Signature(const std::string& data);
+
+	static auto signatureBytes() { return SIGNATURE_BYTES; }
 
 	auto getData() const { return this->_data; }
 

@@ -1,6 +1,7 @@
 #pragma once
 
 // System includes
+#include <algorithm>
 #include <array>
 #include <cstddef>
 
@@ -14,6 +15,8 @@ template<uint64_t N>
 class ByteSet
 {
 private:
+	static const std::string _hexes;
+
 	std::array<std::byte, N> _data;
 public:
 	ByteSet()
@@ -21,23 +24,38 @@ public:
 		this->_data.fill(std::byte(0));
 	}
 
-	explicit ByteSet(const std::string& hex)
+	explicit ByteSet(const std::string& str)
 	{
-		// TODO dew it
-		// TODO need to assert that the size of hex matches with N
+		auto raw_size = str.length();
+		if (raw_size % 2u != 0u)
+			throw std::invalid_argument("hex string must have an even number of hexes");
+		const auto size = raw_size / 2u;
+		if (size != N)
+			throw std::invalid_argument("attempting to convert from hex string with invalid size");
+
+		for (auto i = size_t(0); i < raw_size; i+=2) {
+			auto pos1 = str.at(i);
+			auto pos2 = str.at(i+1);
+
+			if(std::find(_hexes.begin(), _hexes.end(), pos1) == _hexes.end())
+				throw std::invalid_argument("invalid hex char in position 1");
+			if(std::find(_hexes.begin(), _hexes.end(), pos2) == _hexes.end())
+				throw std::invalid_argument("invalid hex char in position 2");
+
+			this->_data.at(i/2u, static_cast<std::byte>(pos1 * 16 + pos2));
+		}
+
 		this->_data.fill(std::byte(0));
 	}
 
 	std::string toHex() const
 	{
-		static const auto hexes = std::string("0123456789abcdef");
-
 		auto offset = size_t(0);
-		auto str = std::string(N*2, '0');
+		auto str = std::string(N * 2, '0');
 
-		for (auto& b : this->_data)	{
-			str.at(offset++) = hexes[(static_cast<uint8_t>(b) >> 4u) & 15u];
-			str.at(offset++) = hexes[static_cast<uint8_t>(b) & 15u];
+		for (const auto& b : this->_data) {
+			str.at(offset++) = _hexes.at((static_cast<uint8_t>(b) >> 4u) & 15u);
+			str.at(offset++) = _hexes.at(static_cast<uint8_t>(b) & 15u);
 		}
 
 		return str;
@@ -51,7 +69,7 @@ public:
 };
 
 // Make it look like bitset
-template <uint64_t N>
+template<uint64_t N>
 using byteset = ByteSet<N>;
 
-}
+} // namespace ech::crypto
