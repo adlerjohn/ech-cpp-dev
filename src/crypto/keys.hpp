@@ -5,12 +5,10 @@
 #include <crypto++/oids.h>
 #include <crypto++/osrng.h>
 
-namespace ech
-{
-namespace crypto
+namespace ech::crypto
 {
 
 using PublicKey = CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PublicKey;
+using SecretKey = CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PrivateKey;
 
-} // namespace crypto
-} // namespace ech
+} // namespace ech::crypto
