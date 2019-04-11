@@ -10,15 +10,29 @@ using namespace ech::crypto;
 
 auto Address::toAddress(const std::string& pk) const
 {
-	CryptoPP::Keccak_256 hash;
-	hash.Update((const byte*) pk.data(), pk.size());
+	std::string decoded;
+	CryptoPP::StringSource(pk, true,
+		new CryptoPP::HexDecoder(
+			new CryptoPP::StringSink(decoded)
+			)
+		);
 
-	auto digest = std::string(size(), '0');
-	hash.TruncatedFinal((byte*) &digest[0], digest.size());
+	CryptoPP::Keccak_256 hash;
+	std::string digest;
+	CryptoPP::StringSource(decoded, true,
+		new CryptoPP::HashFilter(hash,
+			new CryptoPP::StringSink(digest),
+			false)
+		);
+	// Only keep the last 20 bytes
+	digest = digest.substr(digest.length() - size());
 
 	std::string hexAddress;
-	CryptoPP::HexEncoder encoder(new CryptoPP::StringSink(hexAddress), false);
-	CryptoPP::StringSource(digest, true, new CryptoPP::Redirector(encoder));
+	CryptoPP::StringSource(digest, true,
+		new CryptoPP::HexEncoder(
+			new CryptoPP::StringSink(hexAddress),
+			false)
+		);
 
 	return hexAddress;
 }
