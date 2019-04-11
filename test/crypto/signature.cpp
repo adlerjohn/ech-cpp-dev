@@ -7,5 +7,5 @@ using namespace ech::crypto;
 
 TEST_CASE("Signature length", "[sig-len]")
 {
-	REQUIRE_THROWS(Signature(std::string()));
+	REQUIRE_THROWS_AS(Signature(std::string()), std::invalid_argument);
 }
