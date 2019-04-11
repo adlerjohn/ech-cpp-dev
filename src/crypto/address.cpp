@@ -17,12 +17,12 @@ auto Address::keyToAddress(PublicKey pk) const
 	return std::string();
 }
 
-Address::Address(std::string pk) :
-	_addr(keyToAddress(pk))
+Address::Address(std::string pk)
+	: _addr(keyToAddress(pk))
 {
 }
 
-Address::Address(PublicKey pk) :
-	_addr(keyToAddress(pk))
+Address::Address(PublicKey pk)
+	: _addr(keyToAddress(pk))
 {
 }
