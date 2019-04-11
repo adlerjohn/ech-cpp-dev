@@ -11,14 +11,19 @@ using namespace ech::crypto;
 auto Digest::hash(const std::string& str) const
 {
 	CryptoPP::Keccak_256 hash;
-	hash.Update((const byte*) str.data(), str.size());
-
-	auto digest = std::string(size(), '0');
-	hash.Final((byte*) &digest[0]);
+	std::string digest;
+	CryptoPP::StringSource(str, true,
+		new CryptoPP::HashFilter(hash,
+			new CryptoPP::StringSink(digest),
+			false, size())
+	);
 
 	std::string hexDigest;
-	CryptoPP::HexEncoder encoder(new CryptoPP::StringSink(hexDigest), false);
-	CryptoPP::StringSource(digest, true, new CryptoPP::Redirector(encoder));
+	CryptoPP::StringSource(digest, true,
+		new CryptoPP::HexEncoder(
+			new CryptoPP::StringSink(hexDigest),
+			false)
+	);
 
 	return hexDigest;
 }
