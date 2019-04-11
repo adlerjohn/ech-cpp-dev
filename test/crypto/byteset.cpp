@@ -44,3 +44,9 @@ TEST_CASE("byteset zero address", "[crypto][byteset]")
 	auto bs = byteset<20u>(str);
 	REQUIRE_THAT(str, Equals(bs.toHex()));
 }
+
+TEST_CASE("byteset invalid string", "[crypto][byteset]")
+{
+	auto str = std::string("0ww0");
+	REQUIRE_THROWS(byteset<2u>(str));
+}
