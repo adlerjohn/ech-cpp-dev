@@ -17,8 +17,39 @@ SecretKey::SecretKey(const std::string& str)
 
 std::string SecretKey::sign(const Digest& msg) const
 {
-	// TODO implement
-	return std::string("TODO");
+	CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PrivateKey sk;
+	auto exp = std::string("0x" + this->toHex());
+	CryptoPP::Integer x(exp.c_str());
+	sk.Initialize(CryptoPP::ASN1::secp256k1(), x);
+
+	CryptoPP::AutoSeededRandomPool prng;
+	CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::Signer signer(sk);
+	bool result = signer.AccessKey().Validate(prng, 3);
+	if (!result)
+		throw std::runtime_error("invalid secret key");
+
+	std::string decoded;
+	CryptoPP::StringSource(msg.toHex(), true,
+		new CryptoPP::HexDecoder(
+			new CryptoPP::StringSink(decoded)
+		)
+	);
+
+	std::string sig;
+	CryptoPP::StringSource(decoded, true,
+		new CryptoPP::SignerFilter(prng, signer,
+			new CryptoPP::StringSink(sig)
+		)
+	);
+
+	std::string hexSig;
+	CryptoPP::StringSource(sig, true,
+		new CryptoPP::HexEncoder(
+			new CryptoPP::StringSink(hexSig),
+			false)
+	);
+
+	return hexSig;
 }
 
 std::string SecretKey::sign(const std::string& str) const
