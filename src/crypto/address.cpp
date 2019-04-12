@@ -6,10 +6,10 @@
 
 using namespace ech::crypto;
 
-auto Address::toAddress(const std::string& pk) const
+auto Address::toAddress(const std::string& publicKey) const
 {
 	std::string decoded;
-	CryptoPP::StringSource(pk, true,
+	CryptoPP::StringSource(publicKey, true,
 		new CryptoPP::HexDecoder(
 			new CryptoPP::StringSink(decoded)
 		)
@@ -35,12 +35,12 @@ auto Address::toAddress(const std::string& pk) const
 	return hexAddress;
 }
 
-Address::Address(const std::string& pk)
-	: ByteSet(toAddress(pk))
+Address::Address(const std::string& publicKey)
+	: ByteSet(toAddress(publicKey))
 {
 }
 
-Address::Address(const PublicKey& pk)
-	: Address(pk.toHex())
+Address::Address(const PublicKey& publicKey)
+	: Address(publicKey.toHex())
 {
 }

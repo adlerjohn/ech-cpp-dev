@@ -15,12 +15,12 @@ namespace ech::crypto
 class Address : public byteset<ADDRESS_BYTES>
 {
 private:
-	auto toAddress(const std::string& pk) const;
+	auto toAddress(const std::string& publicKey) const;
 
 public:
-	explicit Address(const std::string& pk);
+	explicit Address(const std::string& publicKey);
 
-	explicit Address(const PublicKey& pk);
+	explicit Address(const PublicKey& publicKey);
 };
 
 } // namespace ech::crypto
