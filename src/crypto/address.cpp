@@ -2,8 +2,6 @@
 
 // Library includes
 #include <crypto++/cryptlib.h>
-#include <crypto++/filters.h>
-#include <crypto++/hex.h>
 #include <crypto++/keccak.h>
 
 using namespace ech::crypto;
