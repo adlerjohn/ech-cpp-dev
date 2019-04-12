@@ -20,6 +20,13 @@ cmake ..
 cmake --build .
 ```
 
+## Testing
+
+```sh
+cd build
+ctest -V
+```
+
 ## Running
 
 ```sh
