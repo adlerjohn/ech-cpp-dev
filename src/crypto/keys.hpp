@@ -6,7 +6,6 @@
 // Project includes
 #include "byteset.hpp"
 #include "digest.hpp"
-//#include "signature.hpp"
 
 #define SECRET_KEY_BYTES 32u
 #define PUBLIC_KEY_BYTES 64u

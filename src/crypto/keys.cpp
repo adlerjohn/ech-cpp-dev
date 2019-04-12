@@ -5,9 +5,6 @@
 #include <crypto++/oids.h>
 #include <crypto++/osrng.h>
 
-// Project includes
-//#include "signature.hpp"
-
 using namespace ech::crypto;
 
 SecretKey::SecretKey(const std::string& str)
