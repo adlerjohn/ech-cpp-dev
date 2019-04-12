@@ -14,8 +14,8 @@ auto Address::toAddress(const std::string& pk) const
 	CryptoPP::StringSource(pk, true,
 		new CryptoPP::HexDecoder(
 			new CryptoPP::StringSink(decoded)
-			)
-		);
+		)
+	);
 
 	CryptoPP::Keccak_256 hash;
 	std::string digest;
@@ -23,7 +23,7 @@ auto Address::toAddress(const std::string& pk) const
 		new CryptoPP::HashFilter(hash,
 			new CryptoPP::StringSink(digest),
 			false)
-		);
+	);
 	// Only keep the last 20 bytes
 	digest = digest.substr(digest.length() - size());
 
@@ -32,7 +32,7 @@ auto Address::toAddress(const std::string& pk) const
 		new CryptoPP::HexEncoder(
 			new CryptoPP::StringSink(hexAddress),
 			false)
-		);
+	);
 
 	return hexAddress;
 }
