@@ -26,7 +26,7 @@ public:
 class PublicKey : public byteset<PUBLIC_KEY_BYTES>
 {
 private:
-	auto deriveFromSecretKey(const SecretKey& secretKey) const;
+	static auto deriveFromSecretKey(const SecretKey& secretKey);
 
 public:
 	explicit PublicKey(const std::string& str);
