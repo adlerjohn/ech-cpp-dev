@@ -22,6 +22,8 @@ private:
 public:
 	explicit Signature(const std::string& data);
 
+	PublicKey recover(const std::string& msg) const;
+
 	bool verify(const std::string& msg, const PublicKey& publicKey) const;
 };
 
