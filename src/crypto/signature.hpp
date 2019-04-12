@@ -20,11 +20,13 @@ class Signature : public byteset<SIGNATURE_BYTES>
 {
 private:
 public:
-	explicit Signature(const std::string& data);
+	explicit Signature(const std::string& sig);
 
-	PublicKey recover(const std::string& msg) const;
+	// Recover the public key from the signed message
+	auto recover() const;
 
-	bool verify(const std::string& msg, const PublicKey& publicKey) const;
+	// Verify the signature matches the original message
+	bool verify(const std::string& msg) const;
 };
 
 } // namespace ech::crypto

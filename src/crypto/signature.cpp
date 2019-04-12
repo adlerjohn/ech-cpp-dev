@@ -7,11 +7,17 @@
 
 using namespace ech::crypto;
 
-Signature::Signature(const std::string& data)
-	: ByteSet(data)
+Signature::Signature(const std::string& sig)
+	: ByteSet(sig)
 {
 }
 
+auto Signature::recover() const
+{
+	return PublicKey(std::string());
+}
+
+/*
 bool Signature::verify(const std::string& msg, const PublicKey& publicKey) const
 {
 	CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PublicKey pk;
@@ -36,3 +42,4 @@ bool Signature::verify(const std::string& msg, const PublicKey& publicKey) const
 
 	return result;
 }
+*/
