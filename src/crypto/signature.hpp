@@ -4,7 +4,6 @@
 #include <string>
 
 // Project includes
-#include "address.hpp"
 #include "keys.hpp"
 
 // Signatures are 65 bytes:
@@ -23,10 +22,10 @@ public:
 	explicit Signature(const std::string& sig);
 
 	// Recover the public key from the signed message
-	auto recover() const;
+	PublicKey recover() const;
 
 	// Verify the signature matches the original message
-	bool verify(const std::string& msg) const;
+	bool verify(const std::string& msg, const PublicKey& publicKey) const;
 };
 
 } // namespace ech::crypto

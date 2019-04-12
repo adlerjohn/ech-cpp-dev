@@ -12,34 +12,33 @@ Signature::Signature(const std::string& sig)
 {
 }
 
-auto Signature::recover() const
+PublicKey Signature::recover() const
 {
-	return PublicKey(std::string());
+	return PublicKey(std::string(PublicKey::size()*2, '0'));
 }
 
-/*
 bool Signature::verify(const std::string& msg, const PublicKey& publicKey) const
 {
-	CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PublicKey pk;
-
-	std::string decoded;
-	CryptoPP::StringSource(publicKey.toHex(), true,
-		new CryptoPP::HexDecoder(
-			new CryptoPP::StringSink(decoded)
-		)
-	);
-	CryptoPP::StringSource source(decoded, true);
-	pk.Load(source);
-
-	CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::Verifier verifier(pk);
-	auto result = false;
-
-	CryptoPP::StringSource(this->toHex() + msg, true,
-		new CryptoPP::SignatureVerificationFilter(verifier,
-			new CryptoPP::ArraySink((byte*) &result, sizeof(result))
-		)
-	);
-
-	return result;
+//	CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PublicKey pk;
+//
+//	std::string decoded;
+//	CryptoPP::StringSource(publicKey.toHex(), true,
+//		new CryptoPP::HexDecoder(
+//			new CryptoPP::StringSink(decoded)
+//		)
+//	);
+//	CryptoPP::StringSource source(decoded, true);
+//	pk.Load(source);
+//
+//	CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::Verifier verifier(pk);
+//	auto result = false;
+//
+//	CryptoPP::StringSource(this->toHex() + msg, true,
+//		new CryptoPP::SignatureVerificationFilter(verifier,
+//			new CryptoPP::ArraySink((byte*) &result, sizeof(result))
+//		)
+//	);
+//
+//	return result;
+	return false;
 }
-*/
