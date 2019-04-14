@@ -18,6 +18,7 @@ addons:
       - librocksdb-dev
 
 install:
+  - # Travis CI uses Xenial, so we need to build Crypto++ ourselves
   - wget 'https://www.cryptopp.com/cryptopp565.zip'
   - unzip cryptopp565.zip -d cryptopp
   - pushd cryptopp
@@ -25,6 +26,7 @@ install:
   - sudo make install PREFIX=/usr
   - popd
   - sudo ln -s /usr/include/cryptopp /usr/include/crypto++
+  - sudo ln -s /usr/lib/libcryptopp.a /usr/lib/libcrypto++.a
 
 script:
   - export CC=gcc-8
