@@ -1,5 +1,8 @@
 #include "signature.hpp"
 
+// TODO remove
+#include <iostream>
+
 // Library includes
 #include <crypto++/eccrypto.h>
 #include <crypto++/oids.h>
@@ -19,26 +22,35 @@ PublicKey Signature::recover() const
 
 bool Signature::verify(const std::string& msg, const PublicKey& publicKey) const
 {
-//	CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PublicKey pk;
-//
-//	std::string decoded;
-//	CryptoPP::StringSource(publicKey.toHex(), true,
-//		new CryptoPP::HexDecoder(
-//			new CryptoPP::StringSink(decoded)
-//		)
-//	);
-//	CryptoPP::StringSource source(decoded, true);
-//	pk.Load(source);
-//
-//	CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::Verifier verifier(pk);
-//	auto result = false;
-//
-//	CryptoPP::StringSource(this->toHex() + msg, true,
-//		new CryptoPP::SignatureVerificationFilter(verifier,
-//			new CryptoPP::ArraySink((byte*) &result, sizeof(result))
-//		)
-//	);
-//
-//	return result;
-	return false;
+	CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PublicKey pk;
+	pk.AccessGroupParameters().Initialize(CryptoPP::ASN1::secp256k1());
+
+	auto hexPublicKey = publicKey.toHex();
+	auto px = std::string("0x" + hexPublicKey.substr(0, 64));
+	auto py = std::string("0x" + hexPublicKey.substr(64, 64));
+	auto point = CryptoPP::ECPPoint(CryptoPP::Integer(px.c_str()), CryptoPP::Integer(py.c_str()));
+	pk.SetPublicElement(point);
+
+	// TODO validate this public key!
+
+	// Slice off V from signature
+	auto sig = this->toHex();
+	sig = sig.substr(sig.length() - 2);
+	std::cout << sig.length() << " " << sig << std::endl;
+
+	// Verify
+	CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::Verifier verifier(pk);
+	auto result = false;
+	CryptoPP::StringSource(sig + msg, true,
+		new CryptoPP::SignatureVerificationFilter(verifier,
+			new CryptoPP::ArraySink((byte*) &result, sizeof(result))
+		)
+	);
+
+	return result;
+}
+
+bool Signature::verify(const std::string& msg) const
+{
+	return verify(msg, recover());
 }

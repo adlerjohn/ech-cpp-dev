@@ -26,6 +26,8 @@ public:
 
 	// Verify the signature matches the original message
 	bool verify(const std::string& msg, const PublicKey& publicKey) const;
+
+	bool verify(const std::string& msg) const;
 };
 
 } // namespace ech::crypto
