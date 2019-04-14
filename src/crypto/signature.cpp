@@ -23,7 +23,13 @@ Signature::Signature(const std::string& str, const SecretKey& secretKey)
 PublicKey Signature::recover() const
 {
 	// TODO implement this!
-	return PublicKey(std::string(PublicKey::size() * 2, '0'));
+	std::cout << this->toHex() << std::endl;
+
+	auto recovered = std::string(PublicKey::size() * 2, '0');
+
+	std::cout << recovered.size() << " " << recovered << std::endl;
+
+	return PublicKey(recovered);
 }
 
 bool Signature::verify(const Digest& digest, const PublicKey& publicKey) const
@@ -37,9 +43,13 @@ bool Signature::verify(const Digest& digest, const PublicKey& publicKey) const
 	auto point = CryptoPP::ECPPoint(CryptoPP::Integer(px.c_str()), CryptoPP::Integer(py.c_str()));
 	pk.SetPublicElement(point);
 
-	// TODO validate this public key!
+	// Validate public key
+	CryptoPP::AutoSeededRandomPool prng;
+	bool result = pk.Validate(prng, 3);
+	if (!result)
+		throw std::runtime_error("invalid public key");
 
-	// Slice off V from signature
+	// Slice off v from signature
 	auto hexSig = this->toHex().substr(0, (Signature::size() - 1) * 2);
 	std::cout << hexSig.length() << " " << hexSig << std::endl;
 
@@ -59,7 +69,6 @@ bool Signature::verify(const Digest& digest, const PublicKey& publicKey) const
 
 	// Verify
 	CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::Verifier verifier(pk);
-	auto result = false;
 	CryptoPP::StringSource(decodedSignature + decodedDigest, true,
 		new CryptoPP::SignatureVerificationFilter(verifier,
 			new CryptoPP::ArraySink((byte*) &result, sizeof(result))
