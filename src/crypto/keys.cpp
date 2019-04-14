@@ -57,8 +57,7 @@ std::string SecretKey::sign(const Digest& msg) const
 
 	// hexSig now contains r and s, we need to append v
 	// From the Y coordinate of our point:
-	// The value 35 represents an even Y value and 36 represents an odd Y value
-	// TODO is this supposed to be 27 and 28?
+	// The value 27/35 represents an even Y value and 28/36 represents an odd Y value
 	CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PublicKey pk;
 	sk.MakePublicKey(pk);
 	result = pk.Validate(prng, 3);
@@ -66,8 +65,10 @@ std::string SecretKey::sign(const Digest& msg) const
 		throw std::runtime_error("invalid public key");
 
 	auto point = pk.GetPublicElement();
+	// Hex representations of 27 and 28 are 0x1b and 0x1c
+	auto v = (point.y % 2 == 0) ? std::string("1b") : std::string("1c");
 	// Hex representations of 35 and 36 are 0x23 and 0x24
-	auto v = (point.y % 2 == 0) ? std::string("23") : std::string("24");
+	//auto v = (point.y % 2 == 0) ? std::string("23") : std::string("24");
 	hexSig += v;
 
 	return hexSig;
