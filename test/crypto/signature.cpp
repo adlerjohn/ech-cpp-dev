@@ -15,6 +15,9 @@ TEST_CASE("signature verify", "[crypto][sig]")
 	auto publicKey = PublicKey(secretKey);
 
 	auto msg = std::string("The quick brown fox jumps over the lazy dog.");
+	auto msg_bad = std::string("The lazy brown fox jumps over the quick dog.");
+
+	auto digest = Digest(msg);
 
 	SECTION("sign message")
 	{
@@ -22,23 +25,26 @@ TEST_CASE("signature verify", "[crypto][sig]")
 		std::cout << sig.length() << " " << sig << std::endl;
 		auto signature = Signature(sig);
 		std::cout << signature.size() << " " << signature.toHex() << std::endl;
-		auto recovered = signature.recover();
-		std::cout << recovered.size() << " " << recovered.toHex() << std::endl;
-		REQUIRE_THAT(publicKey.toHex(), Equals(recovered.toHex()));
+//		auto recovered = signature.recover();
+//		std::cout << recovered.size() << " " << recovered.toHex() << std::endl;
+//		REQUIRE_THAT(publicKey.toHex(), Equals(recovered.toHex()));
 		auto result = signature.verify(msg, publicKey);
 		REQUIRE(result);
+		auto result_bad = signature.verify(msg_bad, publicKey);
+		REQUIRE(!result_bad);
 	}
 	SECTION("sign digest")
 	{
-		auto digest = Digest(msg);
 		auto sig = secretKey.sign(digest);
 		std::cout << sig.length() << " " << sig << std::endl;
 		auto signature = Signature(sig);
 		std::cout << signature.size() << " " << signature.toHex() << std::endl;
-		auto recovered = signature.recover();
-		std::cout << recovered.size() << " " << recovered.toHex() << std::endl;
-		REQUIRE_THAT(publicKey.toHex(), Equals(recovered.toHex()));
+//		auto recovered = signature.recover();
+//		std::cout << recovered.size() << " " << recovered.toHex() << std::endl;
+//		REQUIRE_THAT(publicKey.toHex(), Equals(recovered.toHex()));
 		auto result = signature.verify(msg, publicKey);
 		REQUIRE(result);
+		auto result_bad = signature.verify(msg_bad, publicKey);
+		REQUIRE(!result_bad);
 	}
 }
