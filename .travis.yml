@@ -19,9 +19,11 @@ addons:
 
 install:
   - wget 'https://www.cryptopp.com/cryptopp565.zip'
-  - unzip cryptopp565.zip -d cryptopp; cd cryptopp
+  - unzip cryptopp565.zip -d cryptopp
+  - pushd cryptopp
   - make
   - sudo make install
+  - popd
 
 script:
   - export CC=gcc-8
