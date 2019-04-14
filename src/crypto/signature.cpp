@@ -17,7 +17,7 @@ Signature::Signature(const std::string& sig)
 
 PublicKey Signature::recover() const
 {
-	return PublicKey(std::string(PublicKey::size()*2, '0'));
+	return PublicKey(std::string(PublicKey::size() * 2, '0'));
 }
 
 bool Signature::verify(const std::string& msg, const PublicKey& publicKey) const
@@ -26,16 +26,15 @@ bool Signature::verify(const std::string& msg, const PublicKey& publicKey) const
 	pk.AccessGroupParameters().Initialize(CryptoPP::ASN1::secp256k1());
 
 	auto hexPublicKey = publicKey.toHex();
-	auto px = std::string("0x" + hexPublicKey.substr(0, 64));
-	auto py = std::string("0x" + hexPublicKey.substr(64, 64));
+	auto px = std::string("0x" + hexPublicKey.substr(0, PublicKey::size()));
+	auto py = std::string("0x" + hexPublicKey.substr(PublicKey::size(), PublicKey::size()));
 	auto point = CryptoPP::ECPPoint(CryptoPP::Integer(px.c_str()), CryptoPP::Integer(py.c_str()));
 	pk.SetPublicElement(point);
 
 	// TODO validate this public key!
 
 	// Slice off V from signature
-	auto sig = this->toHex();
-	sig = sig.substr(0, sig.length() - 2);
+	auto sig = this->toHex().substr(0, (Signature::size() - 1) * 2);
 	std::cout << sig.length() << " " << sig << std::endl;
 
 	// Verify
