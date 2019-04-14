@@ -20,7 +20,7 @@ PublicKey Signature::recover() const
 	return PublicKey(std::string(PublicKey::size() * 2, '0'));
 }
 
-bool Signature::verify(const std::string& msg, const PublicKey& publicKey) const
+bool Signature::verify(const Digest& digest, const PublicKey& publicKey) const
 {
 	CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PublicKey pk;
 	pk.AccessGroupParameters().Initialize(CryptoPP::ASN1::secp256k1());
@@ -34,13 +34,27 @@ bool Signature::verify(const std::string& msg, const PublicKey& publicKey) const
 	// TODO validate this public key!
 
 	// Slice off V from signature
-	auto sig = this->toHex().substr(0, (Signature::size() - 1) * 2);
-	std::cout << sig.length() << " " << sig << std::endl;
+	auto hexSig = this->toHex().substr(0, (Signature::size() - 1) * 2);
+	std::cout << hexSig.length() << " " << hexSig << std::endl;
+
+	std::string decodedSignature;
+	CryptoPP::StringSource(hexSig, true,
+		new CryptoPP::HexDecoder(
+			new CryptoPP::StringSink(decodedSignature)
+		)
+	);
+
+	std::string decodedDigest;
+	CryptoPP::StringSource(digest.toHex(), true,
+		new CryptoPP::HexDecoder(
+			new CryptoPP::StringSink(decodedDigest)
+		)
+	);
 
 	// Verify
 	CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::Verifier verifier(pk);
 	auto result = false;
-	CryptoPP::StringSource(sig + msg, true,
+	CryptoPP::StringSource(decodedSignature + decodedDigest, true,
 		new CryptoPP::SignatureVerificationFilter(verifier,
 			new CryptoPP::ArraySink((byte*) &result, sizeof(result))
 		)
@@ -49,7 +63,17 @@ bool Signature::verify(const std::string& msg, const PublicKey& publicKey) const
 	return result;
 }
 
+bool Signature::verify(const std::string& msg, const PublicKey& publicKey) const
+{
+	return verify(Digest(msg), publicKey);
+}
+
+bool Signature::verify(const Digest& digest) const
+{
+	return verify(digest, this->recover());
+}
+
 bool Signature::verify(const std::string& msg) const
 {
-	return verify(msg, recover());
+	return verify(Digest(msg));
 }

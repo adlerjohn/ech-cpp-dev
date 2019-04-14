@@ -25,7 +25,11 @@ public:
 	PublicKey recover() const;
 
 	// Verify the signature matches the original message
+	bool verify(const Digest& digest, const PublicKey& publicKey) const;
+
 	bool verify(const std::string& msg, const PublicKey& publicKey) const;
+
+	bool verify(const Digest& digest) const;
 
 	bool verify(const std::string& msg) const;
 };
