@@ -15,8 +15,14 @@ Signature::Signature(const std::string& sig)
 {
 }
 
+Signature::Signature(const std::string& str, const SecretKey& secretKey)
+	: Signature(secretKey.sign(str))
+{
+}
+
 PublicKey Signature::recover() const
 {
+	// TODO implement this!
 	return PublicKey(std::string(PublicKey::size() * 2, '0'));
 }
 

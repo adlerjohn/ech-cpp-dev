@@ -21,6 +21,8 @@ private:
 public:
 	explicit Signature(const std::string& sig);
 
+	Signature(const std::string& str, const SecretKey& secretKey);
+
 	// Recover the public key from the signed message
 	PublicKey recover() const;
 

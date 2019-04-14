@@ -21,30 +21,28 @@ TEST_CASE("signature verify", "[crypto][sig]")
 
 	SECTION("sign message")
 	{
-		auto sig = secretKey.sign(msg);
-		std::cout << sig.length() << " " << sig << std::endl;
-		auto signature = Signature(sig);
-		std::cout << signature.size() << " " << signature.toHex() << std::endl;
-//		auto recovered = signature.recover();
-//		std::cout << recovered.size() << " " << recovered.toHex() << std::endl;
-//		REQUIRE_THAT(publicKey.toHex(), Equals(recovered.toHex()));
-		auto result = signature.verify(msg, publicKey);
-		REQUIRE(result);
-		auto result_bad = signature.verify(msg_bad, publicKey);
-		REQUIRE(!result_bad);
-	}
-	SECTION("sign digest")
-	{
-		auto sig = secretKey.sign(digest);
-		std::cout << sig.length() << " " << sig << std::endl;
-		auto signature = Signature(sig);
-		std::cout << signature.size() << " " << signature.toHex() << std::endl;
-//		auto recovered = signature.recover();
-//		std::cout << recovered.size() << " " << recovered.toHex() << std::endl;
-//		REQUIRE_THAT(publicKey.toHex(), Equals(recovered.toHex()));
-		auto result = signature.verify(msg, publicKey);
-		REQUIRE(result);
-		auto result_bad = signature.verify(msg_bad, publicKey);
-		REQUIRE(!result_bad);
+		auto signature = Signature(msg, secretKey);
+		std::cout << signature.toHex() << std::endl;
+
+		SECTION("recover")
+		{
+			auto recovered = signature.recover();
+			std::cout << recovered.size() << " " << recovered.toHex() << std::endl;
+			REQUIRE_THAT(publicKey.toHex(), Equals(recovered.toHex()));
+		}
+		SECTION("verify with pubkey")
+		{
+			auto result = signature.verify(msg, publicKey);
+			REQUIRE(result);
+			auto result_bad = signature.verify(msg_bad, publicKey);
+			REQUIRE(!result_bad);
+		}
+		SECTION("verify with recover")
+		{
+			auto result = signature.verify(msg);
+			REQUIRE(result);
+			auto result_bad = signature.verify(msg_bad);
+			REQUIRE(!result_bad);
+		}
 	}
 }
