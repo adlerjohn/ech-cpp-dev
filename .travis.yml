@@ -22,8 +22,9 @@ install:
   - unzip cryptopp565.zip -d cryptopp
   - pushd cryptopp
   - make
-  - sudo make install PREFIX=/usr
+  - sudo make install
   - popd
+  - sudo ln -s /usr/local/include/crypto++ /usr/local/include/cryptopp
 
 script:
   - export CC=gcc-8
