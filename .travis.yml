@@ -14,9 +14,14 @@ addons:
     packages:
       - gcc-8
       - g++-8
-      - libcrypto++-dev
       - libboost-dev
       - librocksdb-dev
+
+install:
+  - wget 'https://www.cryptopp.com/cryptopp565.zip'
+  - unzip cryptopp565.zip -d cryptopp; cd cryptopp
+  - make
+  - sudo make install
 
 script:
   - export CC=gcc-8
