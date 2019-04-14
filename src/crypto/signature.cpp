@@ -69,19 +69,18 @@ PublicKey Signature::recover(const Digest& digest) const
 	const auto di = CryptoPP::Integer(std::string("0x" + digest.toHex()).c_str());
 
 	const auto Gz = curve.ScalarMultiply(G, (N - di) % N);
-	const auto XY = curve.ScalarMultiply(epoint, si);
-	const auto Qr = curve.Add(Gz, XY);
-	const auto Q = curve.ScalarMultiply(Qr, curve.GetField().MultiplicativeInverse(ri));
+	const auto Rs = curve.ScalarMultiply(epoint, si);
+	const auto Qr = curve.Subtract(Rs, Gz);
+	const auto ri_inv = curve.GetField().MultiplicativeInverse(ri);
+	const auto K = curve.ScalarMultiply(Qr, ri_inv);
 
-	pk.SetPublicElement(Q);
+	pk.SetPublicElement(K);
 
-	// Validate ephemeral public key
+	// Validate public key
 	CryptoPP::AutoSeededRandomPool prng;
 	bool result = pk.Validate(prng, 3);
 	if (!result)
 		throw std::runtime_error("invalid public key");
-
-	// Now calculate public key from ephemeral public key
 
 	const auto point = pk.GetPublicElement();
 	std::stringstream buf;
