@@ -22,7 +22,7 @@ TEST_CASE("signature verify", "[crypto][sig]")
 
 		SECTION("recover")
 		{
-			auto recovered = signature.recover();
+			auto recovered = signature.recover(msg);
 			REQUIRE_THAT(publicKey.toHex(), Equals(recovered.toHex()));
 		}
 		SECTION("verify with pubkey")
