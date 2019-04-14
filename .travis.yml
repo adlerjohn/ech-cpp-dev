@@ -24,7 +24,7 @@ install:
   - make
   - sudo make install PREFIX=/usr
   - popd
-  - sudo ln -s /usr/include/crypto++ /usr/include/cryptopp
+  - sudo ln -s /usr/include/cryptopp /usr/include/crypto++
 
 script:
   - export CC=gcc-8
