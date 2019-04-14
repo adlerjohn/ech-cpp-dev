@@ -35,7 +35,7 @@ bool Signature::verify(const std::string& msg, const PublicKey& publicKey) const
 
 	// Slice off V from signature
 	auto sig = this->toHex();
-	sig = sig.substr(sig.length() - 2);
+	sig = sig.substr(0, sig.length() - 2);
 	std::cout << sig.length() << " " << sig << std::endl;
 
 	// Verify
