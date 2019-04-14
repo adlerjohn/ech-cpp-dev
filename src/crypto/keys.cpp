@@ -1,5 +1,9 @@
 #include "keys.hpp"
 
+// System includes
+#include <iomanip>
+#include <sstream>
+
 // Library includes
 #include <crypto++/eccrypto.h>
 #include <crypto++/oids.h>
@@ -93,10 +97,11 @@ auto PublicKey::deriveFromSecretKey(const SecretKey& secretKey)
 	if (!result)
 		throw std::runtime_error("invalid public key");
 
-	std::string publicKey;
-	pk.Save(CryptoPP::HexEncoder(new CryptoPP::StringSink(publicKey), false).Ref());
-	// TODO is this correct?
-	publicKey = publicKey.substr(publicKey.length() - PublicKey::size() * 2u);
+	auto e = pk.GetPublicElement();
+	std::stringstream buf;
+	buf << std::setw(64) << std::setfill('0') << CryptoPP::IntToString(e.x, 16u);
+	buf << std::setw(64) << std::setfill('0') << CryptoPP::IntToString(e.y, 16u);
+	auto publicKey = buf.str();
 
 	return PublicKey(publicKey);
 }
