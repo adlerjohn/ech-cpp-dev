@@ -1,8 +1,5 @@
 #include "catch2/catch.hpp"
 
-// TODO remove
-#include <iostream>
-
 // Project includes
 #include "crypto/signature.hpp"
 
@@ -22,12 +19,10 @@ TEST_CASE("signature verify", "[crypto][sig]")
 	SECTION("sign message")
 	{
 		auto signature = Signature(msg, secretKey);
-		std::cout << signature.toHex() << std::endl;
 
 		SECTION("recover")
 		{
 			auto recovered = signature.recover();
-			std::cout << recovered.size() << " " << recovered.toHex() << std::endl;
 			REQUIRE_THAT(publicKey.toHex(), Equals(recovered.toHex()));
 		}
 		SECTION("verify with pubkey")
