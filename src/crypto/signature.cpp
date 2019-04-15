@@ -26,7 +26,7 @@ Signature::Signature(const std::string& str, const SecretKey& secretKey)
 
 PublicKey Signature::recover(const Digest& digest) const
 {
-	std::cout << this->toHex() << std::endl;
+	std::cout << this->size() << " " << this->toHex() << std::endl;
 
 	const auto sig = this->toHex();
 	const auto r = sig.substr(0, 64);
@@ -36,9 +36,7 @@ PublicKey Signature::recover(const Digest& digest) const
 	const auto ri = CryptoPP::Integer(std::string("0x" + r).c_str());
 	const auto si = CryptoPP::Integer(std::string("0x" + s).c_str());
 	const auto vi = CryptoPP::Integer(std::string("0x" + v).c_str());
-
-	// r is the x coordinate of the ephemeral key
-	const auto ex = ri;
+	const auto di = CryptoPP::Integer(std::string("0x" + digest.toHex()).c_str());
 
 	CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PublicKey pk;
 	pk.AccessGroupParameters().Initialize(CryptoPP::ASN1::secp256k1());
@@ -46,38 +44,24 @@ PublicKey Signature::recover(const Digest& digest) const
 	const auto curve = pk.GetGroupParameters().GetCurve();
 	// Field size
 	const auto P = curve.FieldSize();
-	std::cout << "P:  " << std::hex << P << std::endl;
 	// A
 	const auto A = curve.GetA();
-	std::cout << "A:  " << std::hex << A << std::endl;
 	// B
 	const auto B = curve.GetB();
-	std::cout << "B:  " << std::hex << B << std::endl;
 	// Curve generator point coordinates
 	const auto G = pk.GetGroupParameters().GetSubgroupGenerator();
-	std::cout << "Gx: " << std::hex << G.x << std::endl;
-	std::cout << "Gy: " << std::hex << G.y << std::endl;
 	// Group order
 	const auto N = pk.GetGroupParameters().GetGroupOrder();
-	std::cout << "N:  " << std::hex << N << std::endl;
 
-	const auto ey_tmp = ((ex*ex + A) * ex + B) % P;
-	auto ey = CryptoPP::ModularSquareRoot(ey_tmp, P);
+	// r is the x coordinate of the ephemeral public key
+	const auto compactPoint = std::string((vi % 2 == 1 ? "02" : "03") + r);
+	CryptoPP::StringSource source(compactPoint, true, new CryptoPP::HexDecoder);
+	CryptoPP::ECP::Point epoint;
+	curve.DecodePoint(epoint, source, source.MaxRetrievable());
 
-	if (CryptoPP::Jacobi(ey, P) != 1)
-		throw std::runtime_error("invalid signature");
-
-	if (!(vi % 2 ^ ey % 2))
-		ey = P - ey;
-
-	const auto epoint = CryptoPP::ECPPoint(CryptoPP::Integer(ex), CryptoPP::Integer(ey));
-
-	const auto di = CryptoPP::Integer(std::string("0x" + digest.toHex()).c_str());
-
-	// TODO calculate the scalar here
 	// K = ri^-1 * (sR - zG)
-//	const auto z = (N - di) % N;
-	const auto z = di;
+	// TODO calculate the scalar here
+	const auto z = (N - di) % N;
 	const auto Gz = curve.ScalarMultiply(G, z);
 	const auto Rs = curve.ScalarMultiply(epoint, si);
 	const auto Qr = curve.Subtract(Rs, Gz);
@@ -98,8 +82,7 @@ PublicKey Signature::recover(const Digest& digest) const
 	buf << std::setw(64) << std::setfill('0') << CryptoPP::IntToString(point.y, 16u);
 	const auto publicKey = buf.str();
 
-	std::cout << publicKey.size() << " " << publicKey << std::endl;
-
+	std::cout << publicKey.length() << " " << publicKey << std::endl;
 	return PublicKey(publicKey);
 }
 
