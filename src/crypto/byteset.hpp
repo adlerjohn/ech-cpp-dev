@@ -6,9 +6,9 @@
 #include <cstddef>
 
 // Library includes
-#include <crypto++/cryptlib.h>
-#include <crypto++/filters.h>
-#include <crypto++/hex.h>
+#include <cryptopp/cryptlib.h>
+#include <cryptopp/filters.h>
+#include <cryptopp/hex.h>
 
 namespace ech::crypto
 {
@@ -36,7 +36,7 @@ public:
 				throw std::invalid_argument("invalid hex char");
 		}
 
-		CryptoPP::HexDecoder decoder(new CryptoPP::ArraySink((byte*) this->_data.data(), N));
+		CryptoPP::HexDecoder decoder(new CryptoPP::ArraySink((CryptoPP::byte*) this->_data.data(), N));
 		CryptoPP::StringSource(str, true, new CryptoPP::Redirector(decoder));
 	}
 

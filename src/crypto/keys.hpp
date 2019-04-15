@@ -28,6 +28,10 @@ class PublicKey : public byteset<PUBLIC_KEY_BYTES>
 private:
 	static auto deriveFromSecretKey(const SecretKey& secretKey);
 
+	static auto deterministicK(const Digest& msg, const SecretKey& secretKey);
+
+	static auto deterministicK(const std::string& str, const SecretKey& secretKey);
+
 public:
 	explicit PublicKey(const std::string& str);
 

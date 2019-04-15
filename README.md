@@ -9,7 +9,17 @@ This repository contains a proof-of-concept implementation for ECH, a scalable s
 Install the following libraries as dependencies before compiling.
 
 ```sh
-apt install libcrypto++-dev libboost-dev librocksdb-dev
+apt install libboost-dev librocksdb-dev
+```
+
+CryptoPP needs to be installed separately, as the version in repositories is old.
+
+```sh
+wget https://www.cryptopp.com/cryptopp810.zip
+unzip cryptopp810.zip -d cryptopp
+cd cryptopp
+make
+sudo make install
 ```
 
 ## Compiling

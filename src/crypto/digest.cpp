@@ -1,8 +1,8 @@
 #include "digest.hpp"
 
 // Library includes
-#include <crypto++/cryptlib.h>
-#include <crypto++/keccak.h>
+#include <cryptopp/cryptlib.h>
+#include <cryptopp/keccak.h>
 
 using namespace ech::crypto;
 

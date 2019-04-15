@@ -6,4 +6,4 @@ set(source_files
         )
 
 add_library(ech-crypto ${source_files})
-target_link_libraries(ech-crypto crypto++)
+target_link_libraries(ech-crypto cryptopp)

@@ -6,11 +6,11 @@
 #include <iomanip>
 
 // Library includes
-#include <crypto++/eccrypto.h>
-#include <crypto++/modarith.h>
-#include <crypto++/nbtheory.h>
-#include <crypto++/oids.h>
-#include <crypto++/osrng.h>
+#include <cryptopp/eccrypto.h>
+#include <cryptopp/modarith.h>
+#include <cryptopp/nbtheory.h>
+#include <cryptopp/oids.h>
+#include <cryptopp/osrng.h>
 
 using namespace ech::crypto;
 
@@ -46,29 +46,39 @@ PublicKey Signature::recover(const Digest& digest) const
 	const auto curve = pk.GetGroupParameters().GetCurve();
 	// Field size
 	const auto P = curve.FieldSize();
+	std::cout << "P:  " << std::hex << P << std::endl;
 	// A
 	const auto A = curve.GetA();
+	std::cout << "A:  " << std::hex << A << std::endl;
 	// B
 	const auto B = curve.GetB();
+	std::cout << "B:  " << std::hex << B << std::endl;
 	// Curve generator point coordinates
 	const auto G = pk.GetGroupParameters().GetSubgroupGenerator();
+	std::cout << "Gx: " << std::hex << G.x << std::endl;
+	std::cout << "Gy: " << std::hex << G.y << std::endl;
 	// Group order
 	const auto N = pk.GetGroupParameters().GetGroupOrder();
+	std::cout << "N:  " << std::hex << N << std::endl;
 
 	const auto ey_tmp = ((ex*ex + A) * ex + B) % P;
 	auto ey = CryptoPP::ModularSquareRoot(ey_tmp, P);
+
+	if (CryptoPP::Jacobi(ey, P) != 1)
+		throw std::runtime_error("invalid signature");
+
 	if (!(vi % 2 ^ ey % 2))
 		ey = P - ey;
-	// If ey_tmp is not a quadratic residue, then r cannot be the x coord for
-	// a point on the curve, and so the sig is invalid
-	if ((ey_tmp - ey * ey) % P != 0 || !(ri % N) || !(si % N))
-		throw std::runtime_error("invalid signature");
 
 	const auto epoint = CryptoPP::ECPPoint(CryptoPP::Integer(ex), CryptoPP::Integer(ey));
 
 	const auto di = CryptoPP::Integer(std::string("0x" + digest.toHex()).c_str());
 
-	const auto Gz = curve.ScalarMultiply(G, (N - di) % N);
+	// TODO calculate the scalar here
+	// K = ri^-1 * (sR - zG)
+//	const auto z = (N - di) % N;
+	const auto z = di;
+	const auto Gz = curve.ScalarMultiply(G, z);
 	const auto Rs = curve.ScalarMultiply(epoint, si);
 	const auto Qr = curve.Subtract(Rs, Gz);
 	const auto ri_inv = curve.GetField().MultiplicativeInverse(ri);
@@ -137,7 +147,7 @@ bool Signature::verify(const Digest& digest, const PublicKey& publicKey) const
 	CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::Verifier verifier(pk);
 	CryptoPP::StringSource(decodedSignature + decodedDigest, true,
 		new CryptoPP::SignatureVerificationFilter(verifier,
-			new CryptoPP::ArraySink((byte*) &result, sizeof(result))
+			new CryptoPP::ArraySink((CryptoPP::byte*) &result, sizeof(result))
 		)
 	);
 

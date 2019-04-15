@@ -5,9 +5,9 @@
 #include <sstream>
 
 // Library includes
-#include <crypto++/eccrypto.h>
-#include <crypto++/oids.h>
-#include <crypto++/osrng.h>
+#include <cryptopp/eccrypto.h>
+#include <cryptopp/oids.h>
+#include <cryptopp/osrng.h>
 
 using namespace ech::crypto;
 
@@ -24,6 +24,7 @@ std::string SecretKey::sign(const Digest& msg) const
 	CryptoPP::Integer x(exp.c_str());
 	sk.Initialize(CryptoPP::ASN1::secp256k1(), x);
 
+	// TODO deterministic k!
 	CryptoPP::AutoSeededRandomPool prng;
 	CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::Signer signer(sk);
 	bool result = signer.AccessKey().Validate(prng, 3);
@@ -55,6 +56,7 @@ std::string SecretKey::sign(const Digest& msg) const
 			false)
 	);
 
+	// TODO should this instead be the Y of the ephemeral public key?
 	// hexSig now contains r and s, we need to append v
 	// From the Y coordinate of our point:
 	// The value 27/35 represents an even Y value and 28/36 represents an odd Y value
@@ -105,6 +107,18 @@ auto PublicKey::deriveFromSecretKey(const SecretKey& secretKey)
 	auto publicKey = buf.str();
 
 	return PublicKey(publicKey);
+}
+
+auto PublicKey::deterministicK(const Digest& msg, const SecretKey& secretKey)
+{
+	//auto v_0 = CryptoPP::Integer(std::string(32, "01")));
+	auto k = CryptoPP::Integer(std::string("0x00").c_str());
+	return k;
+}
+
+auto PublicKey::deterministicK(const std::string& str, const SecretKey& secretKey)
+{
+	return deterministicK(Digest(str), secretKey);
 }
 
 PublicKey::PublicKey(const std::string& str)
