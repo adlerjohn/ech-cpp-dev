@@ -24,9 +24,8 @@ std::string SecretKey::sign(const Digest& msg) const
 	CryptoPP::Integer x(exp.c_str());
 	sk.Initialize(CryptoPP::ASN1::secp256k1(), x);
 
-	// TODO deterministic k!
 	CryptoPP::AutoSeededRandomPool prng;
-	CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::Signer signer(sk);
+	CryptoPP::ECDSA_RFC6979<CryptoPP::ECP, CryptoPP::SHA256>::Signer signer(sk);
 	bool result = signer.AccessKey().Validate(prng, 3);
 	if (!result)
 		throw std::runtime_error("invalid secret key");
@@ -89,8 +88,7 @@ auto PublicKey::deriveFromSecretKey(const SecretKey& secretKey)
 	sk.Initialize(CryptoPP::ASN1::secp256k1(), x);
 
 	CryptoPP::AutoSeededRandomPool prng;
-	CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::Signer signer(sk);
-	bool result = signer.AccessKey().Validate(prng, 3);
+	bool result = sk.Validate(prng, 3);
 	if (!result)
 		throw std::runtime_error("invalid secret key");
 
@@ -107,18 +105,6 @@ auto PublicKey::deriveFromSecretKey(const SecretKey& secretKey)
 	auto publicKey = buf.str();
 
 	return PublicKey(publicKey);
-}
-
-auto PublicKey::deterministicK(const Digest& msg, const SecretKey& secretKey)
-{
-	//auto v_0 = CryptoPP::Integer(std::string(32, "01")));
-	auto k = CryptoPP::Integer(std::string("0x00").c_str());
-	return k;
-}
-
-auto PublicKey::deterministicK(const std::string& str, const SecretKey& secretKey)
-{
-	return deterministicK(Digest(str), secretKey);
 }
 
 PublicKey::PublicKey(const std::string& str)
