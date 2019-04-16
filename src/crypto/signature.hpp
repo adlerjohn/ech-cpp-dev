@@ -25,20 +25,10 @@ public:
 	Signature(const std::string& str, const SecretKey& secretKey);
 
 	// Recover the public key from the signed message
-	PublicKey recover(const Digest& digest) const;
-
 	PublicKey recover(const std::string& msg) const;
 
-	// Verify the signature matches the original message
-	bool verify(const Digest& digest, const Address& address) const;
-
-	bool verify(const std::string& msg, const Address& address) const;
-
-	bool verify(const Digest& digest, const PublicKey& publicKey) const;
-
+	// Verify that the signature matches the original message
 	bool verify(const std::string& msg, const PublicKey& publicKey) const;
-
-	bool verify(const Digest& digest) const;
 
 	bool verify(const std::string& msg) const;
 };
