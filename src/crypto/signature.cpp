@@ -7,6 +7,7 @@
 
 // Library includes
 #include <cryptopp/eccrypto.h>
+#include <cryptopp/keccak.h>
 #include <cryptopp/modarith.h>
 #include <cryptopp/nbtheory.h>
 #include <cryptopp/oids.h>
@@ -26,7 +27,7 @@ Signature::Signature(const std::string& str, const SecretKey& secretKey)
 
 PublicKey Signature::recover(const Digest& digest) const
 {
-	std::cout << this->size() << " " << this->toHex() << std::endl;
+	std::cout << Signature::size() << " " << this->toHex() << std::endl;
 
 	const auto sig = this->toHex();
 	const auto r = sig.substr(0, 64);
@@ -38,7 +39,7 @@ PublicKey Signature::recover(const Digest& digest) const
 	const auto vi = CryptoPP::Integer(std::string("0x" + v).c_str());
 	const auto di = CryptoPP::Integer(std::string("0x" + digest.toHex()).c_str());
 
-	CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PublicKey pk;
+	CryptoPP::ECDSA_RFC6979<CryptoPP::ECP, CryptoPP::Keccak_256>::PublicKey pk;
 	pk.AccessGroupParameters().Initialize(CryptoPP::ASN1::secp256k1());
 
 	const auto curve = pk.GetGroupParameters().GetCurve();
@@ -60,13 +61,16 @@ PublicKey Signature::recover(const Digest& digest) const
 	curve.DecodePoint(epoint, source, source.MaxRetrievable());
 
 	// K = ri^-1 * (sR - zG)
-	// TODO calculate the scalar here
-	const auto z = (N - di) % N;
+	const auto z = di;
 	const auto Gz = curve.ScalarMultiply(G, z);
 	const auto Rs = curve.ScalarMultiply(epoint, si);
 	const auto Qr = curve.Subtract(Rs, Gz);
 	const auto ri_inv = curve.GetField().MultiplicativeInverse(ri);
 	const auto K = curve.ScalarMultiply(Qr, ri_inv);
+
+	std::cout << "N:  " << N << std::endl;
+	std::cout << "di: " << di << std::endl;
+	std::cout << "z:  " << z << std::endl;
 
 	pk.SetPublicElement(K);
 
@@ -93,7 +97,7 @@ PublicKey Signature::recover(const std::string& msg) const
 
 bool Signature::verify(const Digest& digest, const PublicKey& publicKey) const
 {
-	CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PublicKey pk;
+	CryptoPP::ECDSA_RFC6979<CryptoPP::ECP, CryptoPP::Keccak_256>::PublicKey pk;
 	pk.AccessGroupParameters().Initialize(CryptoPP::ASN1::secp256k1());
 
 	auto hexPublicKey = publicKey.toHex();
@@ -127,7 +131,7 @@ bool Signature::verify(const Digest& digest, const PublicKey& publicKey) const
 	);
 
 	// Verify
-	CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::Verifier verifier(pk);
+	CryptoPP::ECDSA_RFC6979<CryptoPP::ECP, CryptoPP::Keccak_256>::Verifier verifier(pk);
 	CryptoPP::StringSource(decodedSignature + decodedDigest, true,
 		new CryptoPP::SignatureVerificationFilter(verifier,
 			new CryptoPP::ArraySink((CryptoPP::byte*) &result, sizeof(result))
