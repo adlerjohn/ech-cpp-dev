@@ -3,7 +3,6 @@
 // System includes
 #include <algorithm>
 #include <array>
-#include <cstddef>
 
 // Library includes
 #include <cryptopp/cryptlib.h>
