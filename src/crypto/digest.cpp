@@ -13,14 +13,16 @@ auto Digest::hash(const std::string& str) const
 	CryptoPP::StringSource(str, true,
 		new CryptoPP::HashFilter(hash,
 			new CryptoPP::StringSink(digest),
-			false, size())
+			false, size()
+		)
 	);
 
 	std::string hexDigest;
 	CryptoPP::StringSource(digest, true,
 		new CryptoPP::HexEncoder(
 			new CryptoPP::StringSink(hexDigest),
-			false)
+			false
+		)
 	);
 
 	return hexDigest;
