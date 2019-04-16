@@ -19,30 +19,21 @@ SecretKey::SecretKey(const std::string& str)
 std::string SecretKey::sign(const Digest& msg) const
 {
 	// Our secret key is actually the exponent, need to convert
-	CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PrivateKey sk;
-	auto exp = std::string("0x" + this->toHex());
-	CryptoPP::Integer x(exp.c_str());
+	CryptoPP::ECDSA_RFC6979<CryptoPP::ECP, CryptoPP::SHA256>::PrivateKey sk;
+	const auto x = CryptoPP::Integer(std::string("0x" + this->toHex()).c_str());
 	sk.Initialize(CryptoPP::ASN1::secp256k1(), x);
 
+	// Validate secret key
 	CryptoPP::AutoSeededRandomPool prng;
-	CryptoPP::ECDSA_RFC6979<CryptoPP::ECP, CryptoPP::SHA256>::Signer signer(sk);
-	bool result = signer.AccessKey().Validate(prng, 3);
+	bool result = sk.Validate(prng, 3);
 	if (!result)
 		throw std::runtime_error("invalid secret key");
 
-	// Decode the message digest from its hex representation since crypto++
-	// doesn't support std::byte
-	std::string decoded;
-	CryptoPP::StringSource(msg.toHex(), true,
-		new CryptoPP::HexDecoder(
-			new CryptoPP::StringSink(decoded)
-		)
-	);
-
 	// Sign the digest using the secret key
 	std::string sig;
-	CryptoPP::StringSource(decoded, true,
-		new CryptoPP::SignerFilter(prng, signer,
+	CryptoPP::ECDSA_RFC6979<CryptoPP::ECP, CryptoPP::SHA256>::Signer signer(sk);
+	CryptoPP::ArraySource(msg.data().data(), msg.size(), true,
+		new CryptoPP::SignerFilter(CryptoPP::NullRNG(), signer,
 			new CryptoPP::StringSink(sig)
 		)
 	);
@@ -52,14 +43,15 @@ std::string SecretKey::sign(const Digest& msg) const
 	CryptoPP::StringSource(sig, true,
 		new CryptoPP::HexEncoder(
 			new CryptoPP::StringSink(hexSig),
-			false)
+			false
+		)
 	);
 
 	// TODO should this instead be the Y of the ephemeral public key?
 	// hexSig now contains r and s, we need to append v
 	// From the Y coordinate of our point:
 	// The value 27/35 represents an even Y value and 28/36 represents an odd Y value
-	CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PublicKey pk;
+	CryptoPP::ECDSA_RFC6979<CryptoPP::ECP, CryptoPP::SHA256>::PublicKey pk;
 	sk.MakePublicKey(pk);
 	result = pk.Validate(prng, 3);
 	if (!result)
@@ -82,9 +74,8 @@ std::string SecretKey::sign(const std::string& str) const
 
 auto PublicKey::deriveFromSecretKey(const SecretKey& secretKey)
 {
-	CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PrivateKey sk;
-	auto exp = std::string("0x" + secretKey.toHex());
-	CryptoPP::Integer x(exp.c_str());
+	CryptoPP::ECDSA_RFC6979<CryptoPP::ECP, CryptoPP::SHA256>::PrivateKey sk;
+	const auto x = CryptoPP::Integer(std::string("0x" + secretKey.toHex()).c_str());
 	sk.Initialize(CryptoPP::ASN1::secp256k1(), x);
 
 	CryptoPP::AutoSeededRandomPool prng;
@@ -92,7 +83,7 @@ auto PublicKey::deriveFromSecretKey(const SecretKey& secretKey)
 	if (!result)
 		throw std::runtime_error("invalid secret key");
 
-	CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PublicKey pk;
+	CryptoPP::ECDSA_RFC6979<CryptoPP::ECP, CryptoPP::SHA256>::PublicKey pk;
 	sk.MakePublicKey(pk);
 	result = pk.Validate(prng, 3);
 	if (!result)
