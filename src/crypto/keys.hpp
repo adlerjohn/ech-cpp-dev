@@ -18,9 +18,7 @@ class SecretKey : public byteset<SECRET_KEY_BYTES>
 public:
 	explicit SecretKey(const std::string& str);
 
-	std::string sign(const Digest& msg) const;
-
-	std::string sign(const std::string& str) const;
+	std::string sign(const std::string& msg) const;
 };
 
 class PublicKey : public byteset<PUBLIC_KEY_BYTES>

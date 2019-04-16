@@ -6,6 +6,7 @@
 
 // Library includes
 #include <cryptopp/eccrypto.h>
+#include <cryptopp/keccak.h>
 #include <cryptopp/oids.h>
 #include <cryptopp/osrng.h>
 
@@ -16,10 +17,10 @@ SecretKey::SecretKey(const std::string& str)
 {
 }
 
-std::string SecretKey::sign(const Digest& msg) const
+std::string SecretKey::sign(const std::string& msg) const
 {
 	// Our secret key is actually the exponent, need to convert
-	CryptoPP::ECDSA_RFC6979<CryptoPP::ECP, CryptoPP::SHA256>::PrivateKey sk;
+	CryptoPP::ECDSA_RFC6979<CryptoPP::ECP, CryptoPP::Keccak_256>::PrivateKey sk;
 	const auto x = CryptoPP::Integer(std::string("0x" + this->toHex()).c_str());
 	sk.Initialize(CryptoPP::ASN1::secp256k1(), x);
 
@@ -29,10 +30,10 @@ std::string SecretKey::sign(const Digest& msg) const
 	if (!result)
 		throw std::runtime_error("invalid secret key");
 
-	// Sign the digest using the secret key
+	// Sign the message using the secret key
 	std::string sig;
-	CryptoPP::ECDSA_RFC6979<CryptoPP::ECP, CryptoPP::SHA256>::Signer signer(sk);
-	CryptoPP::ArraySource(msg.data().data(), msg.size(), true,
+	CryptoPP::ECDSA_RFC6979<CryptoPP::ECP, CryptoPP::Keccak_256>::Signer signer(sk);
+	CryptoPP::StringSource(msg, true,
 		new CryptoPP::SignerFilter(CryptoPP::NullRNG(), signer,
 			new CryptoPP::StringSink(sig)
 		)
@@ -51,7 +52,7 @@ std::string SecretKey::sign(const Digest& msg) const
 	// hexSig now contains r and s, we need to append v
 	// From the Y coordinate of our point:
 	// The value 27/35 represents an even Y value and 28/36 represents an odd Y value
-	CryptoPP::ECDSA_RFC6979<CryptoPP::ECP, CryptoPP::SHA256>::PublicKey pk;
+	CryptoPP::ECDSA_RFC6979<CryptoPP::ECP, CryptoPP::Keccak_256>::PublicKey pk;
 	sk.MakePublicKey(pk);
 	result = pk.Validate(prng, 3);
 	if (!result)
@@ -67,14 +68,9 @@ std::string SecretKey::sign(const Digest& msg) const
 	return hexSig;
 }
 
-std::string SecretKey::sign(const std::string& str) const
-{
-	return sign(Digest(str));
-}
-
 auto PublicKey::deriveFromSecretKey(const SecretKey& secretKey)
 {
-	CryptoPP::ECDSA_RFC6979<CryptoPP::ECP, CryptoPP::SHA256>::PrivateKey sk;
+	CryptoPP::ECDSA_RFC6979<CryptoPP::ECP, CryptoPP::Keccak_256>::PrivateKey sk;
 	const auto x = CryptoPP::Integer(std::string("0x" + secretKey.toHex()).c_str());
 	sk.Initialize(CryptoPP::ASN1::secp256k1(), x);
 
@@ -83,16 +79,16 @@ auto PublicKey::deriveFromSecretKey(const SecretKey& secretKey)
 	if (!result)
 		throw std::runtime_error("invalid secret key");
 
-	CryptoPP::ECDSA_RFC6979<CryptoPP::ECP, CryptoPP::SHA256>::PublicKey pk;
+	CryptoPP::ECDSA_RFC6979<CryptoPP::ECP, CryptoPP::Keccak_256>::PublicKey pk;
 	sk.MakePublicKey(pk);
 	result = pk.Validate(prng, 3);
 	if (!result)
 		throw std::runtime_error("invalid public key");
 
-	auto e = pk.GetPublicElement();
+	auto point = pk.GetPublicElement();
 	std::stringstream buf;
-	buf << std::setw(64) << std::setfill('0') << CryptoPP::IntToString(e.x, 16u);
-	buf << std::setw(64) << std::setfill('0') << CryptoPP::IntToString(e.y, 16u);
+	buf << std::setw(64) << std::setfill('0') << CryptoPP::IntToString(point.x, 16u);
+	buf << std::setw(64) << std::setfill('0') << CryptoPP::IntToString(point.y, 16u);
 	auto publicKey = buf.str();
 
 	return PublicKey(publicKey);
