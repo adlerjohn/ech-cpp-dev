@@ -20,11 +20,12 @@ template<uint64_t N>
 class ByteSet
 {
 private:
-	std::array<std::byte, N> _data;
+	const std::array<CryptoPP::byte, N> _data;
 
-public:
-	explicit ByteSet(const std::string& str)
+	static auto hexToBytes(const std::string& str)
 	{
+		std::array<CryptoPP::byte, N> data;
+
 		if (str.length() % 2u != 0u)
 			throw std::invalid_argument("hex string must have an even number of hexes");
 		if (str.length() / 2u != N)
@@ -36,17 +37,30 @@ public:
 				throw std::invalid_argument("invalid hex char");
 		}
 
-		CryptoPP::HexDecoder decoder(new CryptoPP::ArraySink((CryptoPP::byte*) this->_data.data(), N));
-		CryptoPP::StringSource(str, true, new CryptoPP::Redirector(decoder));
+		CryptoPP::StringSource(str, true,
+			new CryptoPP::HexDecoder(
+				new CryptoPP::ArraySink(data.data(), N)
+			)
+		);
+
+		return data;
+	}
+
+public:
+	explicit ByteSet(const std::string& str)
+		: _data(hexToBytes(str))
+	{
 	}
 
 	std::string toHex() const
 	{
 		std::string str;
-		auto dataStr = std::string((const char*) this->_data.data(), N);
-
-		CryptoPP::HexEncoder encoder(new CryptoPP::StringSink(str), false);
-		CryptoPP::StringSource(dataStr, true, new CryptoPP::Redirector(encoder));
+		CryptoPP::ArraySource(this->_data.data(), N, true,
+			new CryptoPP::HexEncoder(
+				new CryptoPP::StringSink(str),
+				false
+			)
+		);
 
 		return str;
 	}
