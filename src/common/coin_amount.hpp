@@ -1,11 +1,11 @@
 #pragma once
 
-// Library includes
-#include <boost/multiprecision/cpp_int.hpp>
+// Project include
+#include "uint.hpp"
 
 namespace ech
 {
 
-using CoinAmount = boost::multiprecision::uint256_t;
+using CoinAmount = uint256_t;
 
 } // namespace ech
