@@ -12,7 +12,5 @@ int main()
 {
 	std::cout << "Hello, World!" << std::endl;
 
-	auto utxo = UTXO();
-
 	return 0;
 }

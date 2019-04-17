@@ -6,11 +6,6 @@
 namespace ech
 {
 
-class CoinAmount
-{
-private:
-	const boost::multiprecision::uint256_t _amount;
-public:
-};
+using CoinAmount = boost::multiprecision::uint256_t;
 
 } // namespace ech

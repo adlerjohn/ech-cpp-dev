@@ -6,11 +6,6 @@
 namespace ech
 {
 
-class UTXOID : public crypto::byteset<32u>
-{
-private:
-public:
-	explicit UTXOID(const std::string& id);
-};
+using UTXOID = crypto::byteset<32u>;
 
 } // namespace ech

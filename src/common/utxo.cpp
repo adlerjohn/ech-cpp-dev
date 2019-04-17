@@ -2,10 +2,10 @@
 
 using namespace ech;
 
-UTXO::UTXO()
+UTXO::UTXO(const crypto::Address owner, const CoinAmount& amount, const Color& color)
 	: _id(UTXOID(std::string(64u, '0')))
-	, _owner(std::string())
-	, _amount()
-	, _color()
+	, _owner(owner)
+	, _amount(amount)
+	, _color(color)
 {
 }

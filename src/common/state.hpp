@@ -16,9 +16,9 @@ private:
 	// The UTXO set: blockchain state
 	const std::map<UTXOID, UTXO> _utxoSet;
 public:
-	void add(const std::vector<UTXO> utxos) const;
+	void add(const std::vector<UTXO>& utxos) const;
 
-	void remove(const std::vector<UTXO> utxos) const;
+	void remove(const std::vector<UTXO>& utxos) const;
 };
 
 } // namespace ech
