@@ -68,6 +68,11 @@ public:
 
 	auto data() const { return this->_data; }
 
+	friend bool operator==(const ByteSet<N>& lhs, const ByteSet<N>& rhs)
+	{
+		return lhs.data() == rhs.data();
+	}
+
 	friend std::ostream& operator<<(std::ostream& os, const ByteSet<N>& o)
 	{
 		os << o.toHex();
