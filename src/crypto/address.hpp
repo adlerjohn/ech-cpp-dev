@@ -24,7 +24,7 @@ public:
 
 	friend bool operator==(const Address& lhs, const Address& rhs)
 	{
-		return lhs.toHex().compare(rhs.toHex()) == 0;
+		return lhs.toHex() == rhs.toHex();
 	}
 };
 
