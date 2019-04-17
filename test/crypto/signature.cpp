@@ -14,8 +14,6 @@ TEST_CASE("signature verify", "[crypto][sig]")
 	auto msg = std::string("The quick brown fox jumps over the lazy dog.");
 	auto msg_bad = std::string("The lazy brown fox jumps over the quick dog.");
 
-	auto digest = Digest(msg);
-
 	SECTION("sign message")
 	{
 		auto signature = Signature(msg, secretKey);
