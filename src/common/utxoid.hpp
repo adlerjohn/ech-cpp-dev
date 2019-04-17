@@ -1,7 +1,7 @@
 #pragma once
 
-// Library includes
-#include <boost/multiprecision/cpp_int.hpp>
+// Project includes
+#include "crypto/byteset.hpp"
 
 namespace ech
 {
@@ -9,7 +9,7 @@ namespace ech
 class UTXOID
 {
 private:
-	const boost::multiprecision::uint256_t _id;
+	const crypto::byteset<32u> _id;
 public:
 };
 
