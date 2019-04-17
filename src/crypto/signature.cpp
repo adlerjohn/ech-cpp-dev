@@ -92,7 +92,7 @@ PublicKey Signature::recover(const std::string& msg) const
 	return PublicKey(publicKey);
 }
 
-bool Signature::verify(const std::string& msg, const PublicKey& publicKey) const
+bool Signature::verify_raw(const std::string& msg, const PublicKey& publicKey) const
 {
 	CryptoPP::ECDSA_RFC6979<CryptoPP::ECP, CryptoPP::Keccak_256>::PublicKey pk;
 	pk.AccessGroupParameters().Initialize(CryptoPP::ASN1::secp256k1());
@@ -130,7 +130,12 @@ bool Signature::verify(const std::string& msg, const PublicKey& publicKey) const
 	return result;
 }
 
-bool Signature::verify(const std::string& msg) const
+bool Signature::verify(const std::string& msg, const Address& address) const
 {
-	return verify(msg, this->recover(msg));
+	return Address(recover(msg)) == address;
+}
+
+bool Signature::verify(const std::string& msg, const PublicKey& publicKey) const
+{
+	return verify(msg, Address(publicKey));
 }
