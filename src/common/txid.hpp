@@ -6,11 +6,11 @@
 namespace ech
 {
 
-class TXID
+class TXID : public crypto::byteset<32u>
 {
 private:
-	const crypto::byteset<32u> _id;
 public:
+	explicit TXID(const std::string& id);
 };
 
 } // namespace ech
