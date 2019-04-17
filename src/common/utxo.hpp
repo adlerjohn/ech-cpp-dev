@@ -28,7 +28,7 @@ private:
 	const Color _color;
 
 public:
-	UTXO(const crypto::Address owner, const CoinAmount& amount, const Color& color);
+	UTXO(const crypto::Address& owner, const CoinAmount& amount, const Color& color);
 
 	auto getId() const { return this->_id; }
 
