@@ -1,8 +1,6 @@
 #include "signature.hpp"
 
 // System includes
-// TODO remove
-#include <iostream>
 #include <iomanip>
 
 // Library includes
@@ -27,9 +25,7 @@ Signature::Signature(const std::string& str, const SecretKey& secretKey)
 
 PublicKey Signature::recover(const std::string& msg) const
 {
-	std::cout << Signature::size() << " " << this->toHex() << std::endl;
-
-	auto digest = Digest(msg);
+	const auto digest = Digest(msg);
 
 	const auto sig = this->toHex();
 	const auto r = sig.substr(0, 64);
@@ -59,20 +55,25 @@ PublicKey Signature::recover(const std::string& msg) const
 	// r is the x coordinate of the ephemeral public key
 	const auto compactPoint = std::string((vi % 2 == 1 ? "02" : "03") + r);
 	CryptoPP::StringSource source(compactPoint, true, new CryptoPP::HexDecoder);
-	CryptoPP::ECP::Point epoint;
-	curve.DecodePoint(epoint, source, source.MaxRetrievable());
+	CryptoPP::ECP::Point R;
+	curve.DecodePoint(R, source, source.MaxRetrievable());
 
 	// K = ri^-1 * (sR - zG)
-	const auto z = di;
-	const auto Gz = curve.ScalarMultiply(G, z);
-	const auto Rs = curve.ScalarMultiply(epoint, si);
-	const auto Qr = curve.Subtract(Rs, Gz);
-	const auto ri_inv = curve.GetField().MultiplicativeInverse(ri);
-	const auto K = curve.ScalarMultiply(Qr, ri_inv);
+	// Calculate each term multiplied by ri^-1, then add them
+	const auto ri_inv = ri.InverseMod(N);
 
-	std::cout << "N:  " << N << std::endl;
-	std::cout << "di: " << di << std::endl;
-	std::cout << "z:  " << z << std::endl;
+	// ri^-1 * sR
+	const auto s_inv = ri_inv.Times(si).Modulo(N);
+	const auto sR = curve.ScalarMultiply(R, s_inv);
+
+	// ri^-1 * -zG
+	auto e = di;
+	e.Negate();
+	e.Modulo(N);
+	const auto z = e.Times(ri_inv).Modulo(N);
+	const auto minuszG = curve.ScalarMultiply(G, z);
+
+	const auto K = curve.Add(sR, minuszG);
 
 	pk.SetPublicElement(K);
 
@@ -88,7 +89,6 @@ PublicKey Signature::recover(const std::string& msg) const
 	buf << std::setw(64) << std::setfill('0') << CryptoPP::IntToString(point.y, 16u);
 	const auto publicKey = buf.str();
 
-	std::cout << publicKey.length() << " " << publicKey << std::endl;
 	return PublicKey(publicKey);
 }
 
@@ -111,7 +111,6 @@ bool Signature::verify(const std::string& msg, const PublicKey& publicKey) const
 
 	// Slice off v from signature
 	auto hexSig = this->toHex().substr(0, (Signature::size() - 1) * 2);
-	std::cout << hexSig.length() << " " << hexSig << std::endl;
 
 	std::string decodedSignature;
 	CryptoPP::StringSource(hexSig, true,
