@@ -34,7 +34,7 @@ void Signing::setup()
 		auto secretKey = crypto::SecretKey(buf.str());
 
 		auto msg = std::string("The quick brown fox jumps over the lazy dog.");
-		auto signature = crypto::Signature(secretKey, msg, crypto::SignerCryptoPP());
+		auto signature = crypto::Signature(secretKey, msg, crypto::Signer_CryptoPP());
 
 		this->_data.emplace_back(SigningData(secretKey, msg, signature));
 	}
@@ -45,7 +45,7 @@ void Signing::run()
 	this->before();
 
 	for (auto& d : this->_data) {
-		d.getSignature().verify(d.getMsg(), d.getPublicKey(), crypto::SignerCryptoPP());
+		d.getSignature().verify(d.getMsg(), d.getPublicKey(), crypto::Signer_CryptoPP());
 	}
 
 	this->after();

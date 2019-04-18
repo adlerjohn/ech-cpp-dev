@@ -22,7 +22,7 @@ bool Signer::verify(const Signature& signature, const std::string& msg, const Pu
 	return verify(signature, msg, Address(publicKey));
 }
 
-Signature SignerCryptoPP::sign(const SecretKey& secretKey, const std::string& msg) const
+Signature Signer_CryptoPP::sign(const SecretKey& secretKey, const std::string& msg) const
 {
 	// Our secret key is actually the exponent, need to convert
 	CryptoPP::ECDSA_RFC6979<CryptoPP::ECP, CryptoPP::Keccak_256>::PrivateKey sk;
@@ -73,7 +73,7 @@ Signature SignerCryptoPP::sign(const SecretKey& secretKey, const std::string& ms
 	return Signature(hexSig);
 }
 
-PublicKey SignerCryptoPP::recover(const Signature& signature, const std::string& msg) const
+PublicKey Signer_CryptoPP::recover(const Signature& signature, const std::string& msg) const
 {
 	const auto digest = Digest(msg);
 
@@ -143,7 +143,7 @@ PublicKey SignerCryptoPP::recover(const Signature& signature, const std::string&
 	return PublicKey(publicKey);
 }
 
-bool SignerCryptoPP::verify_direct(const Signature& signature, const std::string& msg, const PublicKey& publicKey) const
+bool Signer_CryptoPP::verify_direct(const Signature& signature, const std::string& msg, const PublicKey& publicKey) const
 {
 	CryptoPP::ECDSA_RFC6979<CryptoPP::ECP, CryptoPP::Keccak_256>::PublicKey pk;
 	pk.AccessGroupParameters().Initialize(CryptoPP::ASN1::secp256k1());

@@ -16,7 +16,7 @@ TEST_CASE("signature verify", "[crypto][sig]")
 
 	SECTION("sign message")
 	{
-		auto signature = Signature(secretKey, msg, SignerCryptoPP());
+		auto signature = Signature(secretKey, msg, Signer_CryptoPP());
 
 		SECTION("deterministic sign")
 		{
@@ -25,21 +25,21 @@ TEST_CASE("signature verify", "[crypto][sig]")
 		}
 		SECTION("recover")
 		{
-			auto recovered = signature.recover(msg, SignerCryptoPP());
+			auto recovered = signature.recover(msg, Signer_CryptoPP());
 			REQUIRE_THAT(publicKey.toHex(), Equals(recovered.toHex()));
 		}
 		SECTION("verify with pubkey")
 		{
-			auto result = signature.verify(msg, publicKey, SignerCryptoPP());
+			auto result = signature.verify(msg, publicKey, Signer_CryptoPP());
 			REQUIRE(result);
-			auto result_bad = signature.verify(msg_bad, publicKey, SignerCryptoPP());
+			auto result_bad = signature.verify(msg_bad, publicKey, Signer_CryptoPP());
 			REQUIRE(!result_bad);
 		}
 		SECTION("verify with address")
 		{
-			auto result = signature.verify(msg, Address(publicKey), SignerCryptoPP());
+			auto result = signature.verify(msg, Address(publicKey), Signer_CryptoPP());
 			REQUIRE(result);
-			auto result_bad = signature.verify(msg_bad, Address(publicKey), SignerCryptoPP());
+			auto result_bad = signature.verify(msg_bad, Address(publicKey), Signer_CryptoPP());
 			REQUIRE(!result_bad);
 		}
 	}

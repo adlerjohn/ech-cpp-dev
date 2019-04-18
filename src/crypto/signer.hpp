@@ -10,7 +10,6 @@ class Signature;
 
 class Signer
 {
-private:
 public:
 	virtual Signature sign(const SecretKey& secretKey, const std::string& msg) const = 0;
 
@@ -21,9 +20,8 @@ public:
 	bool verify(const Signature& signature, const std::string& msg, const PublicKey& publicKey) const;
 };
 
-class SignerCryptoPP : public Signer
+class Signer_CryptoPP : public Signer
 {
-private:
 public:
 	Signature sign(const SecretKey& secretKey, const std::string& msg) const override;
 
