@@ -30,11 +30,11 @@ TEST_CASE("signature verify", "[crypto][sig]")
 			auto result_bad = signature.verify(msg_bad, publicKey);
 			REQUIRE(!result_bad);
 		}
-		SECTION("verify raw")
+		SECTION("verify directly")
 		{
-			auto result = signature.verify_raw(msg, publicKey);
+			auto result = signature.verify_direct(msg, publicKey);
 			REQUIRE(result);
-			auto result_bad = signature.verify_raw(msg_bad, publicKey);
+			auto result_bad = signature.verify_direct(msg_bad, publicKey);
 			REQUIRE(!result_bad);
 		}
 		SECTION("verify with address")
