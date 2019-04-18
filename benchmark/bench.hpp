@@ -25,7 +25,7 @@ public:
 	}
 
 	auto getDuration() const {
-		return std::chrono::duration_cast<std::chrono::seconds>(this->_finish - this->_start).count();
+		return std::chrono::duration_cast<std::chrono::milliseconds>(this->_finish - this->_start).count();
 	}
 };
 
