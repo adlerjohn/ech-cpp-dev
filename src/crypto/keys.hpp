@@ -13,6 +13,7 @@
 namespace ech::crypto
 {
 
+// TODO need to zero out secret key on destroy
 class SecretKey : public byteset<SECRET_KEY_BYTES>
 {
 public:
