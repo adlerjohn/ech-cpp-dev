@@ -34,7 +34,7 @@ auto PublicKey::deriveFromSecretKey(const SecretKey& secretKey)
 	if (!result)
 		throw std::runtime_error("invalid public key");
 
-	auto point = pk.GetPublicElement();
+	const auto& point = pk.GetPublicElement();
 	std::stringstream buf;
 	buf << std::setw(64) << std::setfill('0') << CryptoPP::IntToString(point.x, 16u);
 	buf << std::setw(64) << std::setfill('0') << CryptoPP::IntToString(point.y, 16u);

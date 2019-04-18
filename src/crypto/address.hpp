@@ -21,11 +21,6 @@ public:
 	explicit Address(const std::string& publicKey);
 
 	explicit Address(const PublicKey& publicKey);
-
-	friend bool operator==(const Address& lhs, const Address& rhs)
-	{
-		return lhs.toHex() == rhs.toHex();
-	}
 };
 
 } // namespace ech::crypto
