@@ -78,8 +78,9 @@ PublicKey Signature::recover(const std::string& msg) const
 	pk.SetPublicElement(K);
 
 	// Validate public key
+	// Do level-1 checks because level-2 or level-3 checks take too long
 	CryptoPP::AutoSeededRandomPool prng;
-	bool result = pk.Validate(prng, 3);
+	bool result = pk.Validate(prng, 1);
 	if (!result)
 		throw std::runtime_error("invalid public key");
 
