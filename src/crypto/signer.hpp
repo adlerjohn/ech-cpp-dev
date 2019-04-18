@@ -30,4 +30,12 @@ public:
 	bool verify_direct(const Signature& signature, const std::string& msg, const PublicKey& publicKey) const;
 };
 
+class Signer_libsecp256k1 : public Signer
+{
+public:
+	Signature sign(const SecretKey& secretKey, const std::string& msg) const override;
+
+	PublicKey recover(const Signature& signature, const std::string& msg) const override;
+};
+
 } // namespace ech::crypto

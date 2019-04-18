@@ -180,3 +180,15 @@ bool Signer_CryptoPP::verify_direct(const Signature& signature, const std::strin
 
 	return result;
 }
+
+Signature Signer_libsecp256k1::sign(const SecretKey& secretKey, const std::string& msg) const
+{
+	// TODO implement
+	return Signer_CryptoPP().sign(secretKey, msg);
+}
+
+PublicKey Signer_libsecp256k1::recover(const Signature& signature, const std::string& msg) const
+{
+	// TODO implement
+	return Signer_CryptoPP().recover(signature, msg);
+}
