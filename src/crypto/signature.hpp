@@ -28,7 +28,7 @@ public:
 	PublicKey recover(const std::string& msg) const;
 
 	// Verify that the signature matches the original message
-	bool verify_raw(const std::string& msg, const PublicKey& publicKey) const;
+	bool verify_direct(const std::string& msg, const PublicKey& publicKey) const;
 
 	bool verify(const std::string& msg, const Address& address) const;
 
