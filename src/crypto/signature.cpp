@@ -16,12 +16,12 @@ Signature::Signature(const std::string& sig)
 {
 }
 
-Signature::Signature(const SecretKey& secretKey, const std::string& str, const Signer& signer = SignerCryptoPP())
+Signature::Signature(const SecretKey& secretKey, const std::string& str, const Signer& signer)
 	: Signature(signer.sign(secretKey, str))
 {
 }
 
-PublicKey Signature::recover(const std::string& msg, const Signer& signer = SignerCryptoPP()) const
+PublicKey Signature::recover(const std::string& msg, const Signer& signer) const
 {
 	return signer.recover(*this, msg);
 }

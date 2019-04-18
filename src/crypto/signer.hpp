@@ -16,7 +16,7 @@ public:
 
 	virtual PublicKey recover(const Signature& signature, const std::string& msg) const = 0;
 
-	virtual bool verify(const Signature& signature, const std::string& msg, const Address& address) const = 0;
+	bool verify(const Signature& signature, const std::string& msg, const Address& address) const;
 
 	bool verify(const Signature& signature, const std::string& msg, const PublicKey& publicKey) const;
 };
@@ -28,8 +28,6 @@ public:
 	Signature sign(const SecretKey& secretKey, const std::string& msg) const override;
 
 	PublicKey recover(const Signature& signature, const std::string& msg) const override;
-
-	bool verify(const Signature& signature, const std::string& msg, const Address& address) const override;
 
 	bool verify_direct(const Signature& signature, const std::string& msg, const PublicKey& publicKey) const;
 };

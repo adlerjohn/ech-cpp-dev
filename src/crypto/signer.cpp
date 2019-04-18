@@ -12,6 +12,11 @@
 
 using namespace ech::crypto;
 
+bool Signer::verify(const Signature& signature, const std::string& msg, const Address& address) const
+{
+	return Address(recover(signature, msg)) == address;
+}
+
 bool Signer::verify(const Signature& signature, const std::string& msg, const PublicKey& publicKey) const
 {
 	return verify(signature, msg, Address(publicKey));
@@ -174,9 +179,4 @@ bool SignerCryptoPP::verify_direct(const Signature& signature, const std::string
 	);
 
 	return result;
-}
-
-bool SignerCryptoPP::verify(const Signature& signature, const std::string& msg, const Address& address) const
-{
-	return Address(recover(signature, msg)) == address;
 }
