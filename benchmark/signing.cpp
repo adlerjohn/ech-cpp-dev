@@ -26,7 +26,7 @@ void Signing::setup()
 {
 	CryptoPP::AutoSeededRandomPool prng;
 
-	for (auto i = size_t(0); i < 1000u; i++) {
+	for (auto i = size_t(0); i < 5000u; i++) {
 		auto secretKeyInt = CryptoPP::Integer(prng, 256);
 		std::stringstream buf;
 		buf << std::setw(64) << std::setfill('0') << CryptoPP::IntToString(secretKeyInt, 16u);
@@ -43,7 +43,7 @@ void Signing::run()
 {
 	this->before();
 
-	for (auto & d : this->_data) {
+	for (auto& d : this->_data) {
 		d.getSignature().verify(d.getMsg(), d.getPublicKey());
 	}
 
