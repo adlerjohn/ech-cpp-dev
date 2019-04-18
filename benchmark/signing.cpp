@@ -42,10 +42,15 @@ void Signing::setup()
 
 void Signing::run()
 {
+	run(crypto::Signer_CryptoPP());
+}
+
+void Signing::run(const ech::crypto::Signer& signer)
+{
 	this->before();
 
 	for (auto& d : this->_data) {
-		d.getSignature().verify(d.getMsg(), d.getPublicKey(), crypto::Signer_CryptoPP());
+		d.getSignature().verify(d.getMsg(), d.getPublicKey(), signer);
 	}
 
 	this->after();
