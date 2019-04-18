@@ -14,6 +14,7 @@ int main()
 	std::cout << "Signing..." << std::endl;
 
 	auto signing = benchmark::Signing();
+	signing.setup();
 	signing.run();
 
 	std::cout << "Complete in " << signing.getDuration() << "s." << std::endl;

@@ -12,6 +12,8 @@ private:
 	std::chrono::high_resolution_clock::time_point _start;
 	std::chrono::high_resolution_clock::time_point _finish;
 public:
+	virtual void setup() = 0;
+
 	void before() {
 		this->_start = std::chrono::high_resolution_clock::now();
 	}
