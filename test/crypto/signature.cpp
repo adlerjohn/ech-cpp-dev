@@ -16,32 +16,30 @@ TEST_CASE("signature verify", "[crypto][sig]")
 
 	SECTION("sign message")
 	{
-		auto signature = Signature(msg, secretKey);
+		auto signature = Signature(secretKey, msg, SignerCryptoPP());
 
+		SECTION("deterministic sign")
+		{
+			// TODO why do these signatures not match?
+			// REQUIRE_THAT("5385685eef5fe0f2f93fa022002bb00f8b2478b9567618e47463cda72a78dcdb56a7a6bcd0bd79f709f15e0d3d53ba9909d4a3d100e25065bc0b7bd2537f39191c", Equals(sig));
+		}
 		SECTION("recover")
 		{
-			auto recovered = signature.recover(msg);
+			auto recovered = signature.recover(msg, SignerCryptoPP());
 			REQUIRE_THAT(publicKey.toHex(), Equals(recovered.toHex()));
 		}
 		SECTION("verify with pubkey")
 		{
-			auto result = signature.verify(msg, publicKey);
+			auto result = signature.verify(msg, publicKey, SignerCryptoPP());
 			REQUIRE(result);
-			auto result_bad = signature.verify(msg_bad, publicKey);
-			REQUIRE(!result_bad);
-		}
-		SECTION("verify directly")
-		{
-			auto result = signature.verify_direct(msg, publicKey);
-			REQUIRE(result);
-			auto result_bad = signature.verify_direct(msg_bad, publicKey);
+			auto result_bad = signature.verify(msg_bad, publicKey, SignerCryptoPP());
 			REQUIRE(!result_bad);
 		}
 		SECTION("verify with address")
 		{
-			auto result = signature.verify(msg, Address(publicKey));
+			auto result = signature.verify(msg, Address(publicKey), SignerCryptoPP());
 			REQUIRE(result);
-			auto result_bad = signature.verify(msg_bad, Address(publicKey));
+			auto result_bad = signature.verify(msg_bad, Address(publicKey), SignerCryptoPP());
 			REQUIRE(!result_bad);
 		}
 	}

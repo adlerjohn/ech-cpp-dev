@@ -19,11 +19,11 @@ template<uint64_t N>
 class ByteSet
 {
 private:
-	const std::array<CryptoPP::byte, N> _data;
+	const std::array<std::byte, N> _data;
 
 	static auto hexToBytes(const std::string& str)
 	{
-		std::array<CryptoPP::byte, N> data;
+		std::array<std::byte, N> data;
 
 		if (str.length() % 2u != 0u)
 			throw std::invalid_argument("hex string must have an even number of hexes");
@@ -38,7 +38,7 @@ private:
 
 		CryptoPP::StringSource(str, true,
 			new CryptoPP::HexDecoder(
-				new CryptoPP::ArraySink(data.data(), N)
+				new CryptoPP::ArraySink(reinterpret_cast<CryptoPP::byte*>(data.data()), N)
 			)
 		);
 
@@ -54,7 +54,7 @@ public:
 	std::string toHex() const
 	{
 		std::string str;
-		CryptoPP::ArraySource(this->_data.data(), N, true,
+		CryptoPP::ArraySource(reinterpret_cast<const CryptoPP::byte*>(this->_data.data()), N, true,
 			new CryptoPP::HexEncoder(
 				new CryptoPP::StringSink(str),
 				false

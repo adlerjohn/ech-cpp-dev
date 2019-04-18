@@ -11,6 +11,7 @@
 
 // Project includes
 #include "crypto/signature.hpp"
+#include "crypto/signer.hpp"
 
 using namespace ech::benchmark;
 
@@ -33,7 +34,7 @@ void Signing::setup()
 		auto secretKey = crypto::SecretKey(buf.str());
 
 		auto msg = std::string("The quick brown fox jumps over the lazy dog.");
-		auto signature = crypto::Signature(msg, secretKey);
+		auto signature = crypto::Signature(secretKey, msg, crypto::SignerCryptoPP());
 
 		this->_data.emplace_back(SigningData(secretKey, msg, signature));
 	}
@@ -44,7 +45,7 @@ void Signing::run()
 	this->before();
 
 	for (auto& d : this->_data) {
-		d.getSignature().verify(d.getMsg(), d.getPublicKey());
+		d.getSignature().verify(d.getMsg(), d.getPublicKey(), crypto::SignerCryptoPP());
 	}
 
 	this->after();

@@ -3,6 +3,7 @@ set(source_files
         digest.cpp
         keys.cpp
         signature.cpp
+        signer.cpp
         )
 
 add_library(ech-crypto ${source_files})
