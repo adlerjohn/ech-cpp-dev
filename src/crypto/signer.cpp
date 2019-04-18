@@ -221,6 +221,33 @@ Signature Signer_libsecp256k1::sign(const SecretKey& secretKey, const std::strin
 
 PublicKey Signer_libsecp256k1::recover(const Signature& signature, const std::string& msg) const
 {
-	// TODO implement
-	return Signer_CryptoPP().recover(signature, msg);
+	auto context = getContextVerify();
+
+	const auto v_hex = signature.toHex().substr(128, 2);
+	std::stringstream buf;
+	buf << std::hex << v_hex;
+	int v;
+	buf >> v;
+	v -= 27;
+
+	const auto digest = Digest(msg);
+	secp256k1_ecdsa_recoverable_signature sig;
+	if (!secp256k1_ecdsa_recoverable_signature_parse_compact(context, &sig, reinterpret_cast<const unsigned char*>(signature.data().data()), v))
+		throw std::runtime_error("Could not parse signature: " + signature.toHex());
+
+	secp256k1_pubkey pubkey;
+	if (!secp256k1_ecdsa_recover(context, &pubkey, &sig, reinterpret_cast<const unsigned char*>(digest.data().data())))
+		throw std::runtime_error("Could recover pubkey from signature: " + signature.toHex());
+
+	std::array<std::byte, 65> pubkey_serialized;
+	size_t outputlen = pubkey_serialized.size();
+	secp256k1_ec_pubkey_serialize(context, reinterpret_cast<unsigned char*>(pubkey_serialized.data()), &outputlen, &pubkey, SECP256K1_EC_UNCOMPRESSED);
+
+	std::stringstream buf_pubkey;
+	buf_pubkey << std::hex << std::setfill('0');
+	auto it = pubkey_serialized.begin();
+	for (++it; it != pubkey_serialized.end(); ++it)
+		buf_pubkey << std::setw(2) << static_cast<int>(*it);
+
+	return PublicKey(buf_pubkey.str());
 }
