@@ -2,9 +2,12 @@
 
 // System includes
 #include <iomanip>
+// TODO remove
+#include <iostream>
 #include <sstream>
 
 // Library includes
+#include <secp256k1_recovery.h>
 #include <cryptopp/eccrypto.h>
 #include <cryptopp/keccak.h>
 #include <cryptopp/oids.h>
@@ -181,10 +184,39 @@ bool Signer_CryptoPP::verify_direct(const Signature& signature, const std::strin
 	return result;
 }
 
+const secp256k1_context* Signer_libsecp256k1::getContextSign()
+{
+	static std::unique_ptr<secp256k1_context, decltype(&secp256k1_context_destroy)> context(secp256k1_context_create(SECP256K1_CONTEXT_SIGN), &secp256k1_context_destroy);
+	return context.get();
+}
+
+const secp256k1_context* Signer_libsecp256k1::getContextVerify()
+{
+	static std::unique_ptr<secp256k1_context, decltype(&secp256k1_context_destroy)> context(secp256k1_context_create(SECP256K1_CONTEXT_VERIFY), &secp256k1_context_destroy);
+	return context.get();
+}
+
 Signature Signer_libsecp256k1::sign(const SecretKey& secretKey, const std::string& msg) const
 {
-	// TODO implement
-	return Signer_CryptoPP().sign(secretKey, msg);
+	auto context = getContextSign();
+
+	auto digest = Digest(msg);
+	secp256k1_ecdsa_recoverable_signature sig;
+	if (!secp256k1_ecdsa_sign_recoverable(context, &sig, reinterpret_cast<const unsigned char*>(digest.data().data()), reinterpret_cast<const unsigned char*>(secretKey.data().data()), nullptr, nullptr))
+		throw std::runtime_error("Could not sign message: " + msg);
+
+	std::array<std::byte, 64u> rs;
+	int v = 0;
+	secp256k1_ecdsa_recoverable_signature_serialize_compact(context, reinterpret_cast<unsigned char *>(rs.data()), &v, &sig);
+	v += 27;
+
+	std::stringstream buf;
+	buf << std::hex << std::setfill('0');
+	for (auto c : rs)
+		buf << std::setw(2) << static_cast<int>(c);
+	buf << std::setw(2) << v;
+
+	return Signature(buf.str());
 }
 
 PublicKey Signer_libsecp256k1::recover(const Signature& signature, const std::string& msg) const

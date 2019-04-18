@@ -1,5 +1,8 @@
 #pragma once
 
+// Library includes
+#include <secp256k1.h>
+
 // Project includes
 #include "signature.hpp"
 
@@ -32,6 +35,11 @@ public:
 
 class Signer_libsecp256k1 : public Signer
 {
+private:
+	// Have separate contexts for signing and verifying as verification does not
+	// need randomization
+	static const secp256k1_context* getContextSign();
+	static const secp256k1_context* getContextVerify();
 public:
 	Signature sign(const SecretKey& secretKey, const std::string& msg) const override;
 

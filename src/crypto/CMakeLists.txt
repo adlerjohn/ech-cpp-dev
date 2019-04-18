@@ -7,4 +7,4 @@ set(source_files
         )
 
 add_library(ech-crypto ${source_files})
-target_link_libraries(ech-crypto cryptopp)
+target_link_libraries(ech-crypto cryptopp secp256k1)
