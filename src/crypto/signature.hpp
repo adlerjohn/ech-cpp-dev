@@ -23,7 +23,9 @@ class Signature : public byteset<SIGNATURE_BYTES>
 {
 private:
 	static const secp256k1_context* getContextSign();
+
 	static const secp256k1_context* getContextVerify();
+
 	auto sign(const SecretKey& secretKey, const std::string& msg) const;
 
 public:

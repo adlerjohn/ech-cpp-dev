@@ -22,9 +22,9 @@ const secp256k1_context* Signature::getContextVerify()
 
 auto Signature::sign(const SecretKey& secretKey, const std::string& msg) const
 {
-	auto context = getContextSign();
+	const auto context = getContextSign();
 
-	auto digest = Digest(msg);
+	const auto digest = Digest(msg);
 	secp256k1_ecdsa_recoverable_signature sig;
 	if (!secp256k1_ecdsa_sign_recoverable(context, &sig, reinterpret_cast<const unsigned char*>(digest.data().data()), reinterpret_cast<const unsigned char*>(secretKey.data().data()), nullptr, nullptr))
 		throw std::runtime_error("Could not sign message: " + msg);
@@ -55,7 +55,7 @@ Signature::Signature(const SecretKey& secretKey, const std::string& str)
 
 PublicKey Signature::recover(const std::string& msg) const
 {
-	auto context = getContextVerify();
+	const auto context = getContextVerify();
 
 	const auto v_hex = this->toHex().substr(128, 2);
 	std::stringstream buf;
@@ -73,7 +73,7 @@ PublicKey Signature::recover(const std::string& msg) const
 	if (!secp256k1_ecdsa_recover(context, &pubkey, &sig, reinterpret_cast<const unsigned char*>(digest.data().data())))
 		throw std::runtime_error("Could recover pubkey from signature: " + this->toHex());
 
-	std::array<std::byte, 65> pubkey_serialized;
+	std::array<std::byte, 65u> pubkey_serialized;
 	size_t outputlen = pubkey_serialized.size();
 	secp256k1_ec_pubkey_serialize(context, reinterpret_cast<unsigned char*>(pubkey_serialized.data()), &outputlen, &pubkey, SECP256K1_EC_UNCOMPRESSED);
 
