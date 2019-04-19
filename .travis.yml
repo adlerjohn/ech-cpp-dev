@@ -16,6 +16,7 @@ addons:
       - g++-8
       - libboost-dev
       - librocksdb-dev
+      - libsecp256k1-dev
 
 install:
 # Travis CI uses Xenial, so we need to build Crypto++ ourselves
