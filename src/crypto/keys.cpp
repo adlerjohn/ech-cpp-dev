@@ -17,6 +17,12 @@ SecretKey::SecretKey(const std::string& str)
 {
 }
 
+const secp256k1_context* PublicKey::getContextKeys()
+{
+	static std::unique_ptr<secp256k1_context, decltype(&secp256k1_context_destroy)> context(secp256k1_context_create(SECP256K1_CONTEXT_NONE), &secp256k1_context_destroy);
+	return context.get();
+}
+
 auto PublicKey::deriveFromSecretKey(const SecretKey& secretKey)
 {
 	CryptoPP::ECDSA_RFC6979<CryptoPP::ECP, CryptoPP::Keccak_256>::PrivateKey sk;

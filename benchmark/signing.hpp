@@ -36,8 +36,6 @@ private:
 public:
 	void setup() override;
 	void run() override;
-
-	void run(const crypto::Signer& signer);
 };
 
 } // namespace ech::benchmark

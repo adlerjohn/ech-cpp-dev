@@ -14,39 +14,9 @@ TEST_CASE("signature verify", "[crypto][sig]")
 	auto msg = std::string("The quick brown fox jumps over the lazy dog.");
 	auto msg_bad = std::string("The lazy brown fox jumps over the quick dog.");
 
-	SECTION("crypto++")
-	{
-		auto signature = Signature(secretKey, msg, Signer_CryptoPP());
-
-		SECTION("deterministic sign")
-		{
-			// TODO why do these signatures not match?
-			//REQUIRE_THAT("5385685eef5fe0f2f93fa022002bb00f8b2478b9567618e47463cda72a78dcdb56a7a6bcd0bd79f709f15e0d3d53ba9909d4a3d100e25065bc0b7bd2537f39191c", Equals(signature.toHex()));
-		}
-		SECTION("recover")
-		{
-			auto recovered = signature.recover(msg, Signer_CryptoPP());
-			REQUIRE_THAT(publicKey.toHex(), Equals(recovered.toHex()));
-		}
-		SECTION("verify with pubkey")
-		{
-			auto result = signature.verify(msg, publicKey, Signer_CryptoPP());
-			REQUIRE(result);
-			auto result_bad = signature.verify(msg_bad, publicKey, Signer_CryptoPP());
-			REQUIRE(!result_bad);
-		}
-		SECTION("verify with address")
-		{
-			auto result = signature.verify(msg, Address(publicKey), Signer_CryptoPP());
-			REQUIRE(result);
-			auto result_bad = signature.verify(msg_bad, Address(publicKey), Signer_CryptoPP());
-			REQUIRE(!result_bad);
-		}
-	}
-
 	SECTION("libsecp256k1")
 	{
-		auto signature = Signature(secretKey, msg, Signer_libsecp256k1());
+		auto signature = Signature(secretKey, msg);
 
 		SECTION("deterministic sign")
 		{
@@ -54,21 +24,21 @@ TEST_CASE("signature verify", "[crypto][sig]")
 		}
 		SECTION("recover")
 		{
-			auto recovered = signature.recover(msg, Signer_libsecp256k1());
+			auto recovered = signature.recover(msg);
 			REQUIRE_THAT(publicKey.toHex(), Equals(recovered.toHex()));
 		}
 		SECTION("verify with pubkey")
 		{
-			auto result = signature.verify(msg, publicKey, Signer_libsecp256k1());
+			auto result = signature.verify(msg, publicKey);
 			REQUIRE(result);
-			auto result_bad = signature.verify(msg_bad, publicKey, Signer_libsecp256k1());
+			auto result_bad = signature.verify(msg_bad, publicKey);
 			REQUIRE(!result_bad);
 		}
 		SECTION("verify with address")
 		{
-			auto result = signature.verify(msg, Address(publicKey), Signer_libsecp256k1());
+			auto result = signature.verify(msg, Address(publicKey));
 			REQUIRE(result);
-			auto result_bad = signature.verify(msg_bad, Address(publicKey), Signer_libsecp256k1());
+			auto result_bad = signature.verify(msg_bad, Address(publicKey));
 			REQUIRE(!result_bad);
 		}
 	}

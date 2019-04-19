@@ -2,7 +2,6 @@
 
 // Project includes
 #include "crypto/keys.hpp"
-#include "crypto/signature.hpp"
 
 using namespace ech::crypto;
 using Catch::Matchers::Equals;

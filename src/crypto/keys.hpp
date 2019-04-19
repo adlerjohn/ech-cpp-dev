@@ -3,6 +3,9 @@
 // System includes
 #include <string>
 
+// Library includes
+#include <secp256k1.h>
+
 // Project includes
 #include "byteset.hpp"
 #include "digest.hpp"
@@ -23,6 +26,8 @@ public:
 class PublicKey : public byteset<PUBLIC_KEY_BYTES>
 {
 private:
+	static const secp256k1_context* getContextKeys();
+
 	static auto deriveFromSecretKey(const SecretKey& secretKey);
 
 public:
