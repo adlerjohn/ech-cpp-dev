@@ -31,7 +31,7 @@ install:
   - tar -zxvf libsecp256k1_0.1~20170810.orig.tar.gz
   - pushd secp256k1-f532bdc9f77f7bbf7e93faabfbe9c483f0a9f75f
   - ./autogen.sh
-  - ./configure
+  - ./configure --enable-module-recovery
   - make --jobs 2
   - ./tests
   - sudo make install
