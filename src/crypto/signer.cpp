@@ -251,3 +251,9 @@ PublicKey Signer_libsecp256k1::recover(const Signature& signature, const std::st
 
 	return PublicKey(buf_pubkey.str());
 }
+
+void Signer_libsecp256k1::initialize() const
+{
+	getContextSign();
+	getContextVerify();
+}

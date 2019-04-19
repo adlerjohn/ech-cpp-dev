@@ -44,6 +44,9 @@ public:
 	Signature sign(const SecretKey& secretKey, const std::string& msg) const override;
 
 	PublicKey recover(const Signature& signature, const std::string& msg) const override;
+
+	// Initialize the context variables (only needs to be called at most once)
+	void initialize() const;
 };
 
 } // namespace ech::crypto
