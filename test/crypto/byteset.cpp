@@ -38,3 +38,18 @@ TEST_CASE("byteset invalid string", "[crypto][byteset]")
 	auto str = std::string("0ww0");
 	REQUIRE_THROWS(byteset<2u>(str));
 }
+
+TEST_CASE("byteset compare", "[crypto][byteset]")
+{
+	auto str1 = std::string("0123");
+	auto str2 = std::string("1234");
+
+	auto bs1 = byteset<2u>(str1);
+	auto bs2 = byteset<2u>(str2);
+	auto bs3 = byteset<2u>(str1);
+
+	REQUIRE(bs1 < bs2);
+	REQUIRE_FALSE(bs1 > bs2);
+	REQUIRE(bs1 == bs3);
+	REQUIRE_FALSE(bs1 == bs2);
+}

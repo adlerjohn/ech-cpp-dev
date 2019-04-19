@@ -64,13 +64,23 @@ public:
 		return str;
 	}
 
-	static auto size() { return N; }
+	static const auto size() { return N; }
 
-	auto data() const { return this->_data; }
+	const auto& data() const { return this->_data; }
 
 	friend bool operator==(const ByteSet<N>& lhs, const ByteSet<N>& rhs)
 	{
 		return lhs.data() == rhs.data();
+	}
+
+	friend bool operator<(const ByteSet<N>& lhs, const ByteSet<N>& rhs)
+	{
+		return std::memcmp(lhs.data().data(), rhs.data().data(), N) < 0;
+	}
+
+	friend bool operator>(const ByteSet<N>& lhs, const ByteSet<N>& rhs)
+	{
+		return std::memcmp(lhs.data().data(), rhs.data().data(), N) > 0;
 	}
 
 	friend std::ostream& operator<<(std::ostream& os, const ByteSet<N>& o)
