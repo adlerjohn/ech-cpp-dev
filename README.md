@@ -7,12 +7,13 @@ This repository contains a proof-of-concept implementation for ECH, a scalable s
 ## Dependencies
 
 Install the following libraries as dependencies before compiling.
+If you're using a Ubuntu <Bionic (18.04) then you may need to install [libsecp256k1](https://github.com/bitcoin-core/secp256k1) manually. 
 
 ```sh
 apt install libboost-dev librocksdb-dev libsecp256k1-dev
 ```
 
-CryptoPP needs to be installed separately, as the version in repositories is old.
+[Crypto++](https://www.cryptopp.com/) needs to be installed separately, as the version in repositories is too old and doesn't have Keccak hashing.
 
 ```sh
 wget https://www.cryptopp.com/cryptopp810.zip
@@ -22,7 +23,7 @@ make
 sudo make install
 ```
 
-## Compiling
+## Build
 
 ```sh
 mkdir build; cd build
@@ -30,14 +31,20 @@ cmake ..
 cmake --build .
 ```
 
-## Testing
+## Test
 
 ```sh
 cd build
 ctest -V
 ```
 
-## Running
+## Benchmark
+
+```sh
+bin/ech-benchmark
+```
+
+## Run
 
 ```sh
 bin/echd
