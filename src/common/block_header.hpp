@@ -13,9 +13,7 @@ private:
 	// TODO merkle root
 	// TODO height
 public:
-	std::string serialize() const override;
-
-	Serializable deserialize(const std::string& s) const override;
+	[[nodiscard]] const std::vector<std::byte> serialize() const override;
 };
 
 } // namespace ech

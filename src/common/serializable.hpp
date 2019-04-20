@@ -1,17 +1,28 @@
 #pragma once
 
 // System includes
+#include <cstddef>
+#include <iomanip>
+#include <sstream>
 #include <string>
+#include <vector>
 
 namespace ech
 {
 
 class Serializable
 {
-	virtual std::string serialize() const;
+	[[nodiscard]] virtual const std::vector<std::byte> serialize() const = 0;
 
-	// TODO change to binary format
-	virtual Serializable deserialize(const std::string& s) const;
+	[[nodiscard]] const std::string toHex() const
+	{
+		std::stringstream buf;
+		buf << std::hex << std::setfill('0');
+		for (const auto& c : serialize())
+			buf << std::setw(2) << static_cast<int>(c);
+
+		return buf.str();
+	}
 };
 
 } // namespace ech

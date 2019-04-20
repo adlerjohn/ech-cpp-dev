@@ -35,9 +35,7 @@ public:
 	// TODO need to check for double-spends when parallel
 	bool verify(const State& state) const;
 
-	std::string serialize() const override;
-
-	Serializable deserialize(const std::string& s) const override;
+	[[nodiscard]] const std::vector<std::byte> serialize() const override;
 };
 
 } // namespace ech
