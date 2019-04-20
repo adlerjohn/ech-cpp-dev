@@ -1,12 +1,11 @@
 #include "digest.hpp"
 
 // Library includes
-#include <cryptopp/cryptlib.h>
 #include <cryptopp/keccak.h>
 
 using namespace ech::crypto;
 
-auto Digest::hash(const std::string& str) const
+const auto Digest::hash(const std::string& str) const
 {
 	CryptoPP::Keccak_256 hash;
 	std::string digest;
