@@ -15,7 +15,7 @@ namespace ech::crypto
 /**
  * Like a bitset container, but for bytes. Fixed-size blob of bytes.
  */
-template<uint64_t N>
+template<size_t N>
 class ByteSet
 {
 private:
@@ -91,7 +91,7 @@ public:
 };
 
 // Make it look like bitset
-template<uint64_t N>
+template<size_t N>
 using byteset = ByteSet<N>;
 
 } // namespace ech::crypto
