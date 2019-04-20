@@ -14,6 +14,7 @@ class Serializable
 {
 protected:
 	const std::vector<std::byte> _serialized;
+
 public:
 	[[nodiscard]] virtual const std::vector<std::byte> serialize() const = 0;
 
