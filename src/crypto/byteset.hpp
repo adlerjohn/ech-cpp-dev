@@ -21,7 +21,7 @@ class ByteSet
 private:
 	const std::array<std::byte, N> _data;
 
-	static const auto hexToBytes(const std::string& str)
+	[[nodiscard]] static const auto hexToBytes(const std::string& str)
 	{
 		std::array<std::byte, N> data;
 
@@ -51,7 +51,7 @@ public:
 	{
 	}
 
-	const std::string toHex() const
+	[[nodiscard]] const auto toHex() const
 	{
 		std::string str;
 		CryptoPP::ArraySource(reinterpret_cast<const CryptoPP::byte*>(this->_data.data()), N, true,
@@ -64,9 +64,9 @@ public:
 		return str;
 	}
 
-	static const auto size() { return N; }
+	[[nodiscard]] static constexpr auto size() { return N; }
 
-	const auto data() const { return this->_data; }
+	[[nodiscard]] constexpr auto data() const { return this->_data; }
 
 	friend bool operator==(const ByteSet<N>& lhs, const ByteSet<N>& rhs)
 	{
