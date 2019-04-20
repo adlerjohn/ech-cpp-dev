@@ -26,9 +26,9 @@ public:
 class PublicKey : public byteset<PUBLIC_KEY_BYTES>
 {
 private:
-	static const secp256k1_context* getContextKeys();
+	[[nodiscard]] static const auto getContextKeys();
 
-	static auto deriveFromSecretKey(const SecretKey& secretKey);
+	[[nodiscard]] static const auto deriveFromSecretKey(const SecretKey& secretKey);
 
 public:
 	explicit PublicKey(const std::string& str);

@@ -11,13 +11,13 @@ SecretKey::SecretKey(const std::string& str)
 {
 }
 
-const secp256k1_context* PublicKey::getContextKeys()
+const auto PublicKey::getContextKeys()
 {
-	static std::unique_ptr<secp256k1_context, decltype(&secp256k1_context_destroy)> context(secp256k1_context_create(SECP256K1_CONTEXT_SIGN), &secp256k1_context_destroy);
+	static auto context = std::unique_ptr<secp256k1_context, decltype(&secp256k1_context_destroy)>(secp256k1_context_create(SECP256K1_CONTEXT_SIGN), &secp256k1_context_destroy);
 	return context.get();
 }
 
-auto PublicKey::deriveFromSecretKey(const SecretKey& secretKey)
+const auto PublicKey::deriveFromSecretKey(const SecretKey& secretKey)
 {
 	const auto context = getContextKeys();
 
@@ -26,7 +26,7 @@ auto PublicKey::deriveFromSecretKey(const SecretKey& secretKey)
 		throw std::runtime_error("Invalid secret key");
 
 	std::array<std::byte, 65u> pubkey_serialized;
-	size_t outputlen = pubkey_serialized.size();
+	auto outputlen = pubkey_serialized.size();
 	secp256k1_ec_pubkey_serialize(context, reinterpret_cast<unsigned char*>(pubkey_serialized.data()), &outputlen, &pubkey, SECP256K1_EC_UNCOMPRESSED);
 
 	std::stringstream buf_pubkey;
