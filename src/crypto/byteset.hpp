@@ -66,7 +66,7 @@ public:
 
 	[[nodiscard]] static constexpr auto size() { return N; }
 
-	[[nodiscard]] const auto data() const { return this->_data; }
+	[[nodiscard]] const auto& data() const { return this->_data; }
 
 	friend bool operator==(const ByteSet<N>& lhs, const ByteSet<N>& rhs)
 	{
