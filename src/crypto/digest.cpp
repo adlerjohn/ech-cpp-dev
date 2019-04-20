@@ -27,12 +27,7 @@ const auto Digest::hash(const std::string& str) const
 	return hexDigest;
 }
 
-Digest::Digest(const std::string& str, bool isDigest)
-	: ByteSet(isDigest ? str : hash(str))
-{
-}
-
-Digest::Digest(const std::string& str)
-	: Digest(str, false)
+Digest::Digest(const std::string& str, const bool isHex)
+	: ByteSet(isHex ? str : hash(str))
 {
 }

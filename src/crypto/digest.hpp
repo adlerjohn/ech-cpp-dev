@@ -14,9 +14,7 @@ private:
 	const auto hash(const std::string& str) const;
 
 public:
-	explicit Digest(const std::string& str, bool isDigest);
-
-	explicit Digest(const std::string& str);
+	explicit Digest(const std::string& str, bool isHex = false);
 };
 
 } // namespace ech::crypto
