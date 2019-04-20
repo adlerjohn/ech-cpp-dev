@@ -1,11 +1,11 @@
 #pragma once
 
 // Project includes
-#include "crypto/byteset.hpp"
+#include "crypto/digest.hpp"
 
 namespace ech
 {
 
-using TXID = crypto::byteset<32u>;
+using TXID = crypto::Digest;
 
 } // namespace ech
