@@ -6,7 +6,7 @@
 
 using namespace ech::crypto;
 
-auto Address::toAddress(const std::string& publicKey) const
+auto Address::toAddress(const std::string& publicKey)
 {
 	std::string decoded;
 	CryptoPP::StringSource(publicKey, true,

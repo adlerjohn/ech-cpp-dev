@@ -15,7 +15,7 @@ namespace ech::crypto
 class Address : public byteset<ADDRESS_BYTES>
 {
 private:
-	auto toAddress(const std::string& publicKey) const;
+	[[nodiscard]] static auto toAddress(const std::string& publicKey);
 
 public:
 	explicit Address(const std::string& publicKey);
