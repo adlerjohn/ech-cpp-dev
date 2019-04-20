@@ -29,3 +29,13 @@ TEST_CASE("digest hello", "[crypto][digest]")
 	auto dig = Digest(std::string("hello"));
 	REQUIRE_THAT("1c8aff950685c2ed4bc3174f3472287b56d9517b9c948127319a09a7a36deac8", Equals(dig.toHex()));
 }
+
+TEST_CASE("digest concat", "[crypto][digest]")
+{
+	auto dig1 = Digest(std::string("hello"));
+	auto dig2 = Digest(std::string("testing"));
+
+	auto dig12 = dig1 + dig2;
+
+	REQUIRE_THAT("8087ef925637b0533aa54145b2184d1ee6c88a0abc65d61e01996c6764cacf49", Equals(dig12.toHex()));
+}
