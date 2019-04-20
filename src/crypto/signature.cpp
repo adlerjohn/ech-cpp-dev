@@ -8,19 +8,19 @@
 
 using namespace ech::crypto;
 
-const secp256k1_context* Signature::getContextSign()
+const auto Signature::getContextSign()
 {
-	static std::unique_ptr<secp256k1_context, decltype(&secp256k1_context_destroy)> context(secp256k1_context_create(SECP256K1_CONTEXT_SIGN), &secp256k1_context_destroy);
+	static auto context = std::unique_ptr<secp256k1_context, decltype(&secp256k1_context_destroy)>(secp256k1_context_create(SECP256K1_CONTEXT_SIGN), &secp256k1_context_destroy);
 	return context.get();
 }
 
-const secp256k1_context* Signature::getContextVerify()
+const auto Signature::getContextVerify()
 {
-	static std::unique_ptr<secp256k1_context, decltype(&secp256k1_context_destroy)> context(secp256k1_context_create(SECP256K1_CONTEXT_VERIFY), &secp256k1_context_destroy);
+	static auto context = std::unique_ptr<secp256k1_context, decltype(&secp256k1_context_destroy)>(secp256k1_context_create(SECP256K1_CONTEXT_VERIFY), &secp256k1_context_destroy);
 	return context.get();
 }
 
-auto Signature::sign(const SecretKey& secretKey, const std::string& msg) const
+const auto Signature::sign(const SecretKey& secretKey, const std::string& msg)
 {
 	const auto context = getContextSign();
 
@@ -36,7 +36,7 @@ auto Signature::sign(const SecretKey& secretKey, const std::string& msg) const
 
 	std::stringstream buf;
 	buf << std::hex << std::setfill('0');
-	for (auto c : rs)
+	for (const auto& c : rs)
 		buf << std::setw(2) << static_cast<int>(c);
 	buf << std::setw(2) << v;
 
@@ -53,7 +53,7 @@ Signature::Signature(const SecretKey& secretKey, const std::string& str)
 {
 }
 
-PublicKey Signature::recover(const std::string& msg) const
+const PublicKey Signature::recover(const std::string& msg) const
 {
 	const auto context = getContextVerify();
 
@@ -74,7 +74,7 @@ PublicKey Signature::recover(const std::string& msg) const
 		throw std::runtime_error("Could recover pubkey from signature: " + this->toHex());
 
 	std::array<std::byte, 65u> pubkey_serialized;
-	size_t outputlen = pubkey_serialized.size();
+	auto outputlen = pubkey_serialized.size();
 	secp256k1_ec_pubkey_serialize(context, reinterpret_cast<unsigned char*>(pubkey_serialized.data()), &outputlen, &pubkey, SECP256K1_EC_UNCOMPRESSED);
 
 	std::stringstream buf_pubkey;
@@ -86,12 +86,12 @@ PublicKey Signature::recover(const std::string& msg) const
 	return PublicKey(buf_pubkey.str());
 }
 
-bool Signature::verify(const std::string& msg, const Address& address) const
+const bool Signature::verify(const std::string& msg, const Address& address) const
 {
 	return Address(recover(msg)) == address;
 }
 
-bool Signature::verify(const std::string& msg, const PublicKey& publicKey) const
+const bool Signature::verify(const std::string& msg, const PublicKey& publicKey) const
 {
 	return verify(msg, Address(publicKey));
 }

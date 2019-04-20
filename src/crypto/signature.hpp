@@ -22,11 +22,11 @@ namespace ech::crypto
 class Signature : public byteset<SIGNATURE_BYTES>
 {
 private:
-	static const secp256k1_context* getContextSign();
+	[[nodiscard]] static const auto getContextSign();
 
-	static const secp256k1_context* getContextVerify();
+	[[nodiscard]] static const auto getContextVerify();
 
-	auto sign(const SecretKey& secretKey, const std::string& msg) const;
+	[[nodiscard]] static const auto sign(const SecretKey& secretKey, const std::string& msg);
 
 public:
 	explicit Signature(const std::string& sig);
@@ -34,12 +34,12 @@ public:
 	Signature(const SecretKey& secretKey, const std::string& msg);
 
 	// Recover the public key from the signed message
-	PublicKey recover(const std::string& msg) const;
+	[[nodiscard]] const PublicKey recover(const std::string& msg) const;
 
 	// Verify that the signature matches the original message
-	bool verify(const std::string& msg, const Address& address) const;
+	[[nodiscard]] const bool verify(const std::string& msg, const Address& address) const;
 
-	bool verify(const std::string& msg, const PublicKey& publicKey) const;
+	[[nodiscard]] const bool verify(const std::string& msg, const PublicKey& publicKey) const;
 };
 
 } // namespace ech::crypto
