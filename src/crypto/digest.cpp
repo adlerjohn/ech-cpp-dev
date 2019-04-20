@@ -5,11 +5,33 @@
 
 using namespace ech::crypto;
 
-const auto Digest::hash(const std::string& str) const
+const auto Digest::hash(const std::string& msg) const
 {
 	CryptoPP::Keccak_256 hash;
 	std::string digest;
-	CryptoPP::StringSource(str, true,
+	CryptoPP::StringSource(msg, true,
+		new CryptoPP::HashFilter(hash,
+			new CryptoPP::StringSink(digest),
+			false, size()
+		)
+	);
+
+	std::string hexDigest;
+	CryptoPP::StringSource(digest, true,
+		new CryptoPP::HexEncoder(
+			new CryptoPP::StringSink(hexDigest),
+			false
+		)
+	);
+
+	return hexDigest;
+}
+
+const auto Digest::hash(const std::vector<std::byte>& bytes) const
+{
+	CryptoPP::Keccak_256 hash;
+	std::string digest;
+	CryptoPP::ArraySource(reinterpret_cast<const CryptoPP::byte*>(bytes.data()), bytes.size(), true,
 		new CryptoPP::HashFilter(hash,
 			new CryptoPP::StringSink(digest),
 			false, size()
@@ -29,36 +51,21 @@ const auto Digest::hash(const std::string& str) const
 
 const Digest Digest::concat(const Digest& rhs) const
 {
-	constexpr auto size2 = size() * 2u;
+	const auto& lhs = *this;
 
-	std::array<std::byte, size2> concatenated;
-	CryptoPP::StringSource(this->toHex() + rhs.toHex(), true,
-		new CryptoPP::HexDecoder(
-			new CryptoPP::ArraySink(reinterpret_cast<CryptoPP::byte*>(concatenated.data()), size2)
-		)
-	);
+	std::vector<std::byte> bytes;
+	bytes.insert(bytes.end(), lhs.data().begin(), lhs.data().end());
+	bytes.insert(bytes.end(), rhs.data().begin(), rhs.data().end());
 
-	CryptoPP::Keccak_256 hash;
-	std::string digest;
-	CryptoPP::ArraySource(reinterpret_cast<const CryptoPP::byte*>(concatenated.data()), size2, true,
-		new CryptoPP::HashFilter(hash,
-			new CryptoPP::StringSink(digest),
-			false, size()
-		)
-	);
-
-	std::string hexDigest;
-	CryptoPP::StringSource(digest, true,
-		new CryptoPP::HexEncoder(
-			new CryptoPP::StringSink(hexDigest),
-			false
-		)
-	);
-
-	return Digest(hexDigest, true);
+	return Digest(bytes);
 }
 
-Digest::Digest(const std::string& str, const bool isDigest)
-	: ByteSet(isDigest ? str : hash(str))
+Digest::Digest(const std::string& msg, const bool isDigest)
+	: ByteSet(isDigest ? msg : hash(msg))
+{
+}
+
+Digest::Digest(const std::vector<std::byte>& bytes)
+	: ByteSet(hash(bytes))
 {
 }
