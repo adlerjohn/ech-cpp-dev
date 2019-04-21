@@ -25,5 +25,6 @@ Block::Block(const std::vector<Tx>& leaves, const uint64_t height)
 
 const std::vector<std::byte> ech::Block::serialize() const
 {
+	// TODO implement
 	return std::vector<std::byte>();
 }

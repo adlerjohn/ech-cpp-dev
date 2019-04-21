@@ -7,6 +7,7 @@
 #include "crypto/signature.hpp"
 #include "serializable.hpp"
 #include "state.hpp"
+#include "txid.hpp"
 #include "utxo.hpp"
 
 namespace ech
@@ -15,6 +16,9 @@ namespace ech
 class Tx : public Serializable
 {
 private:
+	// Transaction ID
+	const TXID _id;
+
 	// Inputs to the transaction
 	const std::vector<UTXOID> _inputs;
 

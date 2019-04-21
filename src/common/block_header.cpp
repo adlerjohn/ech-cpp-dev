@@ -2,9 +2,8 @@
 
 using namespace ech;
 
-// TODO compute ID
 BlockHeader::BlockHeader(const crypto::Digest& root, const uint64_t height)
-	: _id()
+	: _id(crypto::Digest(serialize()))
 	, _root(root)
 	, _height(height)
 {
@@ -12,5 +11,6 @@ BlockHeader::BlockHeader(const crypto::Digest& root, const uint64_t height)
 
 const std::vector<std::byte> BlockHeader::serialize() const
 {
+	// TODO implement
 	return std::vector<std::byte>();
 }

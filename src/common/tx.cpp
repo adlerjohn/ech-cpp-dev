@@ -11,3 +11,8 @@ bool Tx::verify(const State& state) const
 	// 2) sum inputs <= sum outputs (including colored coins)
 	return false;
 }
+const std::vector<std::byte> Tx::serialize() const
+{
+	// TODO implement
+	return std::vector<std::byte>();
+}
