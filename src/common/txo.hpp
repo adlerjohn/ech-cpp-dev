@@ -4,11 +4,12 @@
 #include "coin_amount.hpp"
 #include "color.hpp"
 #include "crypto/address.hpp"
+#include "serializable.hpp"
 
 namespace ech
 {
 
-class TXO
+class TXO : public Serializable
 {
 private:
 	const uint32_t _index;
@@ -17,6 +18,9 @@ private:
 	const Color _color;
 
 public:
+	TXO(const uint32_t index, const crypto::Address recipient, const CoinAmount amount, const Color& color);
+
+	[[nodiscard]] const std::vector<std::byte> serialize() const override;
 };
 
 } // namespace ech
