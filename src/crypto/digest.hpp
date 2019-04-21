@@ -18,6 +18,11 @@ private:
 	[[nodiscard]] const Digest concat(const Digest& rhs) const;
 
 public:
+	/**
+	 * Default: the Keccak hash of 0x00000000000000000000000000000000
+	 */
+	Digest();
+
 	explicit Digest(const std::string& msg, bool isDigest = false);
 
 	explicit Digest(const std::vector<std::byte>& bytes);
