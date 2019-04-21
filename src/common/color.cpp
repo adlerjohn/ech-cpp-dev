@@ -1,16 +1,21 @@
 #include "color.hpp"
 
 using namespace ech;
-using namespace ech::crypto;
 
 Color::Color()
 	: _isColored(false)
-	, _id(Address(std::string()))
+	, _id(crypto::Address(std::string()))
 {
 }
 
-Color::Color(Address id)
+Color::Color(const crypto::Address& id)
 	: _isColored(true)
 	, _id(id)
 {
+}
+
+const std::vector<std::byte> Color::serialize() const
+{
+	// TODO implement
+	return std::vector<std::byte>();
 }

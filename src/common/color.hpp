@@ -2,6 +2,7 @@
 
 // Project includes
 #include "crypto/address.hpp"
+#include "serializable.hpp"
 
 namespace ech
 {
@@ -10,19 +11,22 @@ namespace ech
  * Coins can be "colored" i.e., represent a token other than the base currency.
  * Color is the address of the token contract on the parent chain.
  */
-class Color
+class Color : public Serializable
 {
 private:
 	const bool _isColored;
 	const crypto::Address _id;
+
 public:
 	Color();
 
-	Color(crypto::Address id);
+	explicit Color(const crypto::Address& id);
 
-	auto isColored() const { return this->_isColored; }
+	const auto isColored() const { return this->_isColored; }
 
-	auto getColor() const { return this->_id; }
+	const auto getColor() const { return this->_id; }
+
+	[[nodiscard]] const std::vector<std::byte> serialize() const override;
 };
 
 } // namespace ech
