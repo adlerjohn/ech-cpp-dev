@@ -8,16 +8,17 @@ using namespace ech::crypto;
 const auto Digest::hash(const std::string& msg) const
 {
 	CryptoPP::Keccak_256 hash;
-	std::string digest;
+
+	std::array<CryptoPP::byte, size()> digest;
 	CryptoPP::StringSource(msg, true,
 		new CryptoPP::HashFilter(hash,
-			new CryptoPP::StringSink(digest),
+			new CryptoPP::ArraySink(digest.data(), size()),
 			false, size()
 		)
 	);
 
 	std::string hexDigest;
-	CryptoPP::StringSource(digest, true,
+	CryptoPP::ArraySource(digest.data(), size(), true,
 		new CryptoPP::HexEncoder(
 			new CryptoPP::StringSink(hexDigest),
 			false
@@ -30,16 +31,17 @@ const auto Digest::hash(const std::string& msg) const
 const auto Digest::hash(const std::vector<std::byte>& bytes) const
 {
 	CryptoPP::Keccak_256 hash;
-	std::string digest;
+
+	std::array<CryptoPP::byte, size()> digest;
 	CryptoPP::ArraySource(reinterpret_cast<const CryptoPP::byte*>(bytes.data()), bytes.size(), true,
 		new CryptoPP::HashFilter(hash,
-			new CryptoPP::StringSink(digest),
+			new CryptoPP::ArraySink(digest.data(), size()),
 			false, size()
 		)
 	);
 
 	std::string hexDigest;
-	CryptoPP::StringSource(digest, true,
+	CryptoPP::ArraySource(digest.data(), size(), true,
 		new CryptoPP::HexEncoder(
 			new CryptoPP::StringSink(hexDigest),
 			false
