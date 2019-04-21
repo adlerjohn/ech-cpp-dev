@@ -12,6 +12,10 @@ const crypto::Digest MerkleTree::calculateRoot(const std::vector<crypto::Digest>
 
 	auto hashesPrev = leaves;
 
+	// Corner case: if only one leaf, duplicate it
+	if (hashesPrev.size() % 2 == 1)
+		hashesPrev.push_back(hashesPrev.back());
+
 	while (hashesPrev.size() > 1) {
 		if (hashesPrev.size() % 2 == 1)
 			hashesPrev.push_back(hashesPrev.back());
