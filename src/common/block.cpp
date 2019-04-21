@@ -2,13 +2,19 @@
 
 // Project includes
 #include "merkle.hpp"
+#include "txid.hpp"
 
 using namespace ech;
 
-const std::vector<crypto::Digest> Block::toLeafHashes(std::vector<Tx> leaves)
+const std::vector<crypto::Digest> Block::toLeafHashes(const std::vector<Tx>& leaves)
 {
-	// TODO implement
-	return std::vector<crypto::Digest>();
+	std::vector<crypto::Digest> leafHashes;
+
+	for (const auto& leaf : leaves) {
+		leafHashes.emplace_back(TXID(leaf.serialize()));
+	}
+
+	return leafHashes;
 }
 
 Block::Block(const std::vector<Tx>& leaves, const uint64_t height)

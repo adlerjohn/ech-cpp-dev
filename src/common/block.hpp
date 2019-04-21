@@ -19,7 +19,7 @@ private:
 	// TODO also add interstitial state commitments (change to hashable?)
 	const std::vector<Tx> _leaves;
 
-	static const std::vector<crypto::Digest> toLeafHashes(std::vector<Tx> leaves);
+	static const std::vector<crypto::Digest> toLeafHashes(const std::vector<Tx>& leaves);
 
 public:
 	Block(const std::vector<Tx>& leaves, const uint64_t height);
