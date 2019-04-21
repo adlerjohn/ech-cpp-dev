@@ -46,7 +46,7 @@ TEST_CASE("digest concat zeroes", "[crypto][digest]")
 
 	const auto dig12 = dig1 + dig2;
 
-	REQUIRE_THAT("ad3228b676f7d3cd4284a5443f17f1962b36e491b30a40b2405849e597ba5fb5", Equals(dig12.toHex()));
+	REQUIRE_THAT("633dc4d7da7256660a892f8f1604a44b5432649cc8ec5cb3ced4c4e6ac94dd1d", Equals(dig12.toHex()));
 }
 
 TEST_CASE("digest concat words", "[crypto][digest]")
