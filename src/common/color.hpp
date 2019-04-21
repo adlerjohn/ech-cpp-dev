@@ -26,6 +26,13 @@ public:
 
 	const auto getColor() const { return this->_id; }
 
+	/**
+	 * Encoding:
+	 *   1  byte  boolean : Is this coin colored?
+	 *  if above is true,
+	 *   20 bytes Address : Address of the token contract on the parent chain.
+	 * @return serialized data
+	 */
 	[[nodiscard]] const std::vector<std::byte> serialize() const override;
 };
 

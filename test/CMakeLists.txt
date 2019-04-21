@@ -9,6 +9,7 @@ link_directories(${ech_cpp_SOURCE_DIR}/src)
 
 set(source_files
         main.cpp
+        common/color.cpp
         common/merkle.cpp
         common/utxo.cpp
         crypto/address.cpp

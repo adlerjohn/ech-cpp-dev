@@ -16,6 +16,14 @@ Color::Color(const crypto::Address& id)
 
 const std::vector<std::byte> Color::serialize() const
 {
-	// TODO implement
-	return std::vector<std::byte>();
+	std::vector<std::byte> serial;
+
+	if (_isColored) {
+		serial.push_back(std::byte(0x01));
+		serial.insert(serial.end(), _id.begin(), _id.end());
+	} else {
+		serial.push_back(std::byte(0x00));
+	}
+
+	return serial;
 }
