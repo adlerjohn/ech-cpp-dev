@@ -4,7 +4,7 @@ using namespace ech;
 
 Color::Color()
 	: _isColored(false)
-	, _id(crypto::Address(std::string()))
+	, _id(crypto::Address())
 {
 }
 

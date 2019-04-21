@@ -6,18 +6,11 @@
 
 using namespace ech::crypto;
 
-auto Address::toAddress(const std::string& publicKey)
+auto Address::toAddress(const PublicKey& publicKey)
 {
-	std::string decoded;
-	CryptoPP::StringSource(publicKey, true,
-		new CryptoPP::HexDecoder(
-			new CryptoPP::StringSink(decoded)
-		)
-	);
-
 	CryptoPP::Keccak_256 hash;
 	std::string digest;
-	CryptoPP::StringSource(decoded, true,
+	CryptoPP::ArraySource(reinterpret_cast<const CryptoPP::byte*>(publicKey.raw()), PublicKey::size(), true,
 		new CryptoPP::HashFilter(hash,
 			new CryptoPP::StringSink(digest),
 			false)
@@ -35,12 +28,17 @@ auto Address::toAddress(const std::string& publicKey)
 	return hexAddress;
 }
 
-Address::Address(const std::string& publicKey)
-	: ByteSet(toAddress(publicKey))
+Address::Address()
+	: ByteSet(std::string(Address::size() * 2, '0'))
+{
+}
+
+Address::Address(const std::string& str)
+	: ByteSet(str)
 {
 }
 
 Address::Address(const PublicKey& publicKey)
-	: Address(publicKey.toHex())
+	: Address(toAddress(publicKey))
 {
 }
