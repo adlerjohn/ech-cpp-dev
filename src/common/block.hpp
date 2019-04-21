@@ -18,6 +18,7 @@ private:
 
 	// TODO also add interstitial state commitments (change to hashable?)
 	const std::vector<Tx> _leaves;
+
 public:
 	Block(const std::vector<Tx>& leaves, const uint64_t height);
 
