@@ -3,6 +3,7 @@
 // System includes
 #include <algorithm>
 #include <array>
+#include <iomanip>
 
 // Library includes
 #include <cryptopp/cryptlib.h>
@@ -53,15 +54,12 @@ public:
 
 	[[nodiscard]] const auto toHex() const
 	{
-		std::string str;
-		CryptoPP::ArraySource(reinterpret_cast<const CryptoPP::byte*>(this->_data.data()), N, true,
-			new CryptoPP::HexEncoder(
-				new CryptoPP::StringSink(str),
-				false
-			)
-		);
+		std::stringstream buf;
+		buf << std::hex << std::setfill('0');
+		for (const auto& c : this->_data)
+			buf << std::setw(2) << static_cast<int>(c);
 
-		return str;
+		return buf.str();
 	}
 
 	[[nodiscard]] static constexpr auto size() { return N; }
