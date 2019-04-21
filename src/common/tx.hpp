@@ -8,6 +8,7 @@
 #include "serializable.hpp"
 #include "state.hpp"
 #include "txid.hpp"
+#include "txo.hpp"
 #include "utxo.hpp"
 
 namespace ech
@@ -23,7 +24,7 @@ private:
 	const std::vector<UTXOID> _inputs;
 
 	// Outputs of the transaction
-	const std::vector<UTXO> _outputs;
+	const std::vector<TXO> _outputs;
 
 	// Digital signatures, one for each input
 	const std::vector<crypto::Signature> _witnesses;
@@ -35,6 +36,8 @@ private:
 	// TODO block hash
 	// TODO extra data
 public:
+	Tx(const std::vector<UTXOID>& inputs, const std::vector<TXO>& outputs, const std::vector<crypto::Signature>& witnesses);
+
 	// Verifies whether this transaction is valid
 	// TODO need to check for double-spends when parallel
 	bool verify(const State& state) const;

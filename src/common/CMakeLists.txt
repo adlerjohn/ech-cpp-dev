@@ -8,8 +8,10 @@ set(source_files
         merkle.cpp
         state.cpp
         tx.cpp
+        txo.cpp
         utxo.cpp
         )
+
 
 add_library(common ${source_files})
 target_link_libraries(common ${Boost_LIBRARIES} ech-crypto)
