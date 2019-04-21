@@ -56,8 +56,8 @@ const Digest Digest::concat(const Digest& rhs) const
 	const auto& lhs = *this;
 
 	std::vector<std::byte> bytes;
-	bytes.insert(bytes.end(), lhs.data().begin(), lhs.data().end());
-	bytes.insert(bytes.end(), rhs.data().begin(), rhs.data().end());
+	bytes.insert(bytes.end(), lhs.begin(), lhs.end());
+	bytes.insert(bytes.end(), rhs.begin(), rhs.end());
 
 	return Digest(bytes);
 }

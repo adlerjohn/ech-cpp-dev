@@ -26,7 +26,7 @@ const auto Signature::sign(const SecretKey& secretKey, const std::string& msg)
 
 	const auto digest = Digest(msg);
 	secp256k1_ecdsa_recoverable_signature sig;
-	if (!secp256k1_ecdsa_sign_recoverable(context, &sig, reinterpret_cast<const unsigned char*>(digest.data().data()), reinterpret_cast<const unsigned char*>(secretKey.data().data()), nullptr, nullptr))
+	if (!secp256k1_ecdsa_sign_recoverable(context, &sig, reinterpret_cast<const unsigned char*>(digest.raw()), reinterpret_cast<const unsigned char*>(secretKey.raw()), nullptr, nullptr))
 		throw std::runtime_error("Could not sign message: " + msg);
 
 	std::array<std::byte, 64u> rs;
@@ -66,11 +66,11 @@ const PublicKey Signature::recover(const std::string& msg) const
 
 	const auto digest = Digest(msg);
 	secp256k1_ecdsa_recoverable_signature sig;
-	if (!secp256k1_ecdsa_recoverable_signature_parse_compact(context, &sig, reinterpret_cast<const unsigned char*>(this->data().data()), v))
+	if (!secp256k1_ecdsa_recoverable_signature_parse_compact(context, &sig, reinterpret_cast<const unsigned char*>(this->raw()), v))
 		throw std::runtime_error("Could not parse signature: " + this->toHex());
 
 	secp256k1_pubkey pubkey;
-	if (!secp256k1_ecdsa_recover(context, &pubkey, &sig, reinterpret_cast<const unsigned char*>(digest.data().data())))
+	if (!secp256k1_ecdsa_recover(context, &pubkey, &sig, reinterpret_cast<const unsigned char*>(digest.raw())))
 		throw std::runtime_error("Could recover pubkey from signature: " + this->toHex());
 
 	std::array<std::byte, 65u> pubkey_serialized;

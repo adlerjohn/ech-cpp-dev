@@ -22,7 +22,7 @@ const auto PublicKey::deriveFromSecretKey(const SecretKey& secretKey)
 	const auto context = getContextKeys();
 
 	secp256k1_pubkey pubkey;
-	if (!secp256k1_ec_pubkey_create(context, &pubkey, reinterpret_cast<const unsigned char*>(secretKey.data().data())))
+	if (!secp256k1_ec_pubkey_create(context, &pubkey, reinterpret_cast<const unsigned char*>(secretKey.raw())))
 		throw std::runtime_error("Invalid secret key");
 
 	std::array<std::byte, 65u> pubkey_serialized;

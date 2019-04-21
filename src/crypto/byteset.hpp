@@ -66,21 +66,25 @@ public:
 
 	[[nodiscard]] static constexpr auto size() { return N; }
 
-	[[nodiscard]] const auto& data() const { return this->_data; }
+	[[nodiscard]] const auto raw() const { return this->_data.data(); }
+
+	[[nodiscard]] const auto begin() const { return this->_data.begin(); }
+
+	[[nodiscard]] const auto end() const { return this->_data.end(); }
 
 	friend bool operator==(const ByteSet<N>& lhs, const ByteSet<N>& rhs)
 	{
-		return lhs.data() == rhs.data();
+		return std::memcmp(lhs.raw(), rhs.raw(), N) == 0;
 	}
 
 	friend bool operator<(const ByteSet<N>& lhs, const ByteSet<N>& rhs)
 	{
-		return std::memcmp(lhs.data().data(), rhs.data().data(), N) < 0;
+		return std::memcmp(lhs.raw(), rhs.raw(), N) < 0;
 	}
 
 	friend bool operator>(const ByteSet<N>& lhs, const ByteSet<N>& rhs)
 	{
-		return std::memcmp(lhs.data().data(), rhs.data().data(), N) > 0;
+		return std::memcmp(lhs.raw(), rhs.raw(), N) > 0;
 	}
 
 	friend std::ostream& operator<<(std::ostream& os, const ByteSet<N>& o)
