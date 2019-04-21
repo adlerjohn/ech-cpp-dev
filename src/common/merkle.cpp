@@ -6,8 +6,8 @@ const crypto::Digest MerkleTree::calculateRoot(const std::vector<crypto::Digest>
 {
 	// Special case: if the tree is empty, return the hash of 0
 	if (leaves.empty()) {
-		const auto zeroes = std::vector<std::byte>(32, std::byte(0x00));
-		return crypto::Digest(zeroes);
+		const auto zero = std::vector<std::byte>(crypto::Digest::size(), std::byte(0x00));
+		return crypto::Digest(zero);
 	}
 
 	auto hashesPrev = leaves;
