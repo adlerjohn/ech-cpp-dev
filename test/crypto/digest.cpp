@@ -32,17 +32,17 @@ TEST_CASE("digest hello", "[crypto][digest]")
 
 TEST_CASE("digest zero", "[crypto][digest]")
 {
-	const auto zeroes = std::vector<std::byte>(32, std::byte(0x00));
-	const auto digest = Digest(zeroes);
+	const auto zero = std::vector<std::byte>(Digest::size(), std::byte(0x00));
+	const auto digest = Digest(zero);
 
 	REQUIRE_THAT("290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e563", Equals(digest.toHex()));
 }
 
 TEST_CASE("digest concat zeroes", "[crypto][digest]")
 {
-	const auto zeroes = std::vector<std::byte>(32, std::byte(0x00));
-	const auto dig1 = Digest(zeroes);
-	const auto dig2 = Digest(zeroes);
+	const auto zero = std::vector<std::byte>(Digest::size(), std::byte(0x00));
+	const auto dig1 = Digest(zero);
+	const auto dig2 = Digest(zero);
 
 	const auto dig12 = dig1 + dig2;
 
