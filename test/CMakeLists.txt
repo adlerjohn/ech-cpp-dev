@@ -17,6 +17,7 @@ set(source_files
         crypto/digest.cpp
         crypto/keys.cpp
         crypto/signature.cpp
+        common/txo.cpp
         )
 
 add_executable(unit_tester ${source_files})
