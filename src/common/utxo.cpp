@@ -2,7 +2,7 @@
 
 using namespace ech;
 
-const std::vector<std::byte> UTXO::serializeData(const crypto::Address& owner, const CoinAmount& amount, const Color& color) const
+const std::vector<std::byte> UTXO::serializeData(const crypto::Address& owner, const CoinAmount amount, const Color& color) const
 {
 	std::vector<std::byte> serial;
 
@@ -10,18 +10,19 @@ const std::vector<std::byte> UTXO::serializeData(const crypto::Address& owner, c
 
 	static const size_t amountSize = 32u;
 	std::stringstream buf;
-	buf << std::hex << std::setfill('0') << std::setw(amountSize * 2) << _amount;
+	buf << std::hex << std::setfill('0') << std::setw(amountSize * 2) << amount;
 	auto str = buf.str();
 	std::transform(str.begin(), str.end(), str.begin(), ::tolower);
 	const auto amountBytes = crypto::byteset<amountSize>(str);
 	serial.insert(serial.end(), amountBytes.begin(), amountBytes.end());
 
-	serial.insert(serial.end(), color.serialize().begin(), color.serialize().end());
+	const auto colorSerialized = color.serialize();
+	serial.insert(serial.end(), colorSerialized.begin(), colorSerialized.end());
 
 	return serial;
 }
 
-UTXO::UTXO(const crypto::Address& owner, const CoinAmount& amount, const Color& color)
+UTXO::UTXO(const crypto::Address& owner, const CoinAmount amount, const Color& color)
 	: _id(UTXOID(serializeData(owner, amount, color)))
 	, _owner(owner)
 	, _amount(amount)

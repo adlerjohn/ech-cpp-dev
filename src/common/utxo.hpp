@@ -24,10 +24,10 @@ private:
 	// Color (if the UTXO represents a colored coin)
 	const Color _color;
 
-	[[nodiscard]] const std::vector<std::byte> serializeData(const crypto::Address& owner, const CoinAmount& amount, const Color& color) const;
+	[[nodiscard]] const std::vector<std::byte> serializeData(const crypto::Address& owner, const CoinAmount amount, const Color& color) const;
 
 public:
-	UTXO(const crypto::Address& owner, const CoinAmount& amount, const Color& color);
+	UTXO(const crypto::Address& owner, const CoinAmount amount, const Color& color);
 
 	const auto& getId() const { return this->_id; }
 
