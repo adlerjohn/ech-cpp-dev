@@ -23,8 +23,7 @@ public:
 	explicit Color(const crypto::Address& id);
 
 	const auto isColored() const { return this->_isColored; }
-
-	const auto getColor() const { return this->_id; }
+	const auto& getColor() const { return this->_id; }
 
 	/**
 	 * Encoding:

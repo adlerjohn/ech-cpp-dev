@@ -17,7 +17,6 @@ public:
 	Outpoint(const TXID& txid, const uint32_t index);
 
 	[[nodiscard]] const auto getTXID() const { return this->_txid; }
-
 	[[nodiscard]] const auto getIndex() const { return this->_index; }
 
 	[[nodiscard]] const std::vector<std::byte> serialize() const override;

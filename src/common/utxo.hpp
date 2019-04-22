@@ -4,9 +4,9 @@
 #include <cstdint>
 
 // Project includes
-#include "crypto/address.hpp"
 #include "coin_amount.hpp"
 #include "color.hpp"
+#include "crypto/address.hpp"
 #include "utxoid.hpp"
 
 namespace ech
@@ -30,15 +30,10 @@ public:
 	UTXO(const UTXOID& id, const crypto::Address& owner, const CoinAmount amount, const Color& color, const uint64_t height);
 
 	[[nodiscard]] const auto& getId() const { return this->_id; }
-
 	[[nodiscard]] const auto& getOwner() const { return this->_owner; }
-
 	[[nodiscard]] const auto getAmount() const { return this->_amount; }
-
 	[[nodiscard]] const auto isColored() const { return this->_color.isColored(); }
-
 	[[nodiscard]] const auto& getColor() const { return this->_color; }
-
 	[[nodiscard]] const auto getHeight() const { return this->_height; }
 };
 

@@ -24,6 +24,9 @@ private:
 public:
 	Block(const std::vector<TX>& leaves, const uint64_t height);
 
+	[[nodiscard]] const auto& getHeader() const { return this->_header; }
+	[[nodiscard]] const auto& getLeaves() const { return this->_leaves; }
+
 	[[nodiscard]] const std::vector<std::byte> serialize() const override;
 };
 

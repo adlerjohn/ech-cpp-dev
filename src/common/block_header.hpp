@@ -1,8 +1,8 @@
 #pragma once
 
 // Project includes
-#include "serializable.hpp"
 #include "crypto/digest.hpp"
+#include "serializable.hpp"
 
 namespace ech
 {
@@ -18,6 +18,10 @@ private:
 
 public:
 	BlockHeader(const crypto::Digest& root, const uint64_t height);
+
+	[[nodiscard]] const auto getId() const { return this->_id; };
+	[[nodiscard]] const auto getRoot() const { return this->_root; }
+	[[nodiscard]] const auto getHeight() const { return this->_height; };
 
 	[[nodiscard]] const std::vector<std::byte> serialize() const override;
 };
