@@ -15,10 +15,7 @@ const std::vector<std::byte> Input::serialize() const
 	const auto outpointSerialized = _outpoint.serialize();
 	serial.insert(serial.end(), outpointSerialized.begin(), outpointSerialized.end());
 
-	static const size_t indexSize = 4u;
-	std::stringstream buf;
-	buf << std::hex << std::setfill('0') << std::setw(indexSize * 2) << _witnessIndex;
-	const auto indexBytes = crypto::byteset<indexSize>(buf.str());
+	const auto indexBytes = Serializable::serialize(_witnessIndex);
 	serial.insert(serial.end(), indexBytes.begin(), indexBytes.end());
 
 	return serial;

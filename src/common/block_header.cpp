@@ -6,10 +6,7 @@ const std::vector<std::byte> BlockHeader::serializeData(const crypto::Digest& ro
 {
 	std::vector<std::byte> serial;
 
-	static const size_t heightSize = 8u;
-	std::stringstream buf;
-	buf << std::hex << std::setfill('0') << std::setw(heightSize * 2) << height;
-	const auto heightBytes = crypto::byteset<heightSize>(buf.str());
+	const auto heightBytes = Serializable::serialize(height);
 	serial.insert(serial.end(), heightBytes.begin(), heightBytes.end());
 
 	serial.insert(serial.end(), root.begin(), root.end());
