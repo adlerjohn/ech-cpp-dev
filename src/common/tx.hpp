@@ -14,7 +14,7 @@
 namespace ech
 {
 
-class Tx : public Serializable
+class TX : public Serializable
 {
 private:
 	// Transaction ID
@@ -46,7 +46,7 @@ private:
 		const std::vector<TXO>& outputs) const;
 
 public:
-	Tx(
+	TX(
 		const std::vector<UTXOID>& inputs,
 		const std::vector<TXO>& outputs,
 		const std::vector<crypto::Signature>& witnesses);

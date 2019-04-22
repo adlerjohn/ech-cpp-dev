@@ -6,7 +6,7 @@
 
 using namespace ech;
 
-const std::vector<crypto::Digest> Block::toLeafHashes(const std::vector<Tx>& leaves)
+const std::vector<crypto::Digest> Block::toLeafHashes(const std::vector<TX>& leaves)
 {
 	std::vector<crypto::Digest> leafHashes;
 
@@ -17,7 +17,7 @@ const std::vector<crypto::Digest> Block::toLeafHashes(const std::vector<Tx>& lea
 	return leafHashes;
 }
 
-Block::Block(const std::vector<Tx>& leaves, const uint64_t height)
+Block::Block(const std::vector<TX>& leaves, const uint64_t height)
 	: _header(MerkleTree(toLeafHashes(leaves)).getRoot(), height)
 	, _leaves(leaves)
 {
