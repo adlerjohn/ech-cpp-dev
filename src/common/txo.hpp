@@ -18,7 +18,7 @@ private:
 	const Color _color;
 
 public:
-	TXO(const uint32_t index, const crypto::Address recipient, const CoinAmount amount, const Color& color);
+	TXO(const uint32_t index, const crypto::Address& recipient, const CoinAmount amount, const Color& color);
 
 	[[nodiscard]] const std::vector<std::byte> serialize() const override;
 };
