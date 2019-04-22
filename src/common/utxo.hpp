@@ -12,6 +12,7 @@
 namespace ech
 {
 
+// TODO refactor this as outpoint from transaction
 class UTXO
 {
 private:
