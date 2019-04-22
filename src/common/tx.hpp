@@ -51,6 +51,19 @@ public:
 		const std::vector<TXO>& outputs,
 		const std::vector<crypto::Signature>& witnesses);
 
+	[[nodiscard]] const auto getId() const { return this->_id; }
+	[[nodiscard]] const auto& getInputs() const { return this->_inputs; }
+	[[nodiscard]] const auto& getOutputs() const { return this->_outputs; }
+	[[nodiscard]] const auto& getWitnesses() const { return this->_witnesses; }
+	[[nodiscard]] const auto getHeightMin() const { return this->_heightMin; }
+	[[nodiscard]] const auto getHeightMax() const { return this->_heightMax; }
+	[[nodiscard]] const auto getRecentBlockHeight() const { return this->_recentBlockHeight; }
+	[[nodiscard]] const auto getRecentBlockHash() const { return this->_recentBlockHash; }
+	[[nodiscard]] const auto getChainID() const { return this->_chainID; }
+
+	// Get the size of this transaction, in bytes
+	[[nodiscard]] const size_t getSize() const;
+
 	// Verifies whether this transaction is valid
 	// TODO need to check for double-spends when parallel
 	[[nodiscard]] const bool verify(const State& state) const;
