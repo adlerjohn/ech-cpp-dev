@@ -9,11 +9,13 @@ link_directories(${ech_cpp_SOURCE_DIR}/src)
 
 set(source_files
         main.cpp
+        common/block.cpp
         common/block_header.cpp
         common/color.cpp
         common/input.cpp
         common/merkle.cpp
         common/outpoint.cpp
+        common/tx.cpp
         common/txo.cpp
         common/utxo.cpp
         common/utxoid.cpp
