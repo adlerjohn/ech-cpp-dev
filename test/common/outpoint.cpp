@@ -13,10 +13,18 @@ TEST_CASE("outpoint zero", "[common][outpoint]")
 	REQUIRE_THAT("290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e56300000000", Equals(outpoint.toHex()));
 }
 
-TEST_CASE("outpoint random", "[common][outpoint]")
+TEST_CASE("outpoint testing 0", "[common][outpoint]")
 {
 	const auto digest = crypto::Digest("testing");
-	const auto outpoint = Outpoint(TXID(digest), 42);
+	const auto outpoint = Outpoint(TXID(digest), 0u);
+
+	REQUIRE_THAT("5f16f4c7f149ac4f9510d9cf8cf384038ad348b3bcdc01915f95de12df9d1b0200000000", Equals(outpoint.toHex()));
+}
+
+TEST_CASE("outpoint testing 42", "[common][outpoint]")
+{
+	const auto digest = crypto::Digest("testing");
+	const auto outpoint = Outpoint(TXID(digest), 42u);
 
 	REQUIRE_THAT("5f16f4c7f149ac4f9510d9cf8cf384038ad348b3bcdc01915f95de12df9d1b020000002a", Equals(outpoint.toHex()));
 }

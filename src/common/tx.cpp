@@ -68,6 +68,7 @@ TX::TX(
 	, _recentBlockHeight(recentBlockHeight)
 	, _recentBlockHash(recentBlockHash)
 {
+	// TODO do correctness checks (e.g., that each input refers to one existing witness)
 }
 
 const size_t TX::getSize() const
