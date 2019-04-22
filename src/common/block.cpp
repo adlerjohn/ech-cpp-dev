@@ -25,6 +25,19 @@ Block::Block(const std::vector<TX>& leaves, const uint64_t height)
 
 const std::vector<std::byte> ech::Block::serialize() const
 {
-	// TODO implement
-	return std::vector<std::byte>();
+	std::vector<std::byte> serial;
+
+	const auto headerSerialized = _header.serialize();
+	serial.insert(serial.end(), headerSerialized.begin(), headerSerialized.end());
+
+	const uint64_t leafCount = _leaves.size();
+	const auto leafCountBytes = Serializable::serialize(leafCount);
+	serial.insert(serial.end(), leafCountBytes.begin(), leafCountBytes.end());
+
+	for (const auto& leaf : _leaves) {
+		const auto leafBytes = leaf.serialize();
+		serial.insert(serial.end(), leafBytes.begin(), leafBytes.end());
+	}
+
+	return serial;
 }
