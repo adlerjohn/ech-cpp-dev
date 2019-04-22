@@ -2,10 +2,9 @@
 
 using namespace ech;
 
-const std::vector<std::byte> TX::serializeData(
+const std::vector<std::byte> TXData::serializeData(
 	const std::vector<Input>& inputs,
 	const std::vector<TXO>& outputs,
-	const std::vector<crypto::Signature>& witnesses,
 	const uint64_t heightMin,
 	const uint64_t heightMax,
 	const uint64_t recentBlockHeight,
@@ -29,13 +28,6 @@ const std::vector<std::byte> TX::serializeData(
 		serial.insert(serial.end(), outputSerialized.begin(), outputSerialized.end());
 	}
 
-	const uint32_t witnessesCount = witnesses.size();
-	const auto witnessesCountBytes = Serializable::serialize(witnessesCount);
-	serial.insert(serial.end(), witnessesCountBytes.begin(), witnessesCountBytes.end());
-	for (const auto& witness : witnesses) {
-		serial.insert(serial.end(), witness.begin(), witness.end());
-	}
-
 	const auto heightMinBytes = Serializable::serialize(heightMin);
 	serial.insert(serial.end(), heightMinBytes.begin(), heightMinBytes.end());
 
@@ -51,22 +43,44 @@ const std::vector<std::byte> TX::serializeData(
 	return serial;
 }
 
-TX::TX(
+TXData::TXData(
 	const std::vector<Input>& inputs,
 	const std::vector<TXO>& outputs,
-	const std::vector<crypto::Signature>& witnesses,
 	const uint64_t heightMin,
 	const uint64_t heightMax,
 	const uint64_t recentBlockHeight,
 	const crypto::Digest& recentBlockHash)
-	: _id(serializeData(inputs, outputs, witnesses, heightMin, heightMax, recentBlockHeight, recentBlockHash))
+	: _id(serializeData(inputs, outputs, heightMin, heightMax, recentBlockHeight, recentBlockHash))
 	, _inputs(inputs)
 	, _outputs(outputs)
-	, _witnesses(witnesses)
 	, _heightMin(heightMin)
 	, _heightMax(heightMax)
 	, _recentBlockHeight(recentBlockHeight)
 	, _recentBlockHash(recentBlockHash)
+{
+	// TODO do correctness checks (e.g., that each input refers to one existing witness)
+}
+
+const size_t TXData::getSize() const
+{
+	return serialize().size();
+}
+
+const std::vector<std::byte> TXData::serialize() const
+{
+	std::vector<std::byte> serial;
+
+	serial.insert(serial.end(), _id.begin(), _id.end());
+
+	const auto serialData = serializeData(_inputs, _outputs, _heightMin, _heightMax, _recentBlockHeight, _recentBlockHash);
+	serial.insert(serial.end(), serialData.begin(), serialData.end());
+
+	return serial;
+}
+
+TX::TX(const TXData& data, const std::vector<crypto::Signature>& witnesses)
+	: _data(data)
+	, _witnesses(witnesses)
 {
 	// TODO do correctness checks (e.g., that each input refers to one existing witness)
 }
@@ -86,14 +100,20 @@ const bool TX::verify(const State& state) const
 	// 2) sum inputs <= sum outputs (including colored coins)
 	return false;
 }
+
 const std::vector<std::byte> TX::serialize() const
 {
 	std::vector<std::byte> serial;
 
-	serial.insert(serial.end(), _id.begin(), _id.end());
+	const auto dataSerialized = _data.serialize();
+	serial.insert(serial.end(), dataSerialized.begin(), dataSerialized.end());
 
-	const auto serialData = serializeData(_inputs, _outputs, _witnesses, _heightMin, _heightMax, _recentBlockHeight, _recentBlockHash);
-	serial.insert(serial.end(), serialData.begin(), serialData.end());
+	const uint32_t witnessesCount = _witnesses.size();
+	const auto witnessesCountBytes = Serializable::serialize(witnessesCount);
+	serial.insert(serial.end(), witnessesCountBytes.begin(), witnessesCountBytes.end());
+	for (const auto& witness : _witnesses) {
+		serial.insert(serial.end(), witness.begin(), witness.end());
+	}
 
 	return serial;
 }

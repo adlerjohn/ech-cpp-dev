@@ -16,16 +16,17 @@ TEST_CASE("tx zero", "[common][tx]")
 	const uint64_t recentBlockHeight = 0u;
 	const auto recentBlockHash = crypto::Digest();
 
-	const auto tx = TX(inputs, outputs, witnesses, heightMin, heightMax, recentBlockHeight, recentBlockHash);
+	const auto data = TXData(inputs, outputs, heightMin, heightMax, recentBlockHeight, recentBlockHash);
+	const auto tx = TX(data, witnesses);
 
-	REQUIRE_THAT("74723bc3efaf59d897623890ae3912b9be3c4c67ccee3ffcf10b36406c722c1b", Equals(tx.getId().toHex()));
-	REQUIRE(tx.getInputs().empty());
-	REQUIRE(tx.getOutputs().empty());
+	REQUIRE_THAT("74723bc3efaf59d897623890ae3912b9be3c4c67ccee3ffcf10b36406c722c1b", Equals(tx.getData().getId().toHex()));
+	REQUIRE(tx.getData().getInputs().empty());
+	REQUIRE(tx.getData().getOutputs().empty());
 	REQUIRE(tx.getWitnesses().empty());
-	REQUIRE(0u == tx.getHeightMin());
-	REQUIRE(0u == tx.getHeightMax());
-	REQUIRE(0u == tx.getRecentBlockHeight());
-	REQUIRE("290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e563" == tx.getRecentBlockHash().toHex());
+	REQUIRE(0u == tx.getData().getHeightMin());
+	REQUIRE(0u == tx.getData().getHeightMax());
+	REQUIRE(0u == tx.getData().getRecentBlockHeight());
+	REQUIRE("290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e563" == tx.getData().getRecentBlockHash().toHex());
 	const auto golden = std::string(
 		"74723bc3efaf59d897623890ae3912b9be3c4c67ccee3ffcf10b36406c722c1b" // tx id
 		"00000000" // input count
@@ -61,16 +62,17 @@ TEST_CASE("tx random", "[common][tx]")
 	const uint64_t recentBlockHeight = 7u;
 	const auto recentBlockHash = crypto::Digest("5f16f4c7f149ac4f9510d9cf8cf384038ad348b3bcdc01915f95de12df9d1b02", true);
 
-	const auto tx = TX(inputs, outputs, witnesses, heightMin, heightMax, recentBlockHeight, recentBlockHash);
+	const auto data = TXData(inputs, outputs, heightMin, heightMax, recentBlockHeight, recentBlockHash);
+	const auto tx = TX(data, witnesses);
 
-	REQUIRE_THAT("c1d8fdfd67f9382353e79d2e54df0fb1cf5ae0d46570b5dd369e772e91789466", Equals(tx.getId().toHex()));
-	REQUIRE(1u == tx.getInputs().size());
-	REQUIRE(1u == tx.getOutputs().size());
+	REQUIRE_THAT("c1d8fdfd67f9382353e79d2e54df0fb1cf5ae0d46570b5dd369e772e91789466", Equals(tx.getData().getId().toHex()));
+	REQUIRE(1u == tx.getData().getInputs().size());
+	REQUIRE(1u == tx.getData().getOutputs().size());
 	REQUIRE(1u == tx.getWitnesses().size());
-	REQUIRE(42u == tx.getHeightMin());
-	REQUIRE(43u == tx.getHeightMax());
-	REQUIRE(7u == tx.getRecentBlockHeight());
-	REQUIRE("5f16f4c7f149ac4f9510d9cf8cf384038ad348b3bcdc01915f95de12df9d1b02" == tx.getRecentBlockHash().toHex());
+	REQUIRE(42u == tx.getData().getHeightMin());
+	REQUIRE(43u == tx.getData().getHeightMax());
+	REQUIRE(7u == tx.getData().getRecentBlockHeight());
+	REQUIRE("5f16f4c7f149ac4f9510d9cf8cf384038ad348b3bcdc01915f95de12df9d1b02" == tx.getData().getRecentBlockHash().toHex());
 	const auto golden = std::string(
 		"c1d8fdfd67f9382353e79d2e54df0fb1cf5ae0d46570b5dd369e772e91789466" // tx id
 		"00000001" // input count
