@@ -20,14 +20,13 @@ const auto Signature::getContextVerify()
 	return context.get();
 }
 
-const auto Signature::sign(const SecretKey& secretKey, const std::string& msg)
+const auto Signature::sign(const SecretKey& secretKey, const Digest& digest)
 {
 	const auto context = getContextSign();
 
-	const auto digest = Digest(msg);
 	secp256k1_ecdsa_recoverable_signature sig;
 	if (!secp256k1_ecdsa_sign_recoverable(context, &sig, reinterpret_cast<const unsigned char*>(digest.raw()), reinterpret_cast<const unsigned char*>(secretKey.raw()), nullptr, nullptr))
-		throw std::runtime_error("Could not sign message: " + msg);
+		throw std::runtime_error("Could not sign message digest: " + digest.toHex());
 
 	std::array<std::byte, 64u> rs;
 	int v = 0;
@@ -48,12 +47,17 @@ Signature::Signature(const std::string& sig)
 {
 }
 
-Signature::Signature(const SecretKey& secretKey, const std::string& str)
-	: Signature(sign(secretKey, str))
+Signature::Signature(const SecretKey& secretKey, const std::vector<std::byte>& msg)
+	: Signature(sign(secretKey, Digest(msg)))
 {
 }
 
-const PublicKey Signature::recover(const std::string& msg) const
+Signature::Signature(const SecretKey& secretKey, const std::string& msg)
+	: Signature(sign(secretKey, Digest(msg)))
+{
+}
+
+const PublicKey Signature::recover(const Digest& digest) const
 {
 	const auto context = getContextVerify();
 
@@ -64,7 +68,6 @@ const PublicKey Signature::recover(const std::string& msg) const
 	buf >> v;
 	v -= 27;
 
-	const auto digest = Digest(msg);
 	secp256k1_ecdsa_recoverable_signature sig;
 	if (!secp256k1_ecdsa_recoverable_signature_parse_compact(context, &sig, reinterpret_cast<const unsigned char*>(this->raw()), v))
 		throw std::runtime_error("Could not parse signature: " + this->toHex());
@@ -86,12 +89,7 @@ const PublicKey Signature::recover(const std::string& msg) const
 	return PublicKey(buf_pubkey.str());
 }
 
-const bool Signature::verify(const std::string& msg, const Address& address) const
+const bool Signature::verify(const Digest& digest, const Address& address) const
 {
-	return Address(recover(msg)) == address;
-}
-
-const bool Signature::verify(const std::string& msg, const PublicKey& publicKey) const
-{
-	return verify(msg, Address(publicKey));
+	return Address(recover(digest)) == address;
 }

@@ -26,20 +26,20 @@ private:
 
 	[[nodiscard]] static const auto getContextVerify();
 
-	[[nodiscard]] static const auto sign(const SecretKey& secretKey, const std::string& msg);
+	[[nodiscard]] static const auto sign(const SecretKey& secretKey, const Digest& digest);
 
 public:
 	explicit Signature(const std::string& sig);
 
+	Signature(const SecretKey& secretKey, const std::vector<std::byte>& msg);
+
 	Signature(const SecretKey& secretKey, const std::string& msg);
 
 	// Recover the public key from the signed message
-	[[nodiscard]] const PublicKey recover(const std::string& msg) const;
+	[[nodiscard]] const PublicKey recover(const Digest& digest) const;
 
 	// Verify that the signature matches the original message
-	[[nodiscard]] const bool verify(const std::string& msg, const Address& address) const;
-
-	[[nodiscard]] const bool verify(const std::string& msg, const PublicKey& publicKey) const;
+	[[nodiscard]] const bool verify(const Digest& digest, const Address& address) const;
 };
 
 } // namespace ech::crypto

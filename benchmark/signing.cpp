@@ -28,7 +28,7 @@ void Signing::runThread(const size_t begin, const size_t size)
 
 	for (size_t i = begin; i < begin+size; i++) {
 		const auto& d = _data.at(i);
-		const auto result = d.getSignature().verify(d.getMsg(), d.getPublicKey());
+		const auto result = d.getSignature().verify(crypto::Digest(d.getMsg()), crypto::Address(d.getPublicKey()));
 		if (result)
 			passed++;
 	}
@@ -58,7 +58,7 @@ void Signing::run()
 	this->before();
 
 	for (auto& d : this->_data) {
-		const auto result = d.getSignature().verify(d.getMsg(), d.getPublicKey());
+		const auto result = d.getSignature().verify(crypto::Digest(d.getMsg()), crypto::Address(d.getPublicKey()));
 		if (result)
 			this->_passed++;
 	}

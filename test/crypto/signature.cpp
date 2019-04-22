@@ -8,11 +8,14 @@ using Catch::Matchers::Equals;
 
 TEST_CASE("signature verify", "[crypto][sig]")
 {
-	auto secretKey = SecretKey("3ecb44df2159c26e0f995712d4f39b6f6e499b40749b1cf1246c37f9516cb6a4");
-	auto publicKey = PublicKey(secretKey);
+	const auto secretKey = SecretKey("3ecb44df2159c26e0f995712d4f39b6f6e499b40749b1cf1246c37f9516cb6a4");
+	const auto publicKey = PublicKey(secretKey);
+	const auto address = Address(publicKey);
 
-	auto msg = std::string("The quick brown fox jumps over the lazy dog.");
-	auto msg_bad = std::string("The lazy brown fox jumps over the quick dog.");
+	const auto msg = std::string("The quick brown fox jumps over the lazy dog.");
+	const auto digest = Digest(msg);
+	const auto msg_bad = std::string("The lazy brown fox jumps over the quick dog.");
+	const auto digest_bad = Digest(msg_bad);
 
 	SECTION("libsecp256k1")
 	{
@@ -24,21 +27,21 @@ TEST_CASE("signature verify", "[crypto][sig]")
 		}
 		SECTION("recover")
 		{
-			auto recovered = signature.recover(msg);
+			auto recovered = signature.recover(digest);
 			REQUIRE_THAT(publicKey.toHex(), Equals(recovered.toHex()));
 		}
 		SECTION("verify with pubkey")
 		{
-			auto result = signature.verify(msg, publicKey);
+			auto result = signature.verify(digest, address);
 			REQUIRE(result);
-			auto result_bad = signature.verify(msg_bad, publicKey);
+			auto result_bad = signature.verify(digest_bad, address);
 			REQUIRE(!result_bad);
 		}
 		SECTION("verify with address")
 		{
-			auto result = signature.verify(msg, Address(publicKey));
+			auto result = signature.verify(digest, Address(publicKey));
 			REQUIRE(result);
-			auto result_bad = signature.verify(msg_bad, Address(publicKey));
+			auto result_bad = signature.verify(digest_bad, Address(publicKey));
 			REQUIRE(!result_bad);
 		}
 	}
