@@ -2,9 +2,14 @@
 
 using namespace ech;
 
-const std::vector<std::byte> BlockHeader::serializeData(const crypto::Digest& root, const uint64_t height) const
+const std::vector<std::byte> BlockHeader::serializeData(const uint32_t version, const crypto::Digest& prev, const crypto::Digest& root, const uint64_t height) const
 {
 	std::vector<std::byte> serial;
+
+	const auto versionBytes = Serializable::serialize(version);
+	serial.insert(serial.end(), versionBytes.begin(), versionBytes.end());
+
+	serial.insert(serial.end(), prev.begin(), prev.end());
 
 	const auto heightBytes = Serializable::serialize(height);
 	serial.insert(serial.end(), heightBytes.begin(), heightBytes.end());
@@ -14,8 +19,10 @@ const std::vector<std::byte> BlockHeader::serializeData(const crypto::Digest& ro
 	return serial;
 }
 
-BlockHeader::BlockHeader(const crypto::Digest& root, const uint64_t height)
-	: _id(crypto::Digest(serializeData(root, height)))
+BlockHeader::BlockHeader(const uint32_t version, const crypto::Digest& prev, const crypto::Digest& root, const uint64_t height)
+	: _id(crypto::Digest(serializeData(version, prev, root, height)))
+	, _version(version)
+	, _prev(prev)
 	, _root(root)
 	, _height(height)
 {
@@ -27,7 +34,7 @@ const std::vector<std::byte> BlockHeader::serialize() const
 
 	serial.insert(serial.end(), _id.begin(), _id.end());
 
-	const auto serialData = serializeData(_root, _height);
+	const auto serialData = serializeData(_version, _prev, _root, _height);
 	serial.insert(serial.end(), serialData.begin(), serialData.end());
 
 	return serial;

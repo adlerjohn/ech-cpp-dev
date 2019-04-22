@@ -22,7 +22,7 @@ private:
 	static const std::vector<crypto::Digest> toLeafHashes(const std::vector<TX>& leaves);
 
 public:
-	Block(const std::vector<TX>& leaves, const uint64_t height);
+	Block(const uint32_t version, const crypto::Digest& prev, const std::vector<TX>& leaves, const uint64_t height);
 
 	[[nodiscard]] const auto& getHeader() const { return this->_header; }
 	[[nodiscard]] const auto& getLeaves() const { return this->_leaves; }

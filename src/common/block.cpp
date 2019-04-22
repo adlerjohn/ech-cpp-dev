@@ -17,8 +17,8 @@ const std::vector<crypto::Digest> Block::toLeafHashes(const std::vector<TX>& lea
 	return leafHashes;
 }
 
-Block::Block(const std::vector<TX>& leaves, const uint64_t height)
-	: _header(MerkleTree(toLeafHashes(leaves)).getRoot(), height)
+Block::Block(const uint32_t version, const crypto::Digest& prev, const std::vector<TX>& leaves, const uint64_t height)
+	: _header(version, prev, MerkleTree(toLeafHashes(leaves)).getRoot(), height)
 	, _leaves(leaves)
 {
 }
