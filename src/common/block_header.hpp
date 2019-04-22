@@ -14,6 +14,8 @@ private:
 	const crypto::Digest _root;
 	const uint64_t _height;
 
+	[[nodiscard]] const std::vector<std::byte> serializeData(const crypto::Digest& root, const uint64_t height) const;
+
 public:
 	BlockHeader(const crypto::Digest& root, const uint64_t height);
 
