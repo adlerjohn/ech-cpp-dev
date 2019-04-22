@@ -197,8 +197,3 @@ TEST_CASE("tx random", "[common][tx]")
 		REQUIRE(signature.verify(crypto::Digest(data.serialize()), crypto::Address(publicKey)));
 	}
 }
-
-TEST_CASE("tx signed", "[common][tx]")
-{
-	// TODO implement
-}
