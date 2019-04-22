@@ -40,7 +40,7 @@ public:
 
 	// Verifies whether this transaction is valid
 	// TODO need to check for double-spends when parallel
-	bool verify(const State& state) const;
+	[[nodiscard]] const bool verify(const State& state) const;
 
 	[[nodiscard]] const std::vector<std::byte> serialize() const override;
 };

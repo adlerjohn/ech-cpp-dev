@@ -2,7 +2,7 @@
 
 using namespace ech;
 
-bool Tx::verify(const State& state) const
+const bool Tx::verify(const State& state) const
 {
 	// To verify a transaction is valid, we need to
 	// 1) for each input

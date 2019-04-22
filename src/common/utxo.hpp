@@ -30,13 +30,13 @@ private:
 public:
 	UTXO(const crypto::Address& owner, const CoinAmount amount, const Color& color);
 
-	const auto& getId() const { return this->_id; }
+	[[nodiscard]] const auto& getId() const { return this->_id; }
 
-	const auto& getOwner() const { return this->_owner; }
+	[[nodiscard]] const auto& getOwner() const { return this->_owner; }
 
-	const auto getAmount() const { return this->_amount; }
+	[[nodiscard]] const auto getAmount() const { return this->_amount; }
 
-	const auto isColored() const { return this->_color.isColored(); }
+	[[nodiscard]] const auto isColored() const { return this->_color.isColored(); }
 };
 
 } // namespace ech
