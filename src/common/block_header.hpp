@@ -10,6 +10,7 @@ namespace ech
 class BlockHeader : public Serializable
 {
 private:
+	// TODO add version byte
 	const crypto::Digest _id;
 	const crypto::Digest _root;
 	const uint64_t _height;
