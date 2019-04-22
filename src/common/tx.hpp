@@ -44,13 +44,24 @@ private:
 
 	[[nodiscard]] const std::vector<std::byte> serializeData(
 		const std::vector<Input>& inputs,
-		const std::vector<TXO>& outputs) const;
+		const std::vector<TXO>& outputs,
+		const std::vector<crypto::Signature>& witnesses,
+		const uint64_t heightMin,
+		const uint64_t heightMax,
+		const uint64_t recentBlockHeight,
+		const uint64_t recentBlockHash,
+		const uint8_t chainID) const;
 
 public:
 	TX(
 		const std::vector<Input>& inputs,
 		const std::vector<TXO>& outputs,
-		const std::vector<crypto::Signature>& witnesses);
+		const std::vector<crypto::Signature>& witnesses,
+		const uint64_t heightMin,
+		const uint64_t heightMax,
+		const uint64_t recentBlockHeight,
+		const uint64_t recentBlockHash,
+		const uint8_t chainID);
 
 	[[nodiscard]] const auto getId() const { return this->_id; }
 	[[nodiscard]] const auto& getInputs() const { return this->_inputs; }
