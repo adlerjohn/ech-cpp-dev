@@ -16,7 +16,7 @@ TEST_CASE("txo zero", "[common][txo]")
 	const auto txo = TXO(index, recipient, amount, color);
 
 	const auto golden = std::string(
-		"00"
+		"00000000"
 		"0000000000000000000000000000000000000000"
 		"0000000000000000000000000000000000000000000000000000000000000000"
 		"00");
@@ -34,7 +34,7 @@ TEST_CASE("txo random", "[common][txo]")
 	const auto txo = TXO(index, recipient, amount, color);
 
 	const auto golden = std::string(
-		"01"
+		"00000001"
 		"deadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
 		"000000000000000000000000000000000000000000000000000000000000002a"
 		"018a40bfaa73256b60764c1bf40675a99083efb075");
