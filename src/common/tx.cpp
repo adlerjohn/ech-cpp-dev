@@ -9,8 +9,7 @@ const std::vector<std::byte> TX::serializeData(
 	const uint64_t heightMin,
 	const uint64_t heightMax,
 	const uint64_t recentBlockHeight,
-	const uint64_t recentBlockHash,
-	const uint8_t chainID) const
+	const crypto::Digest& recentBlockHash) const
 {
 	std::vector<std::byte> serial;
 
@@ -46,12 +45,8 @@ const std::vector<std::byte> TX::serializeData(
 	const auto recentBlockHeightBytes = Serializable::serialize(recentBlockHeight);
 	serial.insert(serial.end(), recentBlockHeightBytes.begin(), recentBlockHeightBytes.end());
 	if (recentBlockHeight > 0) {
-		const auto recentBlockHashBytes = Serializable::serialize(recentBlockHash);
-		serial.insert(serial.end(), recentBlockHashBytes.begin(), recentBlockHashBytes.end());
+		serial.insert(serial.end(), recentBlockHash.begin(), recentBlockHash.end());
 	}
-
-	const auto chainIDBytes = Serializable::serialize(chainID);
-	serial.insert(serial.end(), chainIDBytes.begin(), chainIDBytes.end());
 
 	return serial;
 }
@@ -63,9 +58,8 @@ TX::TX(
 	const uint64_t heightMin,
 	const uint64_t heightMax,
 	const uint64_t recentBlockHeight,
-	const uint64_t recentBlockHash,
-	const uint8_t chainID)
-	: _id(serializeData(inputs, outputs, witnesses, heightMin, heightMax, recentBlockHeight, recentBlockHash, chainID))
+	const crypto::Digest& recentBlockHash)
+	: _id(serializeData(inputs, outputs, witnesses, heightMin, heightMax, recentBlockHeight, recentBlockHash))
 	, _inputs(inputs)
 	, _outputs(outputs)
 	, _witnesses(witnesses)
@@ -73,7 +67,6 @@ TX::TX(
 	, _heightMax(heightMax)
 	, _recentBlockHeight(recentBlockHeight)
 	, _recentBlockHash(recentBlockHash)
-	, _chainID(chainID)
 {
 }
 
@@ -84,6 +77,7 @@ const size_t TX::getSize() const
 
 const bool TX::verify(const State& state) const
 {
+	// TODO implement
 	// To verify a transaction is valid, we need to
 	// 1) for each input
 	//  a) recover the address from the signature, using tx data hash
@@ -97,7 +91,7 @@ const std::vector<std::byte> TX::serialize() const
 
 	serial.insert(serial.end(), _id.begin(), _id.end());
 
-	const auto serialData = serializeData(_inputs, _outputs, _witnesses, _heightMin, _heightMax, _recentBlockHeight, _recentBlockHash, _chainID);
+	const auto serialData = serializeData(_inputs, _outputs, _witnesses, _heightMin, _heightMax, _recentBlockHeight, _recentBlockHash);
 	serial.insert(serial.end(), serialData.begin(), serialData.end());
 
 	return serial;

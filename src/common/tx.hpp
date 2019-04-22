@@ -35,9 +35,7 @@ private:
 	// If non-0, the height of a recent block that must exist
 	const uint64_t _recentBlockHeight;
 	// If recentBlockHeight is non-0, the hash of the recent block
-	const uint64_t _recentBlockHash;
-	// Replay attack protection
-	const uint8_t _chainID;
+	const crypto::Digest _recentBlockHash;
 
 	// TODO flags?
 	// TODO fee/max fee
@@ -49,8 +47,7 @@ private:
 		const uint64_t heightMin,
 		const uint64_t heightMax,
 		const uint64_t recentBlockHeight,
-		const uint64_t recentBlockHash,
-		const uint8_t chainID) const;
+		const crypto::Digest& recentBlockHash) const;
 
 public:
 	TX(
@@ -60,8 +57,7 @@ public:
 		const uint64_t heightMin,
 		const uint64_t heightMax,
 		const uint64_t recentBlockHeight,
-		const uint64_t recentBlockHash,
-		const uint8_t chainID);
+		const crypto::Digest& recentBlockHash);
 
 	[[nodiscard]] const auto getId() const { return this->_id; }
 	[[nodiscard]] const auto& getInputs() const { return this->_inputs; }
@@ -70,8 +66,7 @@ public:
 	[[nodiscard]] const auto getHeightMin() const { return this->_heightMin; }
 	[[nodiscard]] const auto getHeightMax() const { return this->_heightMax; }
 	[[nodiscard]] const auto getRecentBlockHeight() const { return this->_recentBlockHeight; }
-	[[nodiscard]] const auto getRecentBlockHash() const { return this->_recentBlockHash; }
-	[[nodiscard]] const auto getChainID() const { return this->_chainID; }
+	[[nodiscard]] const auto& getRecentBlockHash() const { return this->_recentBlockHash; }
 
 	// Get the size of this transaction, in bytes
 	[[nodiscard]] const size_t getSize() const;

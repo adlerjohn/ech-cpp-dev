@@ -29,19 +29,6 @@ public:
 		return buf.str();
 	}
 
-	[[nodiscard]] static const auto serialize(const uint8_t in)
-	{
-		std::vector<std::byte> serial;
-
-		static const size_t inSize = 1u;
-		std::stringstream buf;
-		buf << std::hex << std::setfill('0') << std::setw(inSize * 2) << in;
-		const auto inBytes = crypto::byteset<inSize>(buf.str());
-		serial.insert(serial.end(), inBytes.begin(), inBytes.end());
-
-		return serial;
-	}
-
 	[[nodiscard]] static const auto serialize(const uint32_t in)
 	{
 		std::vector<std::byte> serial;
