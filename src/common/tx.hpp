@@ -10,6 +10,7 @@
 #include "txid.hpp"
 #include "txo.hpp"
 #include "utxo.hpp"
+#include "input.hpp"
 
 namespace ech
 {
@@ -20,10 +21,10 @@ private:
 	// Transaction ID
 	const TXID _id;
 	// Inputs to the transaction
-	const std::vector<UTXOID> _inputs;
+	const std::vector<Input> _inputs;
 	// Outputs of the transaction
 	const std::vector<TXO> _outputs;
-	// Digital signatures, one for each input
+	// Digital signatures. Each input refer to one of these witnesses.
 	const std::vector<crypto::Signature> _witnesses;
 	// Minimum height this transaction can be included in
 	// If 0, then any height is valid
@@ -42,12 +43,12 @@ private:
 	// TODO fee/max fee
 
 	[[nodiscard]] const std::vector<std::byte> serializeData(
-		const std::vector<UTXOID>& inputs,
+		const std::vector<Input>& inputs,
 		const std::vector<TXO>& outputs) const;
 
 public:
 	TX(
-		const std::vector<UTXOID>& inputs,
+		const std::vector<Input>& inputs,
 		const std::vector<TXO>& outputs,
 		const std::vector<crypto::Signature>& witnesses);
 

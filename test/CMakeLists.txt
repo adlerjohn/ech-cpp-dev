@@ -11,6 +11,7 @@ set(source_files
         main.cpp
         common/block_header.cpp
         common/color.cpp
+        common/input.cpp
         common/merkle.cpp
         common/outpoint.cpp
         common/txo.cpp

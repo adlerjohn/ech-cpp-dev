@@ -5,6 +5,7 @@ set(source_files
         block.cpp
         block_header.cpp
         color.cpp
+        input.cpp
         merkle.cpp
         outpoint.cpp
         state.cpp
