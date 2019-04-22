@@ -13,6 +13,7 @@ set(source_files
         common/merkle.cpp
         common/utxo.cpp
         crypto/address.cpp
+        common/block_header.cpp
         crypto/byteset.cpp
         crypto/digest.cpp
         crypto/keys.cpp
