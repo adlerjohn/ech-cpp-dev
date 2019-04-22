@@ -8,22 +8,37 @@ using Catch::Matchers::Equals;
 
 TEST_CASE("UTXO zero", "[common][utxo]")
 {
-	const auto address = crypto::Address("0000000000000000000000000000000000000000");
+	const auto outpoint = Outpoint(TXID(), 0);
+	const auto id = UTXOID(outpoint);
+	const auto owner = crypto::Address("0000000000000000000000000000000000000000");
 	const auto amount = 0;
 	const auto color = Color();
+	const auto height = 0;
 
-	const auto utxo = UTXO(address, amount, color);
+	const auto utxo = UTXO(id, owner, amount, color, height);
 
-	REQUIRE_THAT("4d8a735acc38ab7f01310ca8e6026ed9f86de88141cd83996db741df5291fc0d", Equals(utxo.getId().toHex()));
+	REQUIRE_THAT(id.toHex(), Equals(utxo.getId().toHex()));
+	REQUIRE_THAT("0000000000000000000000000000000000000000", Equals(utxo.getOwner().toHex()));
+	REQUIRE(0 == utxo.getAmount());
+	REQUIRE_FALSE(utxo.isColored());
+	REQUIRE(0 == utxo.getHeight());
 }
 
 TEST_CASE("UTXO random", "[common][utxo]")
 {
-	const auto address = crypto::Address("8a40bfaa73256b60764c1bf40675a99083efb075");
+	const auto outpoint = Outpoint(TXID(), 0);
+	const auto id = UTXOID(outpoint);
+	const auto owner = crypto::Address("8a40bfaa73256b60764c1bf40675a99083efb075");
 	const auto amount = 42;
 	const auto color = Color(crypto::Address("deadbeefdeadbeefdeadbeefdeadbeefdeadbeef"));
+	const auto height = 7;
 
-	const auto utxo = UTXO(address, amount, color);
+	const auto utxo = UTXO(id, owner, amount, color, height);
 
-	REQUIRE_THAT("34d12d2dcfef9ef209739bfd20e6073a64d77d588bff48a97fd30bb215b1410a", Equals(utxo.getId().toHex()));
+	REQUIRE_THAT(id.toHex(), Equals(utxo.getId().toHex()));
+	REQUIRE_THAT("8a40bfaa73256b60764c1bf40675a99083efb075", Equals(utxo.getOwner().toHex()));
+	REQUIRE(42 == utxo.getAmount());
+	REQUIRE(utxo.isColored());
+	REQUIRE_THAT("deadbeefdeadbeefdeadbeefdeadbeefdeadbeef", Equals(utxo.getColor().getColor().toHex()));
+	REQUIRE(7 == utxo.getHeight());
 }

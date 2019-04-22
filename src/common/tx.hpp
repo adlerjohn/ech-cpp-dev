@@ -40,8 +40,16 @@ private:
 
 	// TODO flags?
 	// TODO fee/max fee
+
+	[[nodiscard]] const std::vector<std::byte> serializeData(
+		const std::vector<UTXOID>& inputs,
+		const std::vector<TXO>& outputs) const;
+
 public:
-	Tx(const std::vector<UTXOID>& inputs, const std::vector<TXO>& outputs, const std::vector<crypto::Signature>& witnesses);
+	Tx(
+		const std::vector<UTXOID>& inputs,
+		const std::vector<TXO>& outputs,
+		const std::vector<crypto::Signature>& witnesses);
 
 	// Verifies whether this transaction is valid
 	// TODO need to check for double-spends when parallel

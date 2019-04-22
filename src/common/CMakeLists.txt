@@ -6,10 +6,12 @@ set(source_files
         block_header.cpp
         color.cpp
         merkle.cpp
+        outpoint.cpp
         state.cpp
         tx.cpp
         txo.cpp
         utxo.cpp
+        utxoid.cpp
         )
 
 

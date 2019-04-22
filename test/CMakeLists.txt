@@ -9,16 +9,18 @@ link_directories(${ech_cpp_SOURCE_DIR}/src)
 
 set(source_files
         main.cpp
+        common/block_header.cpp
         common/color.cpp
         common/merkle.cpp
+        common/outpoint.cpp
+        common/txo.cpp
         common/utxo.cpp
+        common/utxoid.cpp
         crypto/address.cpp
-        common/block_header.cpp
         crypto/byteset.cpp
         crypto/digest.cpp
         crypto/keys.cpp
         crypto/signature.cpp
-        common/txo.cpp
         )
 
 add_executable(unit_tester ${source_files})

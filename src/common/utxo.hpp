@@ -12,11 +12,10 @@
 namespace ech
 {
 
-// TODO refactor this as outpoint from transaction
 class UTXO
 {
 private:
-	// ID of the UTXO, determined by its hash
+	// ID of the UTXO, determined by the hash of its outpoint
 	const UTXOID _id;
 	// Owner of the UTXO
 	const crypto::Address _owner;
@@ -24,11 +23,11 @@ private:
 	const CoinAmount _amount;
 	// Color (if the UTXO represents a colored coin)
 	const Color _color;
-
-	[[nodiscard]] const std::vector<std::byte> serializeData(const crypto::Address& owner, const CoinAmount amount, const Color& color) const;
+	// Height of the transaction that created this UTXO
+	const uint64_t _height;
 
 public:
-	UTXO(const crypto::Address& owner, const CoinAmount amount, const Color& color);
+	UTXO(const UTXOID& id, const crypto::Address& owner, const CoinAmount amount, const Color& color, const uint64_t height);
 
 	[[nodiscard]] const auto& getId() const { return this->_id; }
 
@@ -37,6 +36,10 @@ public:
 	[[nodiscard]] const auto getAmount() const { return this->_amount; }
 
 	[[nodiscard]] const auto isColored() const { return this->_color.isColored(); }
+
+	[[nodiscard]] const auto& getColor() const { return this->_color; }
+
+	[[nodiscard]] const auto getHeight() const { return this->_height; }
 };
 
 } // namespace ech
