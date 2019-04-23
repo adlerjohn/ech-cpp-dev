@@ -5,6 +5,7 @@ set(source_files
         block.cpp
         block_header.cpp
         color.cpp
+        deposit.cpp
         input.cpp
         merkle.cpp
         outpoint.cpp
@@ -14,7 +15,6 @@ set(source_files
         utxo.cpp
         utxoid.cpp
         )
-
 
 add_library(common ${source_files})
 target_link_libraries(common ${Boost_LIBRARIES} ech-crypto)
