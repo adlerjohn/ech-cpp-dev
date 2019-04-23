@@ -3,6 +3,7 @@
 using namespace ech;
 
 const std::vector<std::byte> TXData::serializeData(
+	const uint32_t version,
 	const std::vector<Input>& inputs,
 	const std::vector<TXO>& outputs,
 	const uint64_t heightMin,
@@ -11,6 +12,9 @@ const std::vector<std::byte> TXData::serializeData(
 	const crypto::Digest& recentBlockHash) const
 {
 	std::vector<std::byte> serial;
+
+	const auto versionBytes = Serializable::serialize(version);
+	serial.insert(serial.end(), versionBytes.begin(), versionBytes.end());
 
 	const uint32_t inputsCount = inputs.size();
 	const auto inputsCountBytes = Serializable::serialize(inputsCount);
@@ -44,13 +48,15 @@ const std::vector<std::byte> TXData::serializeData(
 }
 
 TXData::TXData(
+	const uint32_t version,
 	const std::vector<Input>& inputs,
 	const std::vector<TXO>& outputs,
 	const uint64_t heightMin,
 	const uint64_t heightMax,
 	const uint64_t recentBlockHeight,
 	const crypto::Digest& recentBlockHash)
-	: _id(serializeData(inputs, outputs, heightMin, heightMax, recentBlockHeight, recentBlockHash))
+	: _id(serializeData(version, inputs, outputs, heightMin, heightMax, recentBlockHeight, recentBlockHash))
+	, _version(version)
 	, _inputs(inputs)
 	, _outputs(outputs)
 	, _heightMin(heightMin)
@@ -72,7 +78,7 @@ const std::vector<std::byte> TXData::serialize() const
 
 	serial.insert(serial.end(), _id.begin(), _id.end());
 
-	const auto serialData = serializeData(_inputs, _outputs, _heightMin, _heightMax, _recentBlockHeight, _recentBlockHash);
+	const auto serialData = serializeData(_version, _inputs, _outputs, _heightMin, _heightMax, _recentBlockHeight, _recentBlockHash);
 	serial.insert(serial.end(), serialData.begin(), serialData.end());
 
 	return serial;

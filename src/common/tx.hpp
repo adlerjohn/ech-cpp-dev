@@ -23,6 +23,8 @@ class TXData : public Serializable
 private:
 	// Transaction ID
 	const TXID _id;
+	// Version of the transaction
+	const uint32_t _version;
 	// Inputs to the transaction
 	const std::vector<Input> _inputs;
 	// Outputs of the transaction
@@ -40,9 +42,10 @@ private:
 
 	// TODO flags?
 	// Maximum fee the user is willing to pay per byte
-//	const CoinAmount _maxFeePerByte;
+	//	const CoinAmount _maxFeePerByte;
 
 	[[nodiscard]] const std::vector<std::byte> serializeData(
+		const uint32_t version,
 		const std::vector<Input>& inputs,
 		const std::vector<TXO>& outputs,
 		const uint64_t heightMin,
@@ -52,6 +55,7 @@ private:
 
 public:
 	TXData(
+		const uint32_t version,
 		const std::vector<Input>& inputs,
 		const std::vector<TXO>& outputs,
 		const uint64_t heightMin,
@@ -60,6 +64,7 @@ public:
 		const crypto::Digest& recentBlockHash);
 
 	[[nodiscard]] const auto getId() const { return this->_id; }
+	[[nodiscard]] const auto getVersion() const { return this->_version; }
 	[[nodiscard]] const auto& getInputs() const { return this->_inputs; }
 	[[nodiscard]] const auto& getOutputs() const { return this->_outputs; }
 	[[nodiscard]] const auto getHeightMin() const { return this->_heightMin; }

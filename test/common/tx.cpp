@@ -8,6 +8,7 @@ using Catch::Matchers::Equals;
 
 TEST_CASE("tx data zero", "[common][txdata]")
 {
+	const uint32_t version = 0u;
 	const auto inputs = std::vector<Input>{};
 	const auto outputs = std::vector<TXO>{};
 	const uint64_t heightMin = 0u;
@@ -15,9 +16,10 @@ TEST_CASE("tx data zero", "[common][txdata]")
 	const uint64_t recentBlockHeight = 0u;
 	const auto recentBlockHash = crypto::Digest();
 
-	const auto data = TXData(inputs, outputs, heightMin, heightMax, recentBlockHeight, recentBlockHash);
+	const auto data = TXData(version, inputs, outputs, heightMin, heightMax, recentBlockHeight, recentBlockHash);
 
-	REQUIRE_THAT("290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e563", Equals(data.getId().toHex()));
+	REQUIRE_THAT("74723bc3efaf59d897623890ae3912b9be3c4c67ccee3ffcf10b36406c722c1b", Equals(data.getId().toHex()));
+	REQUIRE(0u == data.getVersion());
 	REQUIRE(data.getInputs().empty());
 	REQUIRE(data.getOutputs().empty());
 	REQUIRE(0u == data.getHeightMin());
@@ -25,7 +27,8 @@ TEST_CASE("tx data zero", "[common][txdata]")
 	REQUIRE(0u == data.getRecentBlockHeight());
 	REQUIRE("290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e563" == data.getRecentBlockHash().toHex());
 	const auto golden = std::string(
-		"290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e563" // tx id
+		"74723bc3efaf59d897623890ae3912b9be3c4c67ccee3ffcf10b36406c722c1b" // tx id
+		"00000000" // version
 		"00000000" // input count
 		"00000000" // output count
 		"0000000000000000" // height min
@@ -37,6 +40,7 @@ TEST_CASE("tx data zero", "[common][txdata]")
 
 TEST_CASE("tx data random", "[common][txdata]")
 {
+	const uint32_t version = 1u;
 	const auto digest = crypto::Digest("testing");
 	const auto outpoint = Outpoint(TXID(digest), 42u);
 	const auto input = Input(outpoint, 0u);
@@ -55,9 +59,10 @@ TEST_CASE("tx data random", "[common][txdata]")
 	const uint64_t recentBlockHeight = 7u;
 	const auto recentBlockHash = crypto::Digest("5f16f4c7f149ac4f9510d9cf8cf384038ad348b3bcdc01915f95de12df9d1b02", true);
 
-	const auto data = TXData(inputs, outputs, heightMin, heightMax, recentBlockHeight, recentBlockHash);
+	const auto data = TXData(version, inputs, outputs, heightMin, heightMax, recentBlockHeight, recentBlockHash);
 
-	REQUIRE_THAT("c775ddaec0393580f18b18ef583cbad1d449a590a685fce908b03a469f00f190", Equals(data.getId().toHex()));
+	REQUIRE_THAT("6694cb2a97e1a7c431352fa1e4e6f98e941fc6aa0cff50ccc4cdd67a49295838", Equals(data.getId().toHex()));
+	REQUIRE(1u == data.getVersion());
 	REQUIRE(1u == data.getInputs().size());
 	REQUIRE(1u == data.getOutputs().size());
 	REQUIRE(42u == data.getHeightMin());
@@ -65,7 +70,8 @@ TEST_CASE("tx data random", "[common][txdata]")
 	REQUIRE(7u == data.getRecentBlockHeight());
 	REQUIRE("5f16f4c7f149ac4f9510d9cf8cf384038ad348b3bcdc01915f95de12df9d1b02" == data.getRecentBlockHash().toHex());
 	const auto golden = std::string(
-		"c775ddaec0393580f18b18ef583cbad1d449a590a685fce908b03a469f00f190" // tx id
+		"6694cb2a97e1a7c431352fa1e4e6f98e941fc6aa0cff50ccc4cdd67a49295838" // tx id
+		"00000001" // version
 		"00000001" // input count
 		"5f16f4c7f149ac4f9510d9cf8cf384038ad348b3bcdc01915f95de12df9d1b020000002a00000000" // inputs
 		"00000001" // output count
@@ -80,18 +86,20 @@ TEST_CASE("tx data random", "[common][txdata]")
 
 TEST_CASE("tx zero", "[common][tx]")
 {
+	const uint32_t version = 0u;
 	const auto inputs = std::vector<Input>{};
 	const auto outputs = std::vector<TXO>{};
 	const uint64_t heightMin = 0u;
 	const uint64_t heightMax = 0u;
 	const uint64_t recentBlockHeight = 0u;
 	const auto recentBlockHash = crypto::Digest();
-	const auto data = TXData(inputs, outputs, heightMin, heightMax, recentBlockHeight, recentBlockHash);
+	const auto data = TXData(version, inputs, outputs, heightMin, heightMax, recentBlockHeight, recentBlockHash);
 
 	const auto witnesses = std::vector<crypto::Signature>{};
 	const auto tx = TX(data, witnesses);
 
-	REQUIRE_THAT("290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e563", Equals(tx.getData().getId().toHex()));
+	REQUIRE_THAT("74723bc3efaf59d897623890ae3912b9be3c4c67ccee3ffcf10b36406c722c1b", Equals(tx.getData().getId().toHex()));
+	REQUIRE(0u == tx.getData().getVersion());
 	REQUIRE(tx.getData().getInputs().empty());
 	REQUIRE(tx.getData().getOutputs().empty());
 	REQUIRE(tx.getWitnesses().empty());
@@ -100,19 +108,21 @@ TEST_CASE("tx zero", "[common][tx]")
 	REQUIRE(0u == tx.getData().getRecentBlockHeight());
 	REQUIRE("290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e563" == tx.getData().getRecentBlockHash().toHex());
 	const auto golden = std::string(
-		"290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e563" // tx id
+		"74723bc3efaf59d897623890ae3912b9be3c4c67ccee3ffcf10b36406c722c1b" // tx id
+		"00000000" //version
 		"00000000" // input count
 		"00000000" // output count
 		"0000000000000000" // height min
 		"0000000000000000" // height max
 		"0000000000000000" // recent block height
 		"00000000" // witnesses count
-		);
+	);
 	REQUIRE_THAT(golden, Equals(tx.toHex()));
 }
 
 TEST_CASE("tx random", "[common][tx]")
 {
+	const auto version = 1u;
 	const auto digest = crypto::Digest("testing");
 	const auto outpoint = Outpoint(TXID(digest), 42u);
 	const auto input = Input(outpoint, 0u);
@@ -131,7 +141,7 @@ TEST_CASE("tx random", "[common][tx]")
 	const uint64_t recentBlockHeight = 7u;
 	const auto recentBlockHash = crypto::Digest("5f16f4c7f149ac4f9510d9cf8cf384038ad348b3bcdc01915f95de12df9d1b02", true);
 
-	const auto data = TXData(inputs, outputs, heightMin, heightMax, recentBlockHeight, recentBlockHash);
+	const auto data = TXData(version, inputs, outputs, heightMin, heightMax, recentBlockHeight, recentBlockHash);
 
 	SECTION("random signature")
 	{
@@ -139,7 +149,8 @@ TEST_CASE("tx random", "[common][tx]")
 		const auto witnesses = std::vector<crypto::Signature>{signature};
 		const auto tx = TX(data, witnesses);
 
-		REQUIRE_THAT("c775ddaec0393580f18b18ef583cbad1d449a590a685fce908b03a469f00f190", Equals(tx.getData().getId().toHex()));
+		REQUIRE_THAT("6694cb2a97e1a7c431352fa1e4e6f98e941fc6aa0cff50ccc4cdd67a49295838", Equals(tx.getData().getId().toHex()));
+		REQUIRE(1u == tx.getData().getVersion());
 		REQUIRE(1u == tx.getData().getInputs().size());
 		REQUIRE(1u == tx.getData().getOutputs().size());
 		REQUIRE(1u == tx.getWitnesses().size());
@@ -148,7 +159,8 @@ TEST_CASE("tx random", "[common][tx]")
 		REQUIRE(7u == tx.getData().getRecentBlockHeight());
 		REQUIRE("5f16f4c7f149ac4f9510d9cf8cf384038ad348b3bcdc01915f95de12df9d1b02" == tx.getData().getRecentBlockHash().toHex());
 		const auto golden = std::string(
-			"c775ddaec0393580f18b18ef583cbad1d449a590a685fce908b03a469f00f190" // tx id
+			"6694cb2a97e1a7c431352fa1e4e6f98e941fc6aa0cff50ccc4cdd67a49295838" // tx id
+			"00000001" // version
 			"00000001" // input count
 			"5f16f4c7f149ac4f9510d9cf8cf384038ad348b3bcdc01915f95de12df9d1b020000002a00000000" // inputs
 			"00000001" // output count
@@ -172,7 +184,8 @@ TEST_CASE("tx random", "[common][tx]")
 
 		const auto publicKey = crypto::PublicKey(secretKey);
 
-		REQUIRE_THAT("c775ddaec0393580f18b18ef583cbad1d449a590a685fce908b03a469f00f190", Equals(tx.getData().getId().toHex()));
+		REQUIRE_THAT("6694cb2a97e1a7c431352fa1e4e6f98e941fc6aa0cff50ccc4cdd67a49295838", Equals(tx.getData().getId().toHex()));
+		REQUIRE(1u == tx.getData().getVersion());
 		REQUIRE(1u == tx.getData().getInputs().size());
 		REQUIRE(1u == tx.getData().getOutputs().size());
 		REQUIRE(1u == tx.getWitnesses().size());
@@ -181,7 +194,8 @@ TEST_CASE("tx random", "[common][tx]")
 		REQUIRE(7u == tx.getData().getRecentBlockHeight());
 		REQUIRE("5f16f4c7f149ac4f9510d9cf8cf384038ad348b3bcdc01915f95de12df9d1b02" == tx.getData().getRecentBlockHash().toHex());
 		const auto golden = std::string(
-			"c775ddaec0393580f18b18ef583cbad1d449a590a685fce908b03a469f00f190" // tx id
+			"6694cb2a97e1a7c431352fa1e4e6f98e941fc6aa0cff50ccc4cdd67a49295838" // tx id
+			"00000001" // version
 			"00000001" // input count
 			"5f16f4c7f149ac4f9510d9cf8cf384038ad348b3bcdc01915f95de12df9d1b020000002a00000000" // inputs
 			"00000001" // output count
@@ -191,7 +205,7 @@ TEST_CASE("tx random", "[common][tx]")
 			"0000000000000007" // recent block height
 			"5f16f4c7f149ac4f9510d9cf8cf384038ad348b3bcdc01915f95de12df9d1b02" // recent block hash
 			"00000001" // witnesses count
-			"3ecc418cdbb3a428e3b7bda8b98020468f60bbfa8f13a6613ed7f3e0d6a350224fa39402330614af7db257630cfca23a5f6945f0d44aed4d592aa3858093018d1b" // witnesses
+			"1e92e4e868a4666770d960ed54467ffb643869985007cd9cf21243e8018bf7992b6f7dc1883eb6f4b58fff09c1d8e44a101f4334b5e76012440652aaba7038581b" // witnesses
 		);
 		REQUIRE_THAT(golden, Equals(tx.toHex()));
 		REQUIRE(signature.verify(crypto::Digest(data.serialize()), crypto::Address(publicKey)));
