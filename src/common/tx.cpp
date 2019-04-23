@@ -90,17 +90,6 @@ const size_t TX::getSize() const
 	return serialize().size();
 }
 
-const bool TX::verify(const State& state) const
-{
-	// TODO implement
-	// To verify a transaction is valid, we need to
-	// 1) for each input
-	//  a) recover the address from the signature, using tx data hash
-	//  b) check that the UTXO being spent exists in the state and owner matches
-	// 2) sum inputs <= sum outputs (including colored coins)
-	return false;
-}
-
 const std::vector<std::byte> TX::serialize() const
 {
 	std::vector<std::byte> serial;

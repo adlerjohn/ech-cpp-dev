@@ -39,7 +39,8 @@ private:
 	const crypto::Digest _recentBlockHash;
 
 	// TODO flags?
-	// TODO fee/max fee
+	// Maximum fee the user is willing to pay per byte
+//	const CoinAmount _maxFeePerByte;
 
 	[[nodiscard]] const std::vector<std::byte> serializeData(
 		const std::vector<Input>& inputs,
@@ -93,10 +94,6 @@ public:
 
 	// Get the size of this transaction, in bytes
 	[[nodiscard]] const size_t getSize() const;
-
-	// Verifies whether this transaction is valid
-	// TODO need to check for double-spends when parallel
-	[[nodiscard]] const bool verify(const State& state) const;
 
 	[[nodiscard]] const std::vector<std::byte> serialize() const override;
 };
