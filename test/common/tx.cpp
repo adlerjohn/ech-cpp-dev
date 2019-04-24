@@ -35,6 +35,11 @@ TEST_CASE("tx data zero", "[common][txdata]")
 		"0000000000000000" // recent block height
 	);
 	REQUIRE_THAT(golden, Equals(data.toHex()));
+
+	const auto serialized = data.serialize();
+	auto q = std::deque<std::byte>(serialized.begin(), serialized.end());
+	const auto deserialized = TXData::deserialize(q);
+	REQUIRE_THAT(data.toHex(), Equals(deserialized.toHex()));
 }
 
 TEST_CASE("tx data random", "[common][txdata]")
@@ -80,6 +85,11 @@ TEST_CASE("tx data random", "[common][txdata]")
 		"5f16f4c7f149ac4f9510d9cf8cf384038ad348b3bcdc01915f95de12df9d1b02" // recent block hash
 	);
 	REQUIRE_THAT(golden, Equals(data.toHex()));
+
+	const auto serialized = data.serialize();
+	auto q = std::deque<std::byte>(serialized.begin(), serialized.end());
+	const auto deserialized = TXData::deserialize(q);
+	REQUIRE_THAT(data.toHex(), Equals(deserialized.toHex()));
 }
 
 TEST_CASE("tx zero", "[common][tx]")
@@ -115,6 +125,11 @@ TEST_CASE("tx zero", "[common][tx]")
 		"00000000" // witnesses count
 	);
 	REQUIRE_THAT(golden, Equals(tx.toHex()));
+
+	const auto serialized = tx.serialize();
+	auto q = std::deque<std::byte>(serialized.begin(), serialized.end());
+	const auto deserialized = TX::deserialize(q);
+	REQUIRE_THAT(tx.toHex(), Equals(deserialized.toHex()));
 }
 
 TEST_CASE("tx random", "[common][tx]")
@@ -169,6 +184,11 @@ TEST_CASE("tx random", "[common][tx]")
 			"5385685eef5fe0f2f93fa022002bb00f8b2478b9567618e47463cda72a78dcdb56a7a6bcd0bd79f709f15e0d3d53ba9909d4a3d100e25065bc0b7bd2537f39191c" // witnesses
 		);
 		REQUIRE_THAT(golden, Equals(tx.toHex()));
+
+		const auto serialized = tx.serialize();
+		auto q = std::deque<std::byte>(serialized.begin(), serialized.end());
+		const auto deserialized = TX::deserialize(q);
+		REQUIRE_THAT(tx.toHex(), Equals(deserialized.toHex()));
 	}
 
 	SECTION("correct signature checking")
@@ -204,6 +224,11 @@ TEST_CASE("tx random", "[common][tx]")
 		);
 		REQUIRE_THAT(golden, Equals(tx.toHex()));
 		REQUIRE(signature.verify(crypto::Digest(data.serialize()), crypto::Address(publicKey)));
+
+		const auto serialized = tx.serialize();
+		auto q = std::deque<std::byte>(serialized.begin(), serialized.end());
+		const auto deserialized = TX::deserialize(q);
+		REQUIRE_THAT(tx.toHex(), Equals(deserialized.toHex()));
 	}
 }
 
