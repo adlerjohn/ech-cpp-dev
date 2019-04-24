@@ -92,7 +92,7 @@ const TXData TXData::deserialize(std::deque<std::byte>& serial)
 
 	const auto recentBlockHeight = deserializer::deserialize<uint64_t, 8u>(serial);
 
-	const auto recentBlockHash = (recentBlockHeight > 0) ? crypto::Digest() : deserializer::move<crypto::Digest>(serial);
+	const auto recentBlockHash = (recentBlockHeight == 0) ? crypto::Digest() : deserializer::move<crypto::Digest>(serial);
 
 	return TXData(version, inputs, outputs, heightMin, heightMax, recentBlockHeight, recentBlockHash);
 }
