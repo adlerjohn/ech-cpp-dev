@@ -52,6 +52,11 @@ public:
 	{
 	}
 
+	explicit ByteSet(const std::array<std::byte, N>& bytes)
+		: _data(bytes)
+	{
+	}
+
 	[[nodiscard]] const auto toHex() const
 	{
 		std::stringstream buf;

@@ -23,6 +23,11 @@ public:
 	 */
 	Digest();
 
+	explicit Digest(const std::array<std::byte, DEFINE_DIGEST_BYTES>& bytes)
+		: ByteSet(bytes)
+	{
+	}
+
 	explicit Digest(const std::string& msg, bool isDigest = false);
 
 	explicit Digest(const std::vector<std::byte>& bytes);

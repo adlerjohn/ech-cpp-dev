@@ -29,6 +29,11 @@ private:
 	[[nodiscard]] static const auto sign(const SecretKey& secretKey, const Digest& digest);
 
 public:
+	explicit Signature(const std::array<std::byte, DEFINE_SIGNATURE_BYTES>& bytes)
+		: ByteSet(bytes)
+	{
+	}
+
 	explicit Signature(const std::string& sig);
 
 	Signature(const SecretKey& secretKey, const std::vector<std::byte>& msg);

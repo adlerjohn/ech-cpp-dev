@@ -20,6 +20,11 @@ private:
 public:
 	Address();
 
+	explicit Address(const std::array<std::byte, DEFINE_ADDRESS_BYTES>& bytes)
+		: ByteSet(bytes)
+	{
+	}
+
 	explicit Address(const std::string& str);
 
 	explicit Address(const PublicKey& publicKey);
