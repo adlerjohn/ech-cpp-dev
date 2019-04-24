@@ -36,11 +36,11 @@ TEST_CASE("color yes", "[common][color]")
 
 TEST_CASE("color deserialize short", "[common][color]")
 {
-	auto bad1 = std::vector<std::byte>{};
+	auto emtpy = std::vector<std::byte>{};
 
-	REQUIRE_THROWS_AS(Color::deserialize(bad1), std::runtime_error);
+	REQUIRE_THROWS_AS(Color::deserialize(emtpy), std::runtime_error);
 
-	auto bad2 = std::vector<std::byte>{std::byte(0x01), std::byte(0x00)};
+	auto bad = std::vector<std::byte>{std::byte(0x01), std::byte(0x00)};
 
-	REQUIRE_THROWS_AS(Color::deserialize(bad2), std::runtime_error);
+	REQUIRE_THROWS_AS(Color::deserialize(bad), std::runtime_error);
 }

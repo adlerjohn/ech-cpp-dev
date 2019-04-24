@@ -206,3 +206,10 @@ TEST_CASE("tx random", "[common][tx]")
 		REQUIRE(signature.verify(crypto::Digest(data.serialize()), crypto::Address(publicKey)));
 	}
 }
+
+TEST_CASE("tx deserialize short", "[common][tx]")
+{
+	auto emtpy = std::vector<std::byte>{};
+
+	REQUIRE_THROWS_AS(TX::deserialize(emtpy), std::runtime_error);
+}

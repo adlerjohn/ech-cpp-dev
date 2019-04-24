@@ -28,4 +28,15 @@ TEST_CASE("block zero", "[common][block]")
 		"0000000000000000" // leaves count
 	);
 	REQUIRE_THAT(golden, Equals(block.toHex()));
+
+	auto serialized = block.serialize();
+	const auto deserialized = Block::deserialize(serialized);
+	REQUIRE_THAT(golden, Equals(deserialized.toHex()));
+}
+
+TEST_CASE("block deserialize short", "[common][block]")
+{
+	auto emtpy = std::vector<std::byte>{};
+
+	REQUIRE_THROWS_AS(Block::deserialize(emtpy), std::runtime_error);
 }

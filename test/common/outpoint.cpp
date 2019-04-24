@@ -39,7 +39,7 @@ TEST_CASE("outpoint testing 42", "[common][outpoint]")
 
 TEST_CASE("outpoint deserialize short", "[common][outpoint]")
 {
-	auto bad1 = std::vector<std::byte>{};
+	auto emtpy = std::vector<std::byte>{};
 
-	REQUIRE_THROWS_AS(Outpoint::deserialize(bad1), std::runtime_error);
+	REQUIRE_THROWS_AS(Outpoint::deserialize(emtpy), std::runtime_error);
 }
