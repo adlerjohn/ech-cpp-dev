@@ -13,7 +13,8 @@ auto Address::toAddress(const PublicKey& publicKey)
 	CryptoPP::ArraySource(reinterpret_cast<const CryptoPP::byte*>(publicKey.raw()), PublicKey::size(), true,
 		new CryptoPP::HashFilter(hash,
 			new CryptoPP::StringSink(digest),
-			false)
+			false
+		)
 	);
 	// Only keep the last 20 bytes
 	digest = digest.substr(digest.length() - size());
@@ -22,7 +23,8 @@ auto Address::toAddress(const PublicKey& publicKey)
 	CryptoPP::StringSource(digest, true,
 		new CryptoPP::HexEncoder(
 			new CryptoPP::StringSink(hexAddress),
-			false)
+			false
+		)
 	);
 
 	return hexAddress;
