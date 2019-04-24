@@ -34,7 +34,7 @@ TEST_CASE("color yes", "[common][color]")
 	REQUIRE_THAT(color.toHex(), Equals(deserialized.toHex()));
 }
 
-TEST_CASE("color deserialize incorrect", "[common][color]")
+TEST_CASE("color deserialize short", "[common][color]")
 {
 	auto bad1 = std::vector<std::byte>{};
 
