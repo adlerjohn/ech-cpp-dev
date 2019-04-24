@@ -15,16 +15,14 @@ namespace serializer
 {
 
 template<class T, size_t B>
-[[nodiscard]] const auto serialize(const T in, const bool tolower = false)
+[[nodiscard]] const auto serialize(const T in)
 {
 	std::vector<std::byte> serial;
 
 	std::stringstream buf;
 	buf << std::hex << std::setfill('0') << std::setw(B * 2) << in;
 	auto str = buf.str();
-	if (tolower) {
-		std::transform(str.begin(), str.end(), str.begin(), ::tolower);
-	}
+	std::transform(str.begin(), str.end(), str.begin(), ::tolower);
 	const auto inBytes = crypto::byteset<B>(str);
 	serial.insert(serial.end(), inBytes.begin(), inBytes.end());
 

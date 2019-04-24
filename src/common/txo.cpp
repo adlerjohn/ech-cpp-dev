@@ -36,7 +36,7 @@ const std::vector<std::byte> TXO::serialize() const
 
 	serial.insert(serial.end(), _recipient.begin(), _recipient.end());
 
-	const auto amountBytes = serializer::serialize<CoinAmount, 32u>(_amount, true);
+	const auto amountBytes = serializer::serialize<CoinAmount, 32u>(_amount);
 	serial.insert(serial.end(), amountBytes.begin(), amountBytes.end());
 
 	const auto color = _color.serialize();

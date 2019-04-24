@@ -12,7 +12,7 @@ const std::vector<std::byte> Deposit::serializeData(const crypto::Address& owner
 
 	serial.insert(serial.end(), owner.begin(), owner.end());
 
-	const auto amountBytes = serializer::serialize<CoinAmount, 32u>(amount, true);
+	const auto amountBytes = serializer::serialize<CoinAmount, 32u>(amount);
 	serial.insert(serial.end(), amountBytes.begin(), amountBytes.end());
 
 	const auto colorSerial = color.serialize();
