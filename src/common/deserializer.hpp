@@ -21,11 +21,10 @@ namespace deserializer
 template<class T>
 [[nodiscard]] const T move(std::vector<std::byte>& serial)
 {
-	static_assert(std::is_base_of<crypto::ByteSet<T::size()>, T>::value, "must move to byteset or child");
-
 	constexpr auto N = T::size();
+	static_assert(std::is_base_of<crypto::ByteSet<N>, T>::value, "must move to byteset or child");
 
-	if (serial.size() >= N) {
+	if (serial.size() < N) {
 		throw std::runtime_error("too few bytes when moving");
 	}
 
@@ -47,7 +46,7 @@ template<class T>
 template<class T, size_t B>
 [[nodiscard]] const T deserialize(std::vector<std::byte>& serial)
 {
-	const auto bytes = move(serial);
+	const auto bytes = move<crypto::byteset<B>>(serial);
 
 	T t;
 
