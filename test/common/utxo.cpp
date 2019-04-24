@@ -22,6 +22,11 @@ TEST_CASE("UTXO zero", "[common][utxo]")
 	REQUIRE(0 == utxo.getAmount());
 	REQUIRE_FALSE(utxo.isColored());
 	REQUIRE(0 == utxo.getHeight());
+
+	const auto serialized = utxo.serialize();
+	auto q = std::deque<std::byte>(serialized.begin(), serialized.end());
+	const auto deserialized = UTXO::deserialize(q);
+	REQUIRE_THAT(utxo.toHex(), Equals(deserialized.toHex()));
 }
 
 TEST_CASE("UTXO random", "[common][utxo]")
@@ -41,4 +46,9 @@ TEST_CASE("UTXO random", "[common][utxo]")
 	REQUIRE(utxo.isColored());
 	REQUIRE_THAT("deadbeefdeadbeefdeadbeefdeadbeefdeadbeef", Equals(utxo.getColor().getColor().toHex()));
 	REQUIRE(7 == utxo.getHeight());
+
+	const auto serialized = utxo.serialize();
+	auto q = std::deque<std::byte>(serialized.begin(), serialized.end());
+	const auto deserialized = UTXO::deserialize(q);
+	REQUIRE_THAT(utxo.toHex(), Equals(deserialized.toHex()));
 }
