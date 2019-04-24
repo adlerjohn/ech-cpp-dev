@@ -50,13 +50,9 @@ template<class T, size_t B>
 
 	T t;
 
-	if constexpr (std::is_base_of<CoinAmount, T>::value) {
-		boost::multiprecision::import_bits(t, bytes.begin(), bytes.end());
-	} else {
-		for (const auto& byte : bytes) {
-			t <<= 8;
-			t |= static_cast<uint8_t>(byte);
-		}
+	for (const auto& byte : bytes) {
+		t <<= 8;
+		t |= static_cast<uint8_t>(byte);
 	}
 
 	return t;
