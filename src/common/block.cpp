@@ -1,6 +1,7 @@
 #include "block.hpp"
 
 // Project includes
+#include "deserializer.hpp"
 #include "merkle.hpp"
 #include "serializer.hpp"
 #include "txid.hpp"
@@ -34,6 +35,25 @@ Block::Block(const uint32_t version, const crypto::Digest& prev, const std::vect
 	, _deposits(deposits)
 	, _leaves(leaves)
 {
+}
+
+const Block Block::deserialize(std::vector<std::byte>& serial)
+{
+	const auto header = BlockHeader::deserialize(serial);
+
+	std::vector<Deposit> deposits;
+	const auto depositsCount = deserializer::deserialize<uint64_t, 8u>(serial);
+	for (size_t i = 0; i < depositsCount; i++) {
+		deposits.push_back(Deposit::deserialize(serial));
+	}
+
+	std::vector<TX> leaves;
+	const auto leavesCount = deserializer::deserialize<uint64_t, 8u>(serial);
+	for (size_t i = 0; i < leavesCount; i++) {
+		leaves.push_back(TX::deserialize(serial));
+	}
+
+	return Block(header.getVersion(), header.getPreviousBlockHash(), deposits, leaves, header.getHeight());
 }
 
 const std::vector<std::byte> ech::Block::serialize() const

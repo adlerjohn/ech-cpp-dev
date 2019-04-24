@@ -22,6 +22,8 @@ private:
 public:
 	BlockHeader(const uint32_t version, const crypto::Digest& prev, const crypto::Digest& depositsRoot, const crypto::Digest& transactionsRoot, const uint64_t height);
 
+	[[nodiscard]] static const BlockHeader deserialize(std::vector<std::byte>& serial);
+
 	[[nodiscard]] const auto getVersion() const { return this->_version; }
 	[[nodiscard]] const auto getPreviousBlockHash() const { return this->_prev; }
 	[[nodiscard]] const auto getId() const { return this->_id; }

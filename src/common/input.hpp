@@ -16,6 +16,8 @@ private:
 public:
 	Input(const Outpoint& outpoint, const uint32_t witnessIndex);
 
+	[[nodiscard]] static const Input deserialize(std::vector<std::byte>& serial);
+
 	[[nodiscard]] const auto& getOutpoint() const { return this->_outpoint; }
 	[[nodiscard]] const auto getWitnessIndex() const { return this->_witnessIndex; }
 

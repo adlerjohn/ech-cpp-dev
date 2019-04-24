@@ -28,6 +28,8 @@ private:
 public:
 	Deposit(const crypto::Address& owner, const CoinAmount amount, const Color& color, const uint64_t height, const uint64_t nonce);
 
+	[[nodiscard]] static const Deposit deserialize(std::vector<std::byte>& serial);
+
 	[[nodiscard]] const auto& getSource() const { return this->_source; }
 	[[nodiscard]] const auto& getOwner() const { return this->_owner; }
 	[[nodiscard]] const auto getAmount() const { return this->_amount; }

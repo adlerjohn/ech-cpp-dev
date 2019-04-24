@@ -1,6 +1,7 @@
 #include "tx.hpp"
 
 // Project includes
+#include "deserializer.hpp"
 #include "serializer.hpp"
 
 using namespace ech;
@@ -67,7 +68,36 @@ TXData::TXData(
 	, _recentBlockHeight(recentBlockHeight)
 	, _recentBlockHash(recentBlockHash)
 {
-	// TODO do correctness checks (e.g., that each input refers to one existing witness)
+}
+
+const TXData TXData::deserialize(std::vector<std::byte>& serial)
+{
+	// TODO don't deserialize ID
+	const auto id = deserializer::deserialize<uint32_t, 4u>(serial);
+
+	const auto version = deserializer::deserialize<uint32_t, 4u>(serial);
+
+	std::vector<Input> inputs;
+	const auto inputsCount = deserializer::deserialize<uint32_t, 4u>(serial);
+	for (size_t i = 0; i < inputsCount; i++) {
+		inputs.push_back(Input::deserialize(serial));
+	}
+
+	std::vector<TXO> outputs;
+	const auto outputsCount = deserializer::deserialize<uint32_t, 4u>(serial);
+	for (size_t i = 0; i < outputsCount; i++) {
+		outputs.push_back(TXO::deserialize(serial));
+	}
+
+	const auto heightMin = deserializer::deserialize<uint64_t, 8u>(serial);
+
+	const auto heightMax = deserializer::deserialize<uint64_t, 8u>(serial);
+
+	const auto recentBlockHeight = deserializer::deserialize<uint64_t, 8u>(serial);
+
+	const auto recentBlockHash = (recentBlockHeight > 0) ? crypto::Digest() : deserializer::move<crypto::Digest>(serial);
+
+	return TXData(version, inputs, outputs, heightMin, heightMax, recentBlockHeight, recentBlockHash);
 }
 
 const size_t TXData::getSize() const
@@ -79,6 +109,7 @@ const std::vector<std::byte> TXData::serialize() const
 {
 	std::vector<std::byte> serial;
 
+	// TODO don't serialize ID
 	serial.insert(serial.end(), _id.begin(), _id.end());
 
 	const auto serialData = serializeData(_version, _inputs, _outputs, _heightMin, _heightMax, _recentBlockHeight, _recentBlockHash);
@@ -91,7 +122,19 @@ TX::TX(const TXData& data, const std::vector<crypto::Signature>& witnesses)
 	: _data(data)
 	, _witnesses(witnesses)
 {
-	// TODO do correctness checks (e.g., that each input refers to one existing witness)
+}
+
+const TX TX::deserialize(std::vector<std::byte>& serial)
+{
+	const auto data = TXData::deserialize(serial);
+
+	std::vector<crypto::Signature> witnesses;
+	const auto witnessCount = deserializer::deserialize<uint32_t, 4u>(serial);
+	for (size_t i = 0; i < witnessCount; i++) {
+		witnesses.push_back(deserializer::move<crypto::Signature>(serial));
+	}
+
+	return TX(data, witnesses);
 }
 
 const size_t TX::getSize() const

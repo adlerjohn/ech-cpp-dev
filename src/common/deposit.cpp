@@ -1,6 +1,7 @@
 #include "deposit.hpp"
 
 // Project includes
+#include "deserializer.hpp"
 #include "serializer.hpp"
 
 using namespace ech;
@@ -34,7 +35,21 @@ Deposit::Deposit(const crypto::Address& owner, const CoinAmount amount, const Co
 	, _height(height)
 	, _nonce(nonce)
 {
-	// TODO double-check source
+}
+
+const Deposit Deposit::deserialize(std::vector<std::byte>& serial)
+{
+	const auto owner = deserializer::move<crypto::Address>(serial);
+
+	const auto amount = deserializer::deserialize<CoinAmount, 32u>(serial);
+
+	const auto color = Color::deserialize(serial);
+
+	const auto height = deserializer::deserialize<uint64_t, 8u>(serial);
+
+	const auto nonce = deserializer::deserialize<uint64_t, 8u>(serial);
+
+	return Deposit(owner, amount, color, height, nonce);
 }
 
 const std::vector<std::byte> Deposit::serialize() const
