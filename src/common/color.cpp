@@ -20,7 +20,7 @@ Color::Color(const crypto::Address& id)
 const Color Color::deserialize(std::vector<std::byte>& serial)
 {
 	const auto isColored = static_cast<bool>(deserializer::deserialize<uint8_t, 1u>(serial));
-	if (isColored) {
+	if (!isColored) {
 		return Color();
 	}
 
