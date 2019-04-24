@@ -20,6 +20,8 @@ private:
 public:
 	TXO(const uint32_t index, const crypto::Address& recipient, const CoinAmount amount, const Color& color);
 
+	[[nodiscard]] static const TXO deserialize(std::vector<std::byte>& serial);
+
 	[[nodiscard]] const std::vector<std::byte> serialize() const override;
 };
 

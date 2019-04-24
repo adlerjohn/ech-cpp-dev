@@ -1,6 +1,7 @@
 #include "txo.hpp"
 
 // Project includes
+#include "deserializer.hpp"
 #include "serializer.hpp"
 
 using namespace ech;
@@ -11,6 +12,19 @@ TXO::TXO(const uint32_t index, const crypto::Address& recipient, const CoinAmoun
 	, _amount(amount)
 	, _color(color)
 {
+}
+
+const TXO TXO::deserialize(std::vector<std::byte>& serial)
+{
+	const auto index = deserializer::deserialize<uint32_t, 4u>(serial);
+
+	const auto address = deserializer::move<crypto::Address>(serial);
+
+	const auto amount = deserializer::deserialize<CoinAmount, 32u>(serial);
+
+	const auto color = Color::deserialize(serial);
+
+	return TXO(index, address, amount, color);
 }
 
 const std::vector<std::byte> TXO::serialize() const

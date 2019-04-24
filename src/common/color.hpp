@@ -22,6 +22,8 @@ public:
 
 	explicit Color(const crypto::Address& id);
 
+	[[nodiscard]] static const Color deserialize(std::vector<std::byte>& serial);
+
 	const auto isColored() const { return this->_isColored; }
 	const auto& getColor() const { return this->_id; }
 
