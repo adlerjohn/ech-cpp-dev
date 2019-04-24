@@ -7,7 +7,6 @@
 #include "crypto/signature.hpp"
 #include "input.hpp"
 #include "serializable.hpp"
-#include "state.hpp"
 #include "txid.hpp"
 #include "txo.hpp"
 #include "utxo.hpp"

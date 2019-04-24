@@ -9,7 +9,6 @@ set(source_files
         input.cpp
         merkle.cpp
         outpoint.cpp
-        state.cpp
         tx.cpp
         txo.cpp
         utxo.cpp

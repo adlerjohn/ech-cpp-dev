@@ -5,7 +5,7 @@
 #include <map>
 
 // Project includes
-#include "utxo.hpp"
+#include "common/utxo.hpp"
 
 namespace ech
 {
