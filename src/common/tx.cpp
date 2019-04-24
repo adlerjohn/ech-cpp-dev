@@ -72,9 +72,6 @@ TXData::TXData(
 
 const TXData TXData::deserialize(std::vector<std::byte>& serial)
 {
-	// TODO don't deserialize ID
-	const auto id = deserializer::deserialize<uint32_t, 4u>(serial);
-
 	const auto version = deserializer::deserialize<uint32_t, 4u>(serial);
 
 	std::vector<Input> inputs;
@@ -108,9 +105,6 @@ const size_t TXData::getSize() const
 const std::vector<std::byte> TXData::serialize() const
 {
 	std::vector<std::byte> serial;
-
-	// TODO don't serialize ID
-	serial.insert(serial.end(), _id.begin(), _id.end());
 
 	const auto serialData = serializeData(_version, _inputs, _outputs, _heightMin, _heightMax, _recentBlockHeight, _recentBlockHash);
 	serial.insert(serial.end(), serialData.begin(), serialData.end());

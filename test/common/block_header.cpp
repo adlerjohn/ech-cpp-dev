@@ -17,8 +17,9 @@ TEST_CASE("block header empty", "[common][block_header]")
 
 	const auto header = BlockHeader(version, prev, depositsRoot, transactionsRoot, height);
 
+	REQUIRE_THAT("4131b417ff595024f24662aa4eabf1e322f9b49738abb52d4660e96c46f83679", Equals(header.getId().toHex()));
+
 	const auto golden = std::string(
-		"4131b417ff595024f24662aa4eabf1e322f9b49738abb52d4660e96c46f83679"
 		"00000001"
 		"290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e563"
 		"0000000000000000"
@@ -37,8 +38,9 @@ TEST_CASE("block header random", "[common][block_header]")
 
 	const auto header = BlockHeader(version, prev, depositsRoot, transactionsRoot, height);
 
+	REQUIRE_THAT("ee06534cb316cf31cc825665bf1b55c225dafbe4971f15ba063d9f5ab26ff87d", Equals(header.getId().toHex()));
+
 	const auto golden = std::string(
-		"ee06534cb316cf31cc825665bf1b55c225dafbe4971f15ba063d9f5ab26ff87d"
 		"00000001"
 		"290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e563"
 		"000000000000002a"

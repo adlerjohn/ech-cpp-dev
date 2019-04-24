@@ -37,9 +37,6 @@ BlockHeader::BlockHeader(const uint32_t version, const crypto::Digest& prev, con
 
 const BlockHeader BlockHeader::deserialize(std::vector<std::byte>& serial)
 {
-	// TODO don't deserialize ID
-	const auto id = deserializer::deserialize<uint32_t, 4u>(serial);
-
 	const auto version = deserializer::deserialize<uint32_t, 4u>(serial);
 
 	const auto prev = deserializer::move<crypto::Digest>(serial);
@@ -56,9 +53,6 @@ const BlockHeader BlockHeader::deserialize(std::vector<std::byte>& serial)
 const std::vector<std::byte> BlockHeader::serialize() const
 {
 	std::vector<std::byte> serial;
-
-	// TODO don't serialize ID
-	serial.insert(serial.end(), _id.begin(), _id.end());
 
 	const auto serialData = serializeData(_version, _prev, _depositsRoot, _transactionsRoot, _height);
 	serial.insert(serial.end(), serialData.begin(), serialData.end());
