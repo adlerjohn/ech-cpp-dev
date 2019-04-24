@@ -17,10 +17,7 @@ UTXO::UTXO(const UTXOID& id, const crypto::Address& owner, const CoinAmount amou
 
 const UTXO UTXO::deserialize(std::deque<std::byte>& serial)
 {
-	const auto size_before = serial.size();
 	const auto id = deserializer::move<UTXOID>(serial);
-	const auto size_after = serial.size();
-	const auto size_delta = size_before - size_after;
 
 	const auto owner = deserializer::move<crypto::Address>(serial);
 
