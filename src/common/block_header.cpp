@@ -41,11 +41,11 @@ const BlockHeader BlockHeader::deserialize(std::vector<std::byte>& serial)
 
 	const auto prev = deserializer::move<crypto::Digest>(serial);
 
+	const auto height = deserializer::deserialize<uint64_t, 8u>(serial);
+
 	const auto depositsRoot = deserializer::move<crypto::Digest>(serial);
 
 	const auto transactionsRoot = deserializer::move<crypto::Digest>(serial);
-
-	const auto height = deserializer::deserialize<uint64_t, 8u>(serial);
 
 	return BlockHeader(version, prev, depositsRoot, transactionsRoot, height);
 }
