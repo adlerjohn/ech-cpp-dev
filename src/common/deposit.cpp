@@ -56,8 +56,6 @@ const std::vector<std::byte> Deposit::serialize() const
 {
 	std::vector<std::byte> serial;
 
-	serial.insert(serial.end(), _source.begin(), _source.end());
-
 	const auto serialData = serializeData(_owner, _amount, _color, _height, _nonce);
 	serial.insert(serial.end(), serialData.begin(), serialData.end());
 
