@@ -6,5 +6,8 @@ set(source_files
         state.cpp
         )
 
-add_executable(echd main.cpp ${source_files})
-target_link_libraries(echd common rocksdb)
+add_library(echd-lib ${source_files})
+target_link_libraries(echd-lib common rocksdb)
+
+add_executable(echd main.cpp)
+target_link_libraries(echd echd-lib)
