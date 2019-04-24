@@ -7,11 +7,11 @@
 namespace ech
 {
 
-//using UTXOID = crypto::Digest;
-
 class UTXOID : public crypto::Digest
 {
 public:
+	explicit UTXOID(const std::array<std::byte, UTXOID::size()>& bytes);
+
 	explicit UTXOID(const Outpoint& outpoint);
 };
 
