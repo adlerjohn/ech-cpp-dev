@@ -29,4 +29,4 @@ set(source_files
         )
 
 add_executable(unit_tester ${source_files})
-target_link_libraries(unit_tester Catch common ech-crypto)
+target_link_libraries(unit_tester Catch echd-lib common ech-crypto)

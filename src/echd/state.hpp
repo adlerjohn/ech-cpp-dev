@@ -1,8 +1,8 @@
 #pragma once
 
 // System includes
-#include <vector>
 #include <map>
+#include <vector>
 
 // Project includes
 #include "common/utxo.hpp"
@@ -20,6 +20,8 @@ public:
 	void add(const std::vector<UTXO>& utxos);
 
 	void remove(const std::vector<UTXO>& utxos);
+
+	[[nodiscard]] const auto size() const { return this->_utxoSet.size(); }
 };
 
 } // namespace ech
