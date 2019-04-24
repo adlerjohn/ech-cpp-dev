@@ -10,20 +10,20 @@
 #include "byteset.hpp"
 #include "digest.hpp"
 
-#define SECRET_KEY_BYTES 32u
-#define PUBLIC_KEY_BYTES 64u
+#define DEFINE_SECRET_KEY_BYTES 32u
+#define DEFINE_PUBLIC_KEY_BYTES 64u
 
 namespace ech::crypto
 {
 
 // TODO need to zero out secret key on destroy
-class SecretKey : public byteset<SECRET_KEY_BYTES>
+class SecretKey : public byteset<DEFINE_SECRET_KEY_BYTES>
 {
 public:
 	explicit SecretKey(const std::string& str);
 };
 
-class PublicKey : public byteset<PUBLIC_KEY_BYTES>
+class PublicKey : public byteset<DEFINE_PUBLIC_KEY_BYTES>
 {
 private:
 	[[nodiscard]] static const auto getContextKeys();

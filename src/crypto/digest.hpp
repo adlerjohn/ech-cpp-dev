@@ -3,12 +3,12 @@
 // Project includes
 #include "byteset.hpp"
 
-#define DIGEST_BYTES 32u
+#define DEFINE_DIGEST_BYTES 32u
 
 namespace ech::crypto
 {
 
-class Digest : public byteset<DIGEST_BYTES>
+class Digest : public byteset<DEFINE_DIGEST_BYTES>
 {
 private:
 	[[nodiscard]] const auto hash(const std::string& msg) const;

@@ -14,12 +14,12 @@
 //  32 bytes r
 //  32 bytes s
 //  1  byte  v
-#define SIGNATURE_BYTES  65u
+#define DEFINE_SIGNATURE_BYTES  65u
 
 namespace ech::crypto
 {
 
-class Signature : public byteset<SIGNATURE_BYTES>
+class Signature : public byteset<DEFINE_SIGNATURE_BYTES>
 {
 private:
 	[[nodiscard]] static const auto getContextSign();
