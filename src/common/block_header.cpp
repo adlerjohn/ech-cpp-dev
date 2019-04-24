@@ -1,17 +1,20 @@
 #include "block_header.hpp"
 
+// Project includes
+#include "serializer.hpp"
+
 using namespace ech;
 
 const std::vector<std::byte> BlockHeader::serializeData(const uint32_t version, const crypto::Digest& prev, const crypto::Digest& depositsRoot, const crypto::Digest& transactionsRoot, const uint64_t height) const
 {
 	std::vector<std::byte> serial;
 
-	const auto versionBytes = Serializable::serialize(version);
+	const auto versionBytes = serializer::serialize<uint32_t, 4u>(version);
 	serial.insert(serial.end(), versionBytes.begin(), versionBytes.end());
 
 	serial.insert(serial.end(), prev.begin(), prev.end());
 
-	const auto heightBytes = Serializable::serialize(height);
+	const auto heightBytes = serializer::serialize<uint64_t, 8u>(height);
 	serial.insert(serial.end(), heightBytes.begin(), heightBytes.end());
 
 	serial.insert(serial.end(), depositsRoot.begin(), depositsRoot.end());

@@ -1,5 +1,8 @@
 #include "deposit.hpp"
 
+// Project includes
+#include "serializer.hpp"
+
 using namespace ech;
 
 const std::vector<std::byte> Deposit::serializeData(const crypto::Address& owner, const CoinAmount amount, const Color& color, const uint64_t height, const uint64_t nonce)
@@ -8,16 +11,16 @@ const std::vector<std::byte> Deposit::serializeData(const crypto::Address& owner
 
 	serial.insert(serial.end(), owner.begin(), owner.end());
 
-	const auto amountBytes = Serializable::serialize(amount);
+	const auto amountBytes = serializer::serialize<CoinAmount, 32u>(amount, true);
 	serial.insert(serial.end(), amountBytes.begin(), amountBytes.end());
 
 	const auto colorSerial = color.serialize();
 	serial.insert(serial.end(), colorSerial.begin(), colorSerial.end());
 
-	const auto heightBytes = Serializable::serialize(height);
+	const auto heightBytes = serializer::serialize<uint64_t, 8u>(height);
 	serial.insert(serial.end(), heightBytes.begin(), heightBytes.end());
 
-	const auto nonceBytes = Serializable::serialize(nonce);
+	const auto nonceBytes = serializer::serialize<uint64_t, 8u>(nonce);
 	serial.insert(serial.end(), nonceBytes.begin(), nonceBytes.end());
 
 	return serial;

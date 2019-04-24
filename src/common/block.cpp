@@ -2,6 +2,7 @@
 
 // Project includes
 #include "merkle.hpp"
+#include "serializer.hpp"
 #include "txid.hpp"
 
 using namespace ech;
@@ -43,7 +44,7 @@ const std::vector<std::byte> ech::Block::serialize() const
 	serial.insert(serial.end(), headerSerialized.begin(), headerSerialized.end());
 
 	const uint64_t depositCount = _deposits.size();
-	const auto depositCountBytes = Serializable::serialize(depositCount);
+	const auto depositCountBytes = serializer::serialize<uint64_t, 8u>(depositCount);
 	serial.insert(serial.end(), depositCountBytes.begin(), depositCountBytes.end());
 
 	for (const auto& deposit : _deposits) {
@@ -52,7 +53,7 @@ const std::vector<std::byte> ech::Block::serialize() const
 	}
 
 	const uint64_t leafCount = _leaves.size();
-	const auto leafCountBytes = Serializable::serialize(leafCount);
+	const auto leafCountBytes = serializer::serialize<uint64_t, 8u>(leafCount);
 	serial.insert(serial.end(), leafCountBytes.begin(), leafCountBytes.end());
 
 	for (const auto& leaf : _leaves) {

@@ -1,5 +1,8 @@
 #include "outpoint.hpp"
 
+// Project includes
+#include "serializer.hpp"
+
 using namespace ech;
 
 Outpoint::Outpoint(const TXID& txid, const uint32_t index)
@@ -14,7 +17,7 @@ const std::vector<std::byte> Outpoint::serialize() const
 
 	serial.insert(serial.end(), _txid.begin(), _txid.end());
 
-	const auto indexBytes = Serializable::serialize(_index);
+	const auto indexBytes = serializer::serialize<uint32_t, 4u>(_index);
 	serial.insert(serial.end(), indexBytes.begin(), indexBytes.end());
 
 	return serial;

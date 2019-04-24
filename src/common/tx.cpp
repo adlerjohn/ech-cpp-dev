@@ -1,5 +1,8 @@
 #include "tx.hpp"
 
+// Project includes
+#include "serializer.hpp"
+
 using namespace ech;
 
 const std::vector<std::byte> TXData::serializeData(
@@ -13,11 +16,11 @@ const std::vector<std::byte> TXData::serializeData(
 {
 	std::vector<std::byte> serial;
 
-	const auto versionBytes = Serializable::serialize(version);
+	const auto versionBytes = serializer::serialize<uint32_t, 4u>(version);
 	serial.insert(serial.end(), versionBytes.begin(), versionBytes.end());
 
 	const uint32_t inputsCount = inputs.size();
-	const auto inputsCountBytes = Serializable::serialize(inputsCount);
+	const auto inputsCountBytes = serializer::serialize<uint32_t, 4u>(inputsCount);
 	serial.insert(serial.end(), inputsCountBytes.begin(), inputsCountBytes.end());
 	for (const auto& input : inputs) {
 		const auto inputSerialized = input.serialize();
@@ -25,20 +28,20 @@ const std::vector<std::byte> TXData::serializeData(
 	}
 
 	const uint32_t outputsCount = outputs.size();
-	const auto outputsCountBytes = Serializable::serialize(outputsCount);
+	const auto outputsCountBytes = serializer::serialize<uint32_t, 4u>(outputsCount);
 	serial.insert(serial.end(), outputsCountBytes.begin(), outputsCountBytes.end());
 	for (const auto& output : outputs) {
 		const auto outputSerialized = output.serialize();
 		serial.insert(serial.end(), outputSerialized.begin(), outputSerialized.end());
 	}
 
-	const auto heightMinBytes = Serializable::serialize(heightMin);
+	const auto heightMinBytes = serializer::serialize<uint64_t, 8u>(heightMin);
 	serial.insert(serial.end(), heightMinBytes.begin(), heightMinBytes.end());
 
-	const auto heightMaxBytes = Serializable::serialize(heightMax);
+	const auto heightMaxBytes = serializer::serialize<uint64_t, 8u>(heightMax);
 	serial.insert(serial.end(), heightMaxBytes.begin(), heightMaxBytes.end());
 
-	const auto recentBlockHeightBytes = Serializable::serialize(recentBlockHeight);
+	const auto recentBlockHeightBytes = serializer::serialize<uint64_t, 8u>(recentBlockHeight);
 	serial.insert(serial.end(), recentBlockHeightBytes.begin(), recentBlockHeightBytes.end());
 	if (recentBlockHeight > 0) {
 		serial.insert(serial.end(), recentBlockHash.begin(), recentBlockHash.end());
@@ -104,7 +107,7 @@ const std::vector<std::byte> TX::serialize() const
 	serial.insert(serial.end(), dataSerialized.begin(), dataSerialized.end());
 
 	const uint32_t witnessesCount = _witnesses.size();
-	const auto witnessesCountBytes = Serializable::serialize(witnessesCount);
+	const auto witnessesCountBytes = serializer::serialize<uint32_t, 4u>(witnessesCount);
 	serial.insert(serial.end(), witnessesCountBytes.begin(), witnessesCountBytes.end());
 	for (const auto& witness : _witnesses) {
 		serial.insert(serial.end(), witness.begin(), witness.end());
