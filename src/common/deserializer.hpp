@@ -2,7 +2,6 @@
 
 // System includes
 #include <cstddef>
-#include <vector>
 
 // Library includes
 #include "crypto/byteset.hpp"
@@ -19,7 +18,7 @@ namespace deserializer
  * @return Instance of T.
  */
 template<class T>
-[[nodiscard]] const T move(std::vector<std::byte>& serial)
+[[nodiscard]] const T move(std::deque<std::byte>& serial)
 {
 	constexpr auto N = T::size();
 	static_assert(std::is_base_of<crypto::ByteSet<N>, T>::value, "must move to byteset or child");
@@ -44,7 +43,7 @@ template<class T>
  * @return Instance of T.
  */
 template<class T, size_t B>
-[[nodiscard]] const T deserialize(std::vector<std::byte>& serial)
+[[nodiscard]] const T deserialize(std::deque<std::byte>& serial)
 {
 	const auto bytes = move<crypto::byteset<B>>(serial);
 

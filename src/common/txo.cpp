@@ -14,7 +14,7 @@ TXO::TXO(const uint32_t index, const crypto::Address& recipient, const CoinAmoun
 {
 }
 
-const TXO TXO::deserialize(std::vector<std::byte>& serial)
+const TXO TXO::deserialize(std::deque<std::byte>& serial)
 {
 	const auto index = deserializer::deserialize<uint32_t, 4u>(serial);
 

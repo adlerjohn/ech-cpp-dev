@@ -70,7 +70,7 @@ TXData::TXData(
 {
 }
 
-const TXData TXData::deserialize(std::vector<std::byte>& serial)
+const TXData TXData::deserialize(std::deque<std::byte>& serial)
 {
 	const auto version = deserializer::deserialize<uint32_t, 4u>(serial);
 
@@ -118,7 +118,7 @@ TX::TX(const TXData& data, const std::vector<crypto::Signature>& witnesses)
 {
 }
 
-const TX TX::deserialize(std::vector<std::byte>& serial)
+const TX TX::deserialize(std::deque<std::byte>& serial)
 {
 	const auto data = TXData::deserialize(serial);
 

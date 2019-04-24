@@ -12,7 +12,7 @@ Input::Input(const Outpoint& outpoint, const uint32_t witnessIndex)
 {
 }
 
-const Input Input::deserialize(std::vector<std::byte>& serial)
+const Input Input::deserialize(std::deque<std::byte>& serial)
 {
 	const auto outpoint = Outpoint::deserialize(serial);
 

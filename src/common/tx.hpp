@@ -63,7 +63,7 @@ public:
 		const uint64_t recentBlockHeight,
 		const crypto::Digest& recentBlockHash);
 
-	[[nodiscard]] static const TXData deserialize(std::vector<std::byte>& serial);
+	[[nodiscard]] static const TXData deserialize(std::deque<std::byte>& serial);
 
 	[[nodiscard]] const auto getId() const { return this->_id; }
 	[[nodiscard]] const auto getVersion() const { return this->_version; }
@@ -94,7 +94,7 @@ private:
 public:
 	TX(const TXData& data, const std::vector<crypto::Signature>& witnesses);
 
-	[[nodiscard]] static const TX deserialize(std::vector<std::byte>& serial);
+	[[nodiscard]] static const TX deserialize(std::deque<std::byte>& serial);
 
 	[[nodiscard]] const auto& getData() const { return this->_data; }
 	[[nodiscard]] const auto& getWitnesses() const { return this->_witnesses; }

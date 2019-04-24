@@ -27,7 +27,7 @@ private:
 public:
 	Block(const uint32_t version, const crypto::Digest& prev, const std::vector<Deposit>& deposits, const std::vector<TX>& leaves, const uint64_t height);
 
-	[[nodiscard]] static const Block deserialize(std::vector<std::byte>& serial);
+	[[nodiscard]] static const Block deserialize(std::deque<std::byte>& serial);
 
 	[[nodiscard]] const auto& getHeader() const { return this->_header; }
 	[[nodiscard]] const auto& getDeposits() const { return this->_deposits; }

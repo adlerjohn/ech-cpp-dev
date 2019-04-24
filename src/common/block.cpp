@@ -37,7 +37,7 @@ Block::Block(const uint32_t version, const crypto::Digest& prev, const std::vect
 {
 }
 
-const Block Block::deserialize(std::vector<std::byte>& serial)
+const Block Block::deserialize(std::deque<std::byte>& serial)
 {
 	const auto header = BlockHeader::deserialize(serial);
 

@@ -35,7 +35,7 @@ BlockHeader::BlockHeader(const uint32_t version, const crypto::Digest& prev, con
 {
 }
 
-const BlockHeader BlockHeader::deserialize(std::vector<std::byte>& serial)
+const BlockHeader BlockHeader::deserialize(std::deque<std::byte>& serial)
 {
 	const auto version = deserializer::deserialize<uint32_t, 4u>(serial);
 

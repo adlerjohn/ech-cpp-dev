@@ -16,7 +16,7 @@ private:
 public:
 	Outpoint(const TXID& txid, const uint32_t index);
 
-	[[nodiscard]] static const Outpoint deserialize(std::vector<std::byte>& serial);
+	[[nodiscard]] static const Outpoint deserialize(std::deque<std::byte>& serial);
 
 	[[nodiscard]] const auto getTXID() const { return this->_txid; }
 	[[nodiscard]] const auto getIndex() const { return this->_index; }

@@ -37,7 +37,7 @@ Deposit::Deposit(const crypto::Address& owner, const CoinAmount amount, const Co
 {
 }
 
-const Deposit Deposit::deserialize(std::vector<std::byte>& serial)
+const Deposit Deposit::deserialize(std::deque<std::byte>& serial)
 {
 	const auto owner = deserializer::move<crypto::Address>(serial);
 

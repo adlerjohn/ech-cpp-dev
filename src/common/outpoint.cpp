@@ -12,7 +12,7 @@ Outpoint::Outpoint(const TXID& txid, const uint32_t index)
 {
 }
 
-const Outpoint Outpoint::deserialize(std::vector<std::byte>& serial)
+const Outpoint Outpoint::deserialize(std::deque<std::byte>& serial)
 {
 	const auto txid = deserializer::move<TXID>(serial);
 
