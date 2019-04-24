@@ -27,8 +27,9 @@ TEST_CASE("block header empty", "[common][block_header]")
 		"290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e563");
 	REQUIRE_THAT(golden, Equals(header.toHex()));
 
-	auto serialized = header.serialize();
-	const auto deserialized = BlockHeader::deserialize(serialized);
+	const auto serialized = header.serialize();
+	auto q = std::deque<std::byte>(serialized.begin(), serialized.end());
+	const auto deserialized = BlockHeader::deserialize(q);
 	REQUIRE_THAT(golden, Equals(deserialized.toHex()));
 }
 
@@ -52,14 +53,15 @@ TEST_CASE("block header random", "[common][block_header]")
 		"5f16f4c7f149ac4f9510d9cf8cf384038ad348b3bcdc01915f95de12df9d1b02");
 	REQUIRE_THAT(golden, Equals(header.toHex()));
 
-	auto serialized = header.serialize();
-	const auto deserialized = BlockHeader::deserialize(serialized);
+	const auto serialized = header.serialize();
+	auto q = std::deque<std::byte>(serialized.begin(), serialized.end());
+	const auto deserialized = BlockHeader::deserialize(q);
 	REQUIRE_THAT(golden, Equals(deserialized.toHex()));
 }
 
 TEST_CASE("block header deserialize short", "[common][block_header]")
 {
-	auto emtpy = std::vector<std::byte>{};
+	auto emtpy = std::deque<std::byte>{};
 
 	REQUIRE_THROWS_AS(BlockHeader::deserialize(emtpy), std::runtime_error);
 }

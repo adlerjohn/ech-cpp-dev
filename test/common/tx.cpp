@@ -209,7 +209,7 @@ TEST_CASE("tx random", "[common][tx]")
 
 TEST_CASE("tx deserialize short", "[common][tx]")
 {
-	auto emtpy = std::vector<std::byte>{};
+	auto emtpy = std::deque<std::byte>{};
 
 	REQUIRE_THROWS_AS(TX::deserialize(emtpy), std::runtime_error);
 }

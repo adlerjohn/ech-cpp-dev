@@ -27,14 +27,15 @@ TEST_CASE("deposit zero", "[common][deposit]")
 	);
 	REQUIRE_THAT(golden, Equals(deposit.toHex()));
 
-	auto serialized = deposit.serialize();
-	const auto deserialized = Deposit::deserialize(serialized);
+	const auto serialized = deposit.serialize();
+	auto q = std::deque<std::byte>(serialized.begin(), serialized.end());
+	const auto deserialized = Deposit::deserialize(q);
 	REQUIRE_THAT(golden, Equals(deserialized.toHex()));
 }
 
 TEST_CASE("deposit deserialize short", "[common][deposit]")
 {
-	auto emtpy = std::vector<std::byte>{};
+	auto emtpy = std::deque<std::byte>{};
 
 	REQUIRE_THROWS_AS(Deposit::deserialize(emtpy), std::runtime_error);
 }

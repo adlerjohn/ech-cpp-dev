@@ -29,14 +29,15 @@ TEST_CASE("block zero", "[common][block]")
 	);
 	REQUIRE_THAT(golden, Equals(block.toHex()));
 
-	auto serialized = block.serialize();
-	const auto deserialized = Block::deserialize(serialized);
+	const auto serialized = block.serialize();
+	auto q = std::deque<std::byte>(serialized.begin(), serialized.end());
+	const auto deserialized = Block::deserialize(q);
 	REQUIRE_THAT(golden, Equals(deserialized.toHex()));
 }
 
 TEST_CASE("block deserialize short", "[common][block]")
 {
-	auto emtpy = std::vector<std::byte>{};
+	auto emtpy = std::deque<std::byte>{};
 
 	REQUIRE_THROWS_AS(Block::deserialize(emtpy), std::runtime_error);
 }

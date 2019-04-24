@@ -22,8 +22,9 @@ TEST_CASE("txo zero", "[common][txo]")
 		"00");
 	REQUIRE_THAT(golden, Equals(txo.toHex()));
 
-	auto serialized = txo.serialize();
-	const auto deserialized = TXO::deserialize(serialized);
+	const auto serialized = txo.serialize();
+	auto q = std::deque<std::byte>(serialized.begin(), serialized.end());
+	const auto deserialized = TXO::deserialize(q);
 	REQUIRE_THAT(golden, Equals(deserialized.toHex()));
 }
 
@@ -44,14 +45,15 @@ TEST_CASE("txo random", "[common][txo]")
 		"018a40bfaa73256b60764c1bf40675a99083efb075");
 	REQUIRE_THAT(golden, Equals(txo.toHex()));
 
-	auto serialized = txo.serialize();
-	const auto deserialized = TXO::deserialize(serialized);
+	const auto serialized = txo.serialize();
+	auto q = std::deque<std::byte>(serialized.begin(), serialized.end());
+	const auto deserialized = TXO::deserialize(q);
 	REQUIRE_THAT(golden, Equals(deserialized.toHex()));
 }
 
 TEST_CASE("txo deserialize short", "[common][txo]")
 {
-	auto emtpy = std::vector<std::byte>{};
+	auto emtpy = std::deque<std::byte>{};
 
 	REQUIRE_THROWS_AS(Color::deserialize(emtpy), std::runtime_error);
 }
