@@ -20,6 +20,8 @@ template<size_t N>
 class ByteSet
 {
 private:
+	static constexpr auto _hexes = std::string_view("0123456789abcdef");
+
 	const std::array<std::byte, N> _data;
 
 	[[nodiscard]] static const auto hexToBytes(const std::string& str)
@@ -32,7 +34,6 @@ private:
 			throw std::invalid_argument("attempting to convert from hex string with invalid size");
 
 		for (const auto& c : str) {
-			static const std::string _hexes = std::string("0123456789abcdef");
 			if (std::find(_hexes.begin(), _hexes.end(), c) == _hexes.end())
 				throw std::invalid_argument("invalid hex char");
 		}
