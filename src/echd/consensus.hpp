@@ -3,7 +3,7 @@
 // Project includes
 #include "common/block.hpp"
 #include "state.hpp"
-#include "rewind.hpp"
+#include "transition.hpp"
 
 namespace ech
 {
@@ -14,19 +14,27 @@ private:
 	// Blockchain state at the head
 	State _state;
 	// Data needed to rewind from the head in case of a re-organization
-	// TODO implement rewinds
-	std::deque<Rewind> _rewinds;
+	// TODO implement rewinding transitions
+	std::deque<Transition> _transitions;
+	// Height of the current head
+	uint64_t _height = 0;
 
 	// TODO keep track of a tree of known block headers
 
 public:
-	const bool isBlockValid(const Block& block) const;
+	/**
+	 * Validates a block and gets its state transition if valid.
+	 * @param block Block the validate.
+	 * @return Optional state transition, on success.
+	 */
+	const std::optional<Transition> getBlockTransition(const Block& block) const;
 
 	/**
 	 * Appends block to the head of the chain.
 	 * @param block Block to append.
+	 * @param transition State transition of the block, to apply.
 	 */
-	const void appendBlock(const Block& block);
+	const void appendBlock(const Block& block, const Transition& transition);
 
 	// TODO fork choice, with block scoring
 
