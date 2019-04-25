@@ -38,6 +38,17 @@ void State::remove(const std::vector<UTXO>& utxos)
 	}
 }
 
+const bool State::exists(const UTXOID& utxoid) const
+{
+	return (_utxoSet.find(utxoid) != _utxoSet.end());
+}
+
+const UTXO& State::find(const UTXOID& utxoid) const
+{
+	// TODO add some sanity check here
+	return _utxoSet.find(utxoid)->second;
+}
+
 const std::vector<std::byte> State::serialize() const
 {
 	std::vector<std::byte> serial;
