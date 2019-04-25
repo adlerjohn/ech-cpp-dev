@@ -1,6 +1,7 @@
 #include "signing.hpp"
 
 // System includes
+#include <iostream>
 #include <iomanip>
 
 // Library includes
@@ -11,6 +12,8 @@
 
 // Project includes
 #include "crypto/signature.hpp"
+#include "common/utxo.hpp"
+#include "signing.hpp"
 
 using namespace ech::benchmark;
 
@@ -82,4 +85,28 @@ void Signing::run(const uint64_t threadCount)
 		t.join();
 
 	this->after();
+}
+
+int main()
+{
+	std::cout << "Setting up " << Signing::count() << " tests with libsecp256k1..." << std::endl;
+	auto signing = Signing();
+	signing.setup();
+	std::cout << "Signing setup complete..." << std::endl;
+	std::cout << std::endl;
+
+	std::cout << "Running single-threaded benchmarking..." << std::endl;
+	signing.run();
+	std::cout << "Complete in " << signing.getDuration() << "ms." << std::endl;
+	signing.reset();
+	std::cout << std::endl;
+
+	constexpr auto threadCount = 4u;
+	std::cout << "Running multi-threaded benchmarking with " << threadCount << " threads..." << std::endl;
+	signing.run(threadCount);
+	std::cout << "Complete in " << signing.getDuration() << "ms." << std::endl;
+	signing.reset();
+	std::cout << std::endl;
+
+	return 0;
 }
