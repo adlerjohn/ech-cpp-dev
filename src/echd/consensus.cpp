@@ -95,4 +95,6 @@ const void Consensus::appendBlock(const ech::Block& block, const Transition& tra
 	// TODO also keep track of block headers
 	_state.add(transition.getAdditions());
 	_state.remove(transition.getRemovals());
+
+	_height++;
 }
