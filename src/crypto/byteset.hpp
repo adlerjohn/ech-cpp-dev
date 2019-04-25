@@ -80,6 +80,11 @@ public:
 		return std::memcmp(lhs.raw(), rhs.raw(), N) == 0;
 	}
 
+	friend bool operator!=(const ByteSet<N>& lhs, const ByteSet<N>& rhs)
+	{
+		return !(lhs == rhs);
+	}
+
 	friend bool operator<(const ByteSet<N>& lhs, const ByteSet<N>& rhs)
 	{
 		return std::memcmp(lhs.raw(), rhs.raw(), N) < 0;
