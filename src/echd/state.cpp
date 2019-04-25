@@ -46,8 +46,8 @@ const std::vector<std::byte> State::serialize() const
 	const auto stateSizeBytes = serializer::serialize<uint64_t, 8u>(stateSize);
 	serial.insert(serial.end(), stateSizeBytes.begin(), stateSizeBytes.end());
 
-	for (const auto& [id, utxo] : _utxoSet) {
-		const auto utxoBytes = utxo.serialize();
+	for (const auto& kv : _utxoSet) {
+		const auto utxoBytes = kv.second.serialize();
 		serial.insert(serial.end(), utxoBytes.begin(), utxoBytes.end());
 	}
 	return serial;
