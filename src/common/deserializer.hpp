@@ -35,6 +35,7 @@ template<class T>
 	return T(bytes);
 }
 
+// TODO change this to vector with index for beginning if benchmarking is slow
 /**
  * Deserialize a primitive integer type.
  * @tparam T Type of integer.
