@@ -22,6 +22,11 @@ public:
 
 	[[nodiscard]] static const TXO deserialize(std::deque<std::byte>& serial);
 
+	[[nodiscard]] const auto getIndex() const { return this->_index; }
+	[[nodiscard]] const auto getRecipient() const { return this->_recipient; }
+	[[nodiscard]] const auto getAmount() const { return this->_amount; }
+	[[nodiscard]] const auto getColor() const { return this->_color; }
+
 	[[nodiscard]] const std::vector<std::byte> serialize() const override;
 };
 
