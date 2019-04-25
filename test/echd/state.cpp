@@ -9,13 +9,12 @@ using Catch::Matchers::Equals;
 TEST_CASE("state zero", "[daemon][state]")
 {
 	const auto outpoint = Outpoint(TXID(), 0);
-	const auto id = UTXOID(outpoint);
 	const auto owner = crypto::Address("0000000000000000000000000000000000000000");
 	const auto amount = 0;
 	const auto color = Color();
 	const auto height = 0;
 
-	const auto utxo = UTXO(id, owner, amount, color, height);
+	const auto utxo = UTXO(outpoint, owner, amount, color, height);
 
 	auto state = State();
 	REQUIRE(0u == state.size());

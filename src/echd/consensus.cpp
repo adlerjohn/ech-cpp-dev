@@ -26,7 +26,7 @@ const std::optional<Transition> Consensus::getBlockTransition(const ech::Block& 
 	// Add each deposit to the state transition
 	for (const auto& deposit : block.getDeposits()) {
 		const auto outpoint = Outpoint(deposit.getSource(), 0u);
-		const auto utxo = UTXO(UTXOID(outpoint), deposit.getOwner(), deposit.getAmount(), deposit.getColor(), _height + 1);
+		const auto utxo = UTXO(outpoint, deposit.getOwner(), deposit.getAmount(), deposit.getColor(), _height + 1);
 		// TODO optimize this as emplace_back?
 		additions.push_back(utxo);
 	}
@@ -82,7 +82,7 @@ const std::optional<Transition> Consensus::getBlockTransition(const ech::Block& 
 		// Add each output to the state transition
 		for (const auto& output : outputs) {
 			const auto outpoint = Outpoint(txData.getId(), output.getIndex());
-			const auto utxo = UTXO(UTXOID(outpoint), output.getRecipient(), output.getAmount(), output.getColor(), _height + 1);
+			const auto utxo = UTXO(outpoint, output.getRecipient(), output.getAmount(), output.getColor(), _height + 1);
 			additions.push_back(utxo);
 		}
 	}

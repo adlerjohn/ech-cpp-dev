@@ -6,8 +6,9 @@
 
 using namespace ech;
 
-UTXO::UTXO(const UTXOID& id, const crypto::Address& owner, const CoinAmount amount, const Color& color, const uint64_t height)
-	: _id(id)
+UTXO::UTXO(const Outpoint& outpoint, const crypto::Address& owner, const CoinAmount amount, const Color& color, const uint64_t height)
+	: _id(UTXOID(outpoint))
+	, _outpoint(outpoint)
 	, _owner(owner)
 	, _amount(amount)
 	, _color(color)
@@ -17,7 +18,7 @@ UTXO::UTXO(const UTXOID& id, const crypto::Address& owner, const CoinAmount amou
 
 const UTXO UTXO::deserialize(std::deque<std::byte>& serial)
 {
-	const auto id = deserializer::move<UTXOID>(serial);
+	const auto outpoint = Outpoint::deserialize(serial);
 
 	const auto owner = deserializer::move<crypto::Address>(serial);
 
@@ -27,14 +28,15 @@ const UTXO UTXO::deserialize(std::deque<std::byte>& serial)
 
 	const auto height = deserializer::deserialize<uint64_t, 8u>(serial);
 
-	return UTXO(id, owner, amount, color, height);
+	return UTXO(outpoint, owner, amount, color, height);
 }
 
 const std::vector<std::byte> UTXO::serialize() const
 {
 	std::vector<std::byte> serial;
 
-	serial.insert(serial.end(), _id.begin(), _id.end());
+	const auto outpointSerial = _outpoint.serialize();
+	serial.insert(serial.end(), outpointSerial.begin(), outpointSerial.end());
 
 	serial.insert(serial.end(), _owner.begin(), _owner.end());
 

@@ -15,7 +15,7 @@ TEST_CASE("UTXO zero", "[common][utxo]")
 	const auto color = Color();
 	const auto height = 0;
 
-	const auto utxo = UTXO(id, owner, amount, color, height);
+	const auto utxo = UTXO(outpoint, owner, amount, color, height);
 
 	REQUIRE_THAT(id.toHex(), Equals(utxo.getId().toHex()));
 	REQUIRE_THAT("0000000000000000000000000000000000000000", Equals(utxo.getOwner().toHex()));
@@ -38,7 +38,7 @@ TEST_CASE("UTXO random", "[common][utxo]")
 	const auto color = Color(crypto::Address("deadbeefdeadbeefdeadbeefdeadbeefdeadbeef"));
 	const auto height = 7;
 
-	const auto utxo = UTXO(id, owner, amount, color, height);
+	const auto utxo = UTXO(outpoint, owner, amount, color, height);
 
 	REQUIRE_THAT(id.toHex(), Equals(utxo.getId().toHex()));
 	REQUIRE_THAT("8a40bfaa73256b60764c1bf40675a99083efb075", Equals(utxo.getOwner().toHex()));

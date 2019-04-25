@@ -18,6 +18,8 @@ class UTXO : public Serializable
 private:
 	// ID of the UTXO, determined by the hash of its outpoint
 	const UTXOID _id;
+	// Outpoint of this UTXO
+	const Outpoint _outpoint;
 	// Owner of the UTXO
 	const crypto::Address _owner;
 	// Amount of coins for this UTXO
@@ -28,11 +30,12 @@ private:
 	const uint64_t _height;
 
 public:
-	UTXO(const UTXOID& id, const crypto::Address& owner, const CoinAmount amount, const Color& color, const uint64_t height);
+	UTXO(const Outpoint& outpoint, const crypto::Address& owner, const CoinAmount amount, const Color& color, const uint64_t height);
 
 	[[nodiscard]] static const UTXO deserialize(std::deque<std::byte>& serial);
 
 	[[nodiscard]] const auto& getId() const { return this->_id; }
+	[[nodiscard]] const auto& getOutpoint() const { return this->_outpoint; }
 	[[nodiscard]] const auto& getOwner() const { return this->_owner; }
 	[[nodiscard]] const auto getAmount() const { return this->_amount; }
 	[[nodiscard]] const auto isColored() const { return this->_color.isColored(); }
