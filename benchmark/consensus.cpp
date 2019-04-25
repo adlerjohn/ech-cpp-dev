@@ -5,20 +5,23 @@
 
 using namespace ech::benchmark;
 
-void ConsensusBenchmark::runThread(const size_t begin, const size_t size)
-{
-}
-
 void ConsensusBenchmark::setup()
 {
 }
 
 void ConsensusBenchmark::run()
 {
-}
+	this->before();
 
-void ConsensusBenchmark::run(const uint64_t threadCount)
-{
+	for (auto& block : this->_data) {
+		const auto result = _consensus.getBlockTransition(block);
+		if (result) {
+			this->_passed++;
+			_consensus.appendBlock(block, result.value());
+		}
+	}
+
+	this->after();
 }
 
 int main()
