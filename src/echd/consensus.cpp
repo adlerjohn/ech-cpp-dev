@@ -10,6 +10,9 @@ const std::optional<Transition> Consensus::getBlockTransition(const ech::Block& 
 
 	const auto realHeader = Block(header.getVersion(), header.getPreviousBlockHash(), block.getDeposits(), block.getLeaves(), header.getHeight()).getHeader();
 
+	// TODO check height
+	// TODO check prev
+
 	// Check: roots of deposits match
 	if (header.getDepositsRoot() != realHeader.getDepositsRoot()) {
 		return {};
