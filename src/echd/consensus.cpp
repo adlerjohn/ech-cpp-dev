@@ -2,7 +2,7 @@
 
 using namespace ech;
 
-const std::optional<Transition> Consensus::getBlockTransition(const ech::Block& block) const
+const std::optional<Transition> Consensus::getBlockTransition(const ech::Block& block, const bool assumeValid) const
 {
 	std::vector<UTXO> additions, removals;
 
@@ -59,15 +59,17 @@ const std::optional<Transition> Consensus::getBlockTransition(const ech::Block& 
 
 			// Check: valid signature
 			const auto& utxo = _state.find(utxoid);
-			const auto& owner = utxo.getOwner();
-			const auto& witness = witnesses.at(i);
+			if (!assumeValid) {
+				const auto& owner = utxo.getOwner();
+				const auto& witness = witnesses.at(i);
 
-			try {
-				if (!witness.verify(utxoid, owner)) {
+				try {
+					if (!witness.verify(utxoid, owner)) {
+						return {};
+					}
+				} catch (const std::exception& e) {
 					return {};
 				}
-			} catch (const std::exception& e) {
-				return {};
 			}
 
 			// Check: input is not double-spending

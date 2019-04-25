@@ -27,7 +27,7 @@ public:
 	 * @param block Block the validate.
 	 * @return Optional state transition, on success.
 	 */
-	const std::optional<Transition> getBlockTransition(const Block& block) const;
+	const std::optional<Transition> getBlockTransition(const Block& block, const bool assumeValid = false) const;
 
 	/**
 	 * Appends block to the head of the chain.
@@ -39,6 +39,8 @@ public:
 	// TODO fork choice, with block scoring
 
 	// TODO allow executing blocks without verifying signatures if they've already been verified, for faster sync
+
+	[[nodiscard]] const auto getState() const { return this->_state; }
 };
 
 } // namespace ech
