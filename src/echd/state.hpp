@@ -27,6 +27,7 @@ public:
 	[[nodiscard]] const bool exists(const UTXOID& utxoid) const;
 	[[nodiscard]] const UTXO& find(const UTXOID& utxoid) const;
 
+	[[nodiscard]] const auto& data() const { return this->_utxoSet; }
 	[[nodiscard]] const auto size() const { return this->_utxoSet.size(); }
 
 	[[nodiscard]] const std::vector<std::byte> serialize() const override;
