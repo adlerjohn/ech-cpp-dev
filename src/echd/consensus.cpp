@@ -41,7 +41,7 @@ const std::optional<Transition> Consensus::getBlockTransition(const ech::Block& 
 
 		// Check: each input has a witness
 		// TODO allow signature batching
-		if (inputs.size() != witnesses.size()) {
+		if (!assumeValid && inputs.size() != witnesses.size()) {
 			return {};
 		}
 
