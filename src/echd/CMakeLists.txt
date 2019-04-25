@@ -3,8 +3,8 @@ project(echd)
 set(source_files
         consensus.cpp
         db.cpp
-        rewind.cpp
         state.cpp
+        transition.cpp
         )
 
 add_library(echd-lib ${source_files})
