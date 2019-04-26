@@ -2,6 +2,7 @@
 
 // System includes
 #include <random>
+#include <set>
 
 // Project includes
 #include "echd/consensus.hpp"
@@ -40,24 +41,34 @@ void ConsensusBenchmark::setup()
 			const auto& owner = _addresses.at(distAddresses(rng));
 			const auto deposit = Deposit(owner, 1000u, Color(), i + 1, j);
 			deposits.push_back(deposit);
+
+			_transactionsCount++;
 		}
 		std::vector<TX> leaves;
 		const auto block = Block(1, (i == 0) ? crypto::Digest() : _data.back().getHeader().getId(), deposits, leaves, i + 1);
 		_data.push_back(block);
-		consensus.appendBlock(block, consensus.getBlockTransition(block).value());
+		const auto transition = consensus.getBlockTransition(block).value();
+		consensus.appendBlock(block, transition);
 	}
 
 	// Create half of count blocks as pure transactions
 	for (size_t i = 0; i < halfCount; i++) {
 		std::vector<Deposit> deposits;
 		std::vector<TX> leaves;
-		const auto& utxoSet = consensus.getState().data();
+		const auto& utxoSet = consensus.getState();
 		auto dist = std::uniform_int_distribution<std::mt19937::result_type>(0, utxoSet.size() - 1);
+		std::set<UTXOID> spent;
 		for (size_t j = 0; j < _blockTxCount; j++) {
 			// Select random UTXO to spend
-			auto it = utxoSet.begin();
+			auto it = utxoSet.data().begin();
 			std::advance(it, dist(rng));
 			const auto& utxo = it->second;
+			const auto& utxoid = utxo.getId();
+
+			if (spent.find(utxoid) != spent.end()) {
+				continue;
+			}
+			spent.insert(utxoid);
 
 			const auto& recipient = _addresses.at(distAddresses(rng));
 			const auto inputs = std::vector<Input>{Input(utxo.getOutpoint(), 0)};
@@ -68,6 +79,8 @@ void ConsensusBenchmark::setup()
 			// TODO sign transactions
 			const auto tx = TX(txdata, witnesses);
 			leaves.push_back(tx);
+
+			_transactionsCount++;
 		}
 		const auto block = Block(1, _data.back().getHeader().getId(), deposits, leaves, halfCount + i + 1);
 		_data.push_back(block);
@@ -95,7 +108,7 @@ int main()
 	std::cout << "Setting up consensus tests for " << ConsensusBenchmark::count() << " blocks..." << std::endl;
 	auto consensus = ConsensusBenchmark();
 	consensus.setup();
-	std::cout << "Consensus setup complete for " << ConsensusBenchmark::countTransactions() << " transactions..." << std::endl;
+	std::cout << "Consensus setup complete for " << consensus.countTransactions() << " transactions..." << std::endl;
 	std::cout << std::endl;
 
 	std::cout << "Running single-threaded benchmarking..." << std::endl;

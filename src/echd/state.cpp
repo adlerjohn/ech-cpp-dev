@@ -22,7 +22,7 @@ void State::add(const std::vector<UTXO>& utxos)
 {
 	// TODO check if utxo exists
 	for (const auto& utxo : utxos) {
-		_utxoSet.insert({utxo.getId(), utxo});
+		_utxoSet.insert(std::pair{utxo.getId(), utxo});
 	}
 }
 

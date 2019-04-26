@@ -20,6 +20,7 @@ private:
 
 	std::atomic<uint64_t> _passed{0};
 	std::vector<Block> _data;
+	uint64_t _transactionsCount = 0;
 	std::vector<crypto::SecretKey> _secretKeys;
 	std::vector<crypto::Address> _addresses;
 	Consensus _consensus;
@@ -30,7 +31,7 @@ public:
 	void run() override;
 
 	[[nodiscard]] static constexpr auto count() { return _count; }
-	[[nodiscard]] static constexpr auto countTransactions() { return _count * _blockTxCount; }
+	[[nodiscard]] const auto countTransactions() const { return this->_transactionsCount; }
 
 	void reset() { _passed = 0u; }
 };
