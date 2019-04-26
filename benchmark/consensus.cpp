@@ -76,7 +76,7 @@ void ConsensusBenchmark::setup()
 			const auto txdata = TXData(1, inputs, outputs, 0, 0, 0, crypto::Digest());
 
 			std::vector<crypto::Signature> witnesses;
-			// TODO sign transactions
+			// Transactions don't need to be signed because we can recover addresses separately
 			const auto tx = TX(txdata, witnesses);
 			leaves.push_back(tx);
 

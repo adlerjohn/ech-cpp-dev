@@ -14,9 +14,9 @@ namespace ech::benchmark
 class ConsensusBenchmark : public Benchmark
 {
 private:
-	static constexpr uint64_t _count = 10u;
-	static constexpr uint64_t _blockTxCount = 10u;
-	static constexpr uint64_t _addressCount = 10u;
+	static constexpr uint64_t _count = 1000u;
+	static constexpr uint64_t _blockTxCount = 100u;
+	static constexpr uint64_t _addressCount = 1000u;
 
 	std::atomic<uint64_t> _passed{0};
 	std::vector<Block> _data;
