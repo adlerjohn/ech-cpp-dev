@@ -13,7 +13,7 @@ namespace ech
 class State : public Serializable
 {
 private:
-	// TODO change this to a sorted vector + smart pointers w/binary search
+	// TODO use rocksdb for this
 	// The UTXO set: blockchain state
 	std::map<UTXOID, UTXO> _utxoSet;
 
