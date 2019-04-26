@@ -10,8 +10,8 @@ namespace ech
 class Outpoint : public Serializable
 {
 private:
-	const TXID _txid;
-	const uint32_t _index;
+	TXID _txid;
+	uint32_t _index;
 
 public:
 	Outpoint(const TXID& txid, const uint32_t index);

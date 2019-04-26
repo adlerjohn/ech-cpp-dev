@@ -14,8 +14,8 @@ namespace ech
 class Color : public Serializable
 {
 private:
-	const bool _isColored;
-	const crypto::Address _id;
+	bool _isColored;
+	crypto::Address _id;
 
 public:
 	Color();

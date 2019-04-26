@@ -17,17 +17,17 @@ class UTXO : public Serializable
 {
 private:
 	// ID of the UTXO, determined by the hash of its outpoint
-	const UTXOID _id;
+	UTXOID _id;
 	// Outpoint of this UTXO
-	const Outpoint _outpoint;
+	Outpoint _outpoint;
 	// Owner of the UTXO
-	const crypto::Address _owner;
+	crypto::Address _owner;
 	// Amount of coins for this UTXO
-	const CoinAmount _amount;
+	CoinAmount _amount;
 	// Color (if the UTXO represents a colored coin)
-	const Color _color;
+	Color _color;
 	// Height of the transaction that created this UTXO
-	const uint64_t _height;
+	uint64_t _height;
 
 public:
 	UTXO(const Outpoint& outpoint, const crypto::Address& owner, const CoinAmount amount, const Color& color, const uint64_t height);
