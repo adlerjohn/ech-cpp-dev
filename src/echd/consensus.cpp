@@ -74,7 +74,7 @@ const std::optional<Transition> Consensus::getBlockTransition(const ech::Block& 
 			}
 
 			// Check: input is not double-spending
-			if (std::find_if(removals.begin(), removals.end(), [utxoid](const UTXOID& id) -> bool { return id == utxoid; }) != removals.end()) {
+			if (std::find(removals.begin(), removals.end(), utxoid) != removals.end()) {
 				return {};
 			}
 
