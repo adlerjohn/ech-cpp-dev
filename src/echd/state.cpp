@@ -22,14 +22,14 @@ void State::add(const std::vector<UTXO>& utxos)
 {
 	// TODO check if utxo exists
 	for (const auto& utxo : utxos) {
-		_utxoSet.insert(std::pair{utxo.getId(), utxo});
+		_utxoSet.emplace(utxo.getId(), std::make_unique<UTXO>(utxo));
 	}
 }
 
-void State::remove(const std::vector<UTXO>& utxos)
+void State::remove(const std::vector<UTXOID>& utxoids)
 {
-	for (const auto& utxo : utxos) {
-		const auto& pos = _utxoSet.find(utxo.getId());
+	for (const auto& utxoid : utxoids) {
+		const auto& pos = _utxoSet.find(utxoid);
 
 		if (pos == _utxoSet.end()) {
 			throw std::runtime_error("utxo not found");
@@ -44,7 +44,7 @@ const bool State::exists(const UTXOID& utxoid) const
 	return (_utxoSet.find(utxoid) != _utxoSet.end());
 }
 
-const UTXO& State::find(const UTXOID& utxoid) const
+const std::unique_ptr<UTXO>& State::find(const UTXOID& utxoid) const
 {
 	// TODO add some sanity check here
 	return _utxoSet.find(utxoid)->second;
@@ -59,7 +59,7 @@ const std::vector<std::byte> State::serialize() const
 	serial.insert(serial.end(), stateSizeBytes.begin(), stateSizeBytes.end());
 
 	for (const auto& kv : _utxoSet) {
-		const auto utxoBytes = kv.second.serialize();
+		const auto utxoBytes = kv.second->serialize();
 		serial.insert(serial.end(), utxoBytes.begin(), utxoBytes.end());
 	}
 	return serial;

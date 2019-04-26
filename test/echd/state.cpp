@@ -22,6 +22,6 @@ TEST_CASE("state zero", "[daemon][state]")
 	state.add({utxo});
 	REQUIRE(1u == state.size());
 
-	state.remove({utxo});
+	state.remove({utxo.getId()});
 	REQUIRE(0u == state.size());
 }
