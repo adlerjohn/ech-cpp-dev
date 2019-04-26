@@ -4,7 +4,8 @@ using namespace ech;
 
 const std::optional<Transition> Consensus::getBlockTransition(const ech::Block& block, const bool assumeValid) const
 {
-	std::vector<UTXO> additions, removals;
+	std::vector<UTXO> additions;
+	std::vector<UTXOID> removals;
 
 	const auto& header = block.getHeader();
 
@@ -58,9 +59,9 @@ const std::optional<Transition> Consensus::getBlockTransition(const ech::Block& 
 			}
 
 			// Check: valid signature
-			const auto& utxo = _state.find(utxoid);
+			const auto& utxoPtr = _state.find(utxoid);
 			if (!assumeValid) {
-				const auto& owner = utxo.getOwner();
+				const auto& owner = utxoPtr->getOwner();
 				const auto& witness = witnesses.at(i);
 
 				try {
@@ -73,12 +74,12 @@ const std::optional<Transition> Consensus::getBlockTransition(const ech::Block& 
 			}
 
 			// Check: input is not double-spending
-			if (std::find_if(removals.begin(), removals.end(), [utxoid](const UTXO& u) -> bool { return u.getId() == utxoid; }) != removals.end()) {
+			if (std::find_if(removals.begin(), removals.end(), [utxoid](const UTXOID& id) -> bool { return id == utxoid; }) != removals.end()) {
 				return {};
 			}
 
 			// State transition removes input
-			removals.push_back(utxo);
+			removals.push_back(utxoid);
 		}
 
 		// Add each output to the state transition

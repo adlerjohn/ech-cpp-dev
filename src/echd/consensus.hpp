@@ -40,7 +40,7 @@ public:
 
 	// TODO allow executing blocks without verifying signatures if they've already been verified, for faster sync
 
-	[[nodiscard]] const auto getState() const { return this->_state; }
+	[[nodiscard]] const auto& getState() const { return this->_state; }
 };
 
 } // namespace ech

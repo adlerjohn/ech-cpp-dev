@@ -62,8 +62,8 @@ void ConsensusBenchmark::setup()
 			// Select random UTXO to spend
 			auto it = utxoSet.data().begin();
 			std::advance(it, dist(rng));
-			const auto& utxo = it->second;
-			const auto& utxoid = utxo.getId();
+			const auto& utxoPtr = it->second;
+			const auto& utxoid = utxoPtr->getId();
 
 			if (spent.find(utxoid) != spent.end()) {
 				continue;
@@ -71,7 +71,7 @@ void ConsensusBenchmark::setup()
 			spent.insert(utxoid);
 
 			const auto& recipient = _addresses.at(distAddresses(rng));
-			const auto inputs = std::vector<Input>{Input(utxo.getOutpoint(), 0)};
+			const auto inputs = std::vector<Input>{Input(utxoPtr->getOutpoint(), 0)};
 			const auto outputs = std::vector<TXO>{TXO(0, recipient, 1000, Color())};
 			const auto txdata = TXData(1, inputs, outputs, 0, 0, 0, crypto::Digest());
 
