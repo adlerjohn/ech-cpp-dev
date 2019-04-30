@@ -13,17 +13,20 @@ const crypto::Digest MerkleTree::calculateRoot(const std::vector<crypto::Digest>
 	auto hashesPrev = leaves;
 
 	// Corner case: if only one leaf, duplicate it
-	if (hashesPrev.size() % 2 == 1)
+	if (hashesPrev.size() % 2 == 1) {
 		hashesPrev.push_back(hashesPrev.back());
+	}
 
 	while (hashesPrev.size() > 1) {
-		if (hashesPrev.size() % 2 == 1)
+		if (hashesPrev.size() % 2 == 1) {
 			hashesPrev.push_back(hashesPrev.back());
+		}
 
 		std::vector<crypto::Digest> hashesNext;
 		hashesNext.reserve(hashesPrev.size() / 2);
-		for (size_t i = 0; i < hashesPrev.size() / 2; i++)
+		for (size_t i = 0; i < hashesPrev.size() / 2; i++) {
 			hashesNext.push_back(hashesPrev.at(i * 2) + hashesPrev.at(i * 2 + 1));
+		}
 
 		hashesPrev.swap(hashesNext);
 	}
@@ -34,4 +37,17 @@ const crypto::Digest MerkleTree::calculateRoot(const std::vector<crypto::Digest>
 MerkleTree::MerkleTree(const std::vector<crypto::Digest>& leaves)
 	: _root(calculateRoot(leaves))
 {
+}
+
+const bool MerkleTree::checkProof(const crypto::Digest& leaf, const std::vector<std::pair<bool, crypto::Digest>>& branch) const
+{
+	auto root = leaf;
+
+	for (const auto& pair : branch) {
+		const auto isLeft = pair.first;
+		const auto& node = pair.second;
+		root = isLeft ? (node + root) : (root + node) ;
+	}
+
+	return (_root == root);
 }
