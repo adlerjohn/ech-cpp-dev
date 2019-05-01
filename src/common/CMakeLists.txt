@@ -9,6 +9,7 @@ set(source_files
         input.cpp
         merkle.cpp
         outpoint.cpp
+        sparse_merkle.cpp
         tx.cpp
         txo.cpp
         utxo.cpp
