@@ -62,6 +62,11 @@ const Digest Digest::concat(const Digest& rhs) const
 	return Digest(bytes);
 }
 
+Digest::Digest()
+	: ByteSet("290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e563")
+{
+}
+
 Digest::Digest(const std::string& msg, const bool isDigest)
 	: ByteSet(isDigest ? msg : hash(msg))
 {
@@ -69,11 +74,5 @@ Digest::Digest(const std::string& msg, const bool isDigest)
 
 Digest::Digest(const std::vector<std::byte>& bytes)
 	: ByteSet(hash(bytes))
-{
-}
-
-// Keccak(0x00000000000000000000000000000000) = 290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e563
-Digest::Digest()
-	: ByteSet("290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e563")
 {
 }

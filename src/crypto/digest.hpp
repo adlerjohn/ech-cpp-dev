@@ -19,7 +19,7 @@ private:
 
 public:
 	/**
-	 * Default: the Keccak hash of 0x00000000000000000000000000000000
+	 * Default: the Keccak hash of 32-byte zero.
 	 */
 	Digest();
 
