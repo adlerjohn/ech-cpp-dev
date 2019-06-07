@@ -3,6 +3,7 @@ project(echd)
 set(source_files
         consensus.cpp
         db.cpp
+        mempool.cpp
         state.cpp
         transition.cpp
         )
