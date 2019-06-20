@@ -15,7 +15,7 @@ Install the following libraries as dependencies before compiling.
 If you're using a Ubuntu <Bionic (18.04) then you may need to install [libsecp256k1](https://github.com/bitcoin-core/secp256k1) manually. 
 
 ```sh
-apt install libboost-dev librocksdb-dev libsecp256k1-dev
+apt install libboost-dev librocksdb-dev libsecp256k1-dev libjsonrpccpp-dev libjsonrpccpp-tools
 ```
 
 [Crypto++](https://www.cryptopp.com/) needs to be installed separately, as the version in repositories is too old and doesn't have Keccak hashing.

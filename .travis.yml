@@ -17,6 +17,8 @@ addons:
       - autoconf
       - libboost-dev
       - librocksdb-dev
+      - libjsonrpccpp-dev
+      - libjsonrpccpp-tools
 
 install:
 # Travis CI uses Xenial, so we need to build Crypto++ ourselves
