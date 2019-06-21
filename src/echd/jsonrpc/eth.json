@@ -1,0 +1,21 @@
+[
+  { "name": "eth_blockNumber", "params": [], "returns": "" },
+
+  { "name": "eth_sign", "params": [{}], "returns": {} },
+  { "name": "eth_sendTransaction", "params": [{}], "returns": "" },
+
+  { "name": "eth_getBlockByHash", "params": ["", false],"returns": {} },
+  { "name": "eth_getBlockByNumber", "params": ["", false], "returns": {} },
+
+  { "name": "eth_getTransactionByHash", "params": [""], "returns": {} },
+  { "name": "eth_getTransactionByBlockHashAndIndex", "params": ["", ""], "returns": {} },
+  { "name": "eth_getTransactionByBlockNumberAndIndex", "params": ["", ""], "returns": {} },
+  { "name": "eth_getTransactionReceipt", "params": [""], "returns": {} },
+
+  { "name": "eth_newFilter", "params": [{}], "returns": "" },
+  { "name": "eth_newBlockFilter", "params": [], "returns": "" },
+  { "name": "eth_uninstallFilter", "params": [""], "returns": true },
+  { "name": "eth_getFilterChanges", "params": [""], "returns": [] },
+  { "name": "eth_getFilterLogs", "params": [""], "returns": [] },
+  { "name": "eth_getLogs", "params": [{}], "returns": [] }
+]
