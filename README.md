@@ -33,9 +33,9 @@ sudo make install
 
 ```sh
 wget -O libjson-rpc-cpp.tar.gz https://github.com/cinemast/libjson-rpc-cpp/archive/v1.2.0.tar.gz
-tar -zxvf libjson-rpc-cpp.tar.gz --one-top-level
-mkdir -p libjson-rpc-cpp/build
-cd libjson-rpc-cpp/build
+tar -zxvf libjson-rpc-cpp.tar.gz
+mkdir -p libjson-rpc-cpp-1.2.0/build
+cd libjson-rpc-cpp-1.2.0/build
 cmake .. && make
 sudo make install
 sudo ldconfig

@@ -25,7 +25,7 @@ addons:
 
 install:
 # Travis CI uses Xenial, so we need to build Crypto++ ourselves
-  - wget -O cryptopp.zip https://www.cryptopp.com/cryptopp810.zip
+  - wget -O cryptopp.zip 'https://www.cryptopp.com/cryptopp810.zip'
   - unzip cryptopp.zip -d cryptopp
   - pushd cryptopp
   - make --jobs 2
@@ -33,8 +33,8 @@ install:
   - popd
 # Travis CI uses Xenial, so we need to build libsecp256k1 ourselves
   - wget -O libsecp256k1.tar.gz 'http://archive.ubuntu.com/ubuntu/pool/universe/libs/libsecp256k1/libsecp256k1_0.1~20170810.orig.tar.gz'
-  - tar -zxvf libsecp256k1.tar.gz  --one-top-level
-  - pushd libsecp256k1
+  - tar -zxvf libsecp256k1.tar.gz
+  - pushd secp256k1-f532bdc9f77f7bbf7e93faabfbe9c483f0a9f75f
   - ./autogen.sh
   - ./configure --enable-module-recovery
   - make --jobs 2
@@ -43,10 +43,10 @@ install:
   - popd
   - export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}":/usr/local/lib
 # Ubuntu has an old version of libjson-rpc-cpp, so we need to build it ourselves
-  - wget -O libjson-rpc-cpp.tar.gz https://github.com/cinemast/libjson-rpc-cpp/archive/v1.2.0.tar.gz
-  - tar -zxvf libjson-rpc-cpp.tar.gz  --one-top-level
-  - mkdir -p libjson-rpc-cpp/build
-  - pushd libjson-rpc-cpp/build
+  - wget -O libjson-rpc-cpp.tar.gz 'https://github.com/cinemast/libjson-rpc-cpp/archive/v1.2.0.tar.gz'
+  - tar -zxvf libjson-rpc-cpp.tar.gz
+  - mkdir -p libjson-rpc-cpp-1.2.0/build
+  - pushd libjson-rpc-cpp-1.2.0/build
   - cmake ..
   - make --jobs 2
   - sudo make install
