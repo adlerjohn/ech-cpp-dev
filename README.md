@@ -15,17 +15,30 @@ Install the following libraries as dependencies before compiling.
 If you're using a Ubuntu <Bionic (18.04) then you may need to install [libsecp256k1](https://github.com/bitcoin-core/secp256k1) manually. 
 
 ```sh
-apt install libboost-dev librocksdb-dev libsecp256k1-dev libjsonrpccpp-dev libjsonrpccpp-tools
+sudo apt install libboost-dev librocksdb-dev libsecp256k1-dev \
+    libcurl4-gnutls-dev libmicrohttpd-dev libjsoncpp-dev libargtable2-dev libhiredis-dev
 ```
 
 [Crypto++](https://www.cryptopp.com/) needs to be installed separately, as the version in repositories is too old and doesn't have Keccak hashing.
 
 ```sh
-wget https://www.cryptopp.com/cryptopp810.zip
-unzip cryptopp810.zip -d cryptopp
+wget -O cryptopp.zip https://www.cryptopp.com/cryptopp810.zip
+unzip cryptopp.zip -d cryptopp
 cd cryptopp
 make
 sudo make install
+```
+
+[libjsonrpc-cpp](https://github.com/cinemast/libjson-rpc-cpp) also needs to be installed separately.
+
+```sh
+wget -O libjson-rpc-cpp.tar.gz https://github.com/cinemast/libjson-rpc-cpp/archive/v1.2.0.tar.gz
+tar -zxvf libjson-rpc-cpp.tar.gz -C libjson-rpc-cpp
+mkdir -p libjson-rpc-cpp/build
+cd libjson-rpc-cpp/build
+cmake .. && make
+sudo make install
+sudo ldconfig
 ```
 
 ## Build
