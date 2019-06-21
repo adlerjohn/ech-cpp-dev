@@ -1,5 +1,7 @@
 project(echd)
 
+add_subdirectory(jsonrpc)
+
 set(source_files
         consensus.cpp
         db.cpp
