@@ -25,6 +25,7 @@ set(source_files
         crypto/digest.cpp
         crypto/keys.cpp
         crypto/signature.cpp
+        echd/jsonrpc/eth_client.cpp
         echd/consensus.cpp
         echd/state.cpp
         )
