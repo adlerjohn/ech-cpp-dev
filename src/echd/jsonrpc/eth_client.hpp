@@ -1,10 +1,8 @@
 #pragma once
 
 // Project includes
+#include "crypto/digest.hpp"
 #include "eth_client_stub.hpp"
-#include <crypto/digest.hpp>
-
-// TODO to eth json helper
 
 namespace ech
 {
