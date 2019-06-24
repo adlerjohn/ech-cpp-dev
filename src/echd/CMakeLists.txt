@@ -11,7 +11,7 @@ set(source_files
         )
 
 add_library(echd-lib ${source_files})
-target_link_libraries(echd-lib common rocksdb)
+target_link_libraries(echd-lib common echjsonrpc rocksdb)
 
 add_executable(echd main.cpp)
 target_link_libraries(echd echd-lib)

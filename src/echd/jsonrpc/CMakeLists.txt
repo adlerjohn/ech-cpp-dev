@@ -18,4 +18,4 @@ add_custom_target(
 )
 
 add_library(echjsonrpc ${source_files})
-target_link_libraries(echjsonrpc libjson-rpc-cpp)
+target_link_libraries(echjsonrpc jsoncpp jsonrpccpp-common jsonrpccpp-client jsonrpccpp-server jsonrpccpp-stub)
