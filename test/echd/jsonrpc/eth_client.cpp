@@ -40,3 +40,10 @@ TEST_CASE("eth jsonrpc client leading zeroes padded non-zero", "[daemon][jsonrpc
 
 	REQUIRE(std::string_view("10") == s);
 }
+
+TEST_CASE("eth jsonrpc client 0x", "[daemon][jsonrpc]")
+{
+	const auto s = eth::JsonHelper::formatHex(std::string("42"));
+
+	REQUIRE(std::string_view("0x42") == s);
+}
