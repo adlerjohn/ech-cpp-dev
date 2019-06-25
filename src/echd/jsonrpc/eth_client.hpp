@@ -1,5 +1,8 @@
 #pragma once
 
+// Library includes
+#include <jsonrpccpp/client/connectors/httpclient.h>
+
 // Project includes
 #include "crypto/digest.hpp"
 #include "eth_client_stub.hpp"
@@ -48,7 +51,9 @@ public:
 	[[nodiscard]] static const std::string formatHex(const std::string& val);
 	[[nodiscard]] static const std::string removeLeadingZeroes(const std::string& val);
 
+	[[nodiscard]] static const std::string toString(const uint64_t number);
 	[[nodiscard]] static const Json::Value toValue(const uint64_t number);
+	[[nodiscard]] static const std::string toString(const crypto::Digest& hash);
 	[[nodiscard]] static const Json::Value toValue(const crypto::Digest& hash);
 	[[nodiscard]] static const Json::Value toValue(const crypto::Address& address);
 	[[nodiscard]] static const Json::Value toValue(const Filter& filter);
@@ -59,20 +64,23 @@ public:
 class EthClient
 {
 private:
+	jsonrpc::HttpClient _httpClient;
+	EthClientStub _clientStub;
+
 public:
 	EthClient();
 
-	[[nodiscard]] const std::string eth_blockNumber() const;
-	[[nodiscard]] const Json::Value eth_sign(const std::string& data) const;
-	[[nodiscard]] const std::string eth_sendTransaction(const eth::Transaction& tx) const;
-	[[nodiscard]] const Json::Value eth_getBlockByNumber(const uint64_t number, bool isFullTransactionObjects) const;
-	[[nodiscard]] const Json::Value eth_getTransactionByHash(const crypto::Digest& hash) const;
-	[[nodiscard]] const std::string eth_newFilter(const eth::Filter& filterObject) const;
-	[[nodiscard]] const std::string eth_newBlockFilter() const;
-	[[nodiscard]] const bool eth_uninstallFilter(const std::string& filterID) const;
-	[[nodiscard]] const Json::Value eth_getFilterChanges(const std::string& filterID) const;
-	[[nodiscard]] const Json::Value eth_getFilterLogs(const std::string& filterID) const;
-	[[nodiscard]] const Json::Value eth_getLogs(const eth::Filter& filterObject) const;
+	[[nodiscard]] const std::string eth_blockNumber();
+	[[nodiscard]] const Json::Value eth_sign(const std::string& data);
+	[[nodiscard]] const std::string eth_sendTransaction(const eth::Transaction& tx);
+	[[nodiscard]] const Json::Value eth_getBlockByNumber(const uint64_t number, bool isFullTransactionObjects);
+	[[nodiscard]] const Json::Value eth_getTransactionByHash(const crypto::Digest& hash);
+	[[nodiscard]] const std::string eth_newFilter(const eth::Filter& filterObject);
+	[[nodiscard]] const std::string eth_newBlockFilter();
+	[[nodiscard]] const bool eth_uninstallFilter(const std::string& filterID);
+	[[nodiscard]] const Json::Value eth_getFilterChanges(const std::string& filterID);
+	[[nodiscard]] const Json::Value eth_getFilterLogs(const std::string& filterID);
+	[[nodiscard]] const Json::Value eth_getLogs(const eth::Filter& filterObject);
 };
 
 } // namespace ech

@@ -1,5 +1,8 @@
 #include "eth_client.hpp"
 
+// Library includes
+#include <jsonrpccpp/client/connectors/httpclient.h>
+
 // Project includes
 #include "eth_client_stub.hpp"
 
@@ -46,20 +49,30 @@ const std::string eth::JsonHelper::removeLeadingZeroes(const std::string& val)
 	return s;
 }
 
-const Json::Value eth::JsonHelper::toValue(const uint64_t number)
+const std::string eth::JsonHelper::toString(const uint64_t number)
 {
 	std::stringstream buf;
 	buf << std::hex << std::setfill('0') << std::setw(8u * 2) << number;
 	auto str = buf.str();
 	std::transform(str.begin(), str.end(), str.begin(), ::tolower);
 
-	const auto val = Json::Value(formatHex(removeLeadingZeroes(str)));
-	return Json::Value(str);
+	return formatHex(removeLeadingZeroes(str));
+}
+
+const Json::Value eth::JsonHelper::toValue(const uint64_t number)
+{
+	const auto val = Json::Value(toString(number));
+	return val;
+}
+
+const std::string eth::JsonHelper::toString(const crypto::Digest& hash)
+{
+	return formatHex(hash.toHex());
 }
 
 const Json::Value eth::JsonHelper::toValue(const crypto::Digest& hash)
 {
-	const auto val = Json::Value(formatHex(hash.toHex()));
+	const auto val = Json::Value(toString(hash));
 	return val;
 }
 
@@ -95,59 +108,67 @@ const Json::Value eth::JsonHelper::toValue(const eth::Filter& filter)
 }
 
 EthClient::EthClient()
+	: _httpClient(jsonrpc::HttpClient("http://localhost:8545"))
+	, _clientStub(EthClientStub(_httpClient, jsonrpc::JSONRPC_CLIENT_V2))
 {
 }
 
-const std::string EthClient::eth_blockNumber() const
+const std::string EthClient::eth_blockNumber()
 {
-	return std::__cxx11::string();
+	return _clientStub.eth_blockNumber();
 }
 
-const Json::Value EthClient::eth_sign(const std::string& data) const
+const Json::Value EthClient::eth_sign(const std::string& data)
 {
+	// TODO
 	return Json::Value();
 }
 
-const std::string EthClient::eth_sendTransaction(const eth::Transaction& tx) const
+const std::string EthClient::eth_sendTransaction(const eth::Transaction& tx)
 {
+	// TODO
 	return std::__cxx11::string();
 }
 
-const Json::Value EthClient::eth_getBlockByNumber(const uint64_t number, bool isFullTransactionObjects) const
+const Json::Value EthClient::eth_getBlockByNumber(const uint64_t number, bool isFullTransactionObjects)
 {
-	return Json::Value();
-}
-const Json::Value EthClient::eth_getTransactionByHash(const crypto::Digest& hash) const
-{
-	return Json::Value();
+	return _clientStub.eth_getBlockByNumber(eth::JsonHelper::toString(number), isFullTransactionObjects);
 }
 
-const std::string EthClient::eth_newFilter(const eth::Filter& filterObject) const
+const Json::Value EthClient::eth_getTransactionByHash(const crypto::Digest& hash)
 {
-	return std::__cxx11::string();
+	return _clientStub.eth_getTransactionByHash(eth::JsonHelper::toString(hash));
 }
 
-const std::string EthClient::eth_newBlockFilter() const
+const std::string EthClient::eth_newFilter(const eth::Filter& filterObject)
 {
-	return std::__cxx11::string();
+	return _clientStub.eth_newFilter(eth::JsonHelper::toValue(filterObject));
 }
 
-const bool EthClient::eth_uninstallFilter(const std::string& filterID) const
+const std::string EthClient::eth_newBlockFilter()
 {
+	return _clientStub.eth_newBlockFilter();
+}
+
+const bool EthClient::eth_uninstallFilter(const std::string& filterID)
+{
+	// TODO
 	return 0;
 }
 
-const Json::Value EthClient::eth_getFilterChanges(const std::string& filterID) const
+const Json::Value EthClient::eth_getFilterChanges(const std::string& filterID)
 {
+	// TODO
 	return Json::Value();
 }
 
-const Json::Value EthClient::eth_getFilterLogs(const std::string& filterID) const
+const Json::Value EthClient::eth_getFilterLogs(const std::string& filterID)
 {
+	// TODO
 	return Json::Value();
 }
 
-const Json::Value EthClient::eth_getLogs(const eth::Filter& filterObject) const
+const Json::Value EthClient::eth_getLogs(const eth::Filter& filterObject)
 {
-	return Json::Value();
+	return _clientStub.eth_getLogs(eth::JsonHelper::toValue(filterObject));
 }
