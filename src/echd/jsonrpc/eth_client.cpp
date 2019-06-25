@@ -5,6 +5,20 @@
 
 using namespace ech;
 
+eth::Filter::Filter(
+	const std::optional<uint64_t>& fromBlock,
+	const std::optional<uint64_t>& toBlock,
+	const std::optional<crypto::Address>& address,
+	const std::vector<std::pair<std::string, std::string>>& topics,
+	const std::optional<crypto::Digest>& blockHash)
+	: _fromBlock(fromBlock)
+	, _toBlock(toBlock)
+	, _address(address)
+	, _topics(topics)
+	, _blockHash(blockHash)
+{
+}
+
 const std::string eth::JsonHelper::formatHex(const std::string& val)
 {
 	return std::string("0x") + val;
@@ -34,19 +48,49 @@ const std::string eth::JsonHelper::removeLeadingZeroes(const std::string& val)
 
 const Json::Value eth::JsonHelper::toValue(const uint64_t number)
 {
-	auto val = Json::Value(Json::stringValue);
-	return val;
+	std::stringstream buf;
+	buf << std::hex << std::setfill('0') << std::setw(8u * 2) << number;
+	auto str = buf.str();
+	std::transform(str.begin(), str.end(), str.begin(), ::tolower);
+
+	const auto val = Json::Value(formatHex(removeLeadingZeroes(str)));
+	return Json::Value(str);
 }
 
 const Json::Value eth::JsonHelper::toValue(const crypto::Digest& hash)
 {
-	auto val = Json::Value(Json::stringValue);
+	const auto val = Json::Value(formatHex(hash.toHex()));
+	return val;
+}
+
+const Json::Value eth::JsonHelper::toValue(const crypto::Address& address)
+{
+	const auto val = Json::Value(formatHex(address.toHex()));
 	return val;
 }
 
 const Json::Value eth::JsonHelper::toValue(const eth::Filter& filter)
 {
 	auto val = Json::Value(Json::objectValue);
+
+	if (const auto& fromBlock = filter.getFromBlock(); fromBlock) {
+		val["fromBlock"] = toValue(fromBlock.value());
+	}
+	if (const auto& toBlock = filter.getToBlock(); toBlock) {
+		val["toBlock"] = toValue(toBlock.value());
+	}
+	if (const auto& address = filter.getAddress(); address) {
+		val["address"] = toValue(address.value());
+	}
+	const auto& topics = filter.getTopics();
+	val["topics"] = Json::Value(Json::arrayValue);
+	for (const auto& topic: topics) {
+		//val["topics"].append(TODO);
+	}
+	if (const auto& blockHash = filter.getBlockHash(); blockHash) {
+		val["blockHash"] = toValue(blockHash.value());
+	}
+
 	return val;
 }
 

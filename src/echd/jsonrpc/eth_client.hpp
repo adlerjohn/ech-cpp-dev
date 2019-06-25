@@ -20,12 +20,25 @@ public:
 class Filter
 {
 private:
-	uint64_t _fromBlock;
-	uint64_t _toBlock;
-	crypto::Address _address;
+	std::optional<uint64_t> _fromBlock;
+	std::optional<uint64_t> _toBlock;
+	std::optional<crypto::Address> _address;
 	std::vector<std::pair<std::string, std::string>> _topics;
+	std::optional<crypto::Digest> _blockHash;
 
 public:
+	Filter(
+		const std::optional<uint64_t>& fromBlock,
+		const std::optional<uint64_t>& toBlock,
+		const std::optional<crypto::Address>& address,
+		const std::vector<std::pair<std::string, std::string>>& topics,
+		const std::optional<crypto::Digest>& blockHash);
+
+	[[nodiscard]] const auto& getFromBlock() const { return _fromBlock; }
+	[[nodiscard]] const auto& getToBlock() const { return _toBlock; }
+	[[nodiscard]] const auto& getAddress() const { return _address; }
+	[[nodiscard]] const auto& getTopics() const { return _topics; }
+	[[nodiscard]] const auto& getBlockHash() const { return _blockHash; }
 };
 
 class JsonHelper
@@ -37,6 +50,7 @@ public:
 
 	[[nodiscard]] static const Json::Value toValue(const uint64_t number);
 	[[nodiscard]] static const Json::Value toValue(const crypto::Digest& hash);
+	[[nodiscard]] static const Json::Value toValue(const crypto::Address& address);
 	[[nodiscard]] static const Json::Value toValue(const Filter& filter);
 };
 
